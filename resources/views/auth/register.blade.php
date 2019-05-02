@@ -12,10 +12,10 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="nome" class="col-md-4 col-form-label text-md-right">{{ __('Nome') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -58,6 +58,24 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="nome" class="col-md-4 col-form-label text-md-right">{{ __('Nível') }}</label>
+
+                            <div class="col-md-6">
+                                <select required class="form-control @error('nivel_id') is-invalid @enderror" name="nivel_id">
+                                    @foreach($niveis as $nivel)
+                                        <option value="{{$nivel->id}}">{{$nivel->nome}}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('nivel_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
