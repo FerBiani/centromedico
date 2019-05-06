@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
-
-use App\{Usuario, Nivel};
+use App\{Usuario, Nivel, Endereco, Estado, Cidade, Telefone};
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 class RegisterController extends Controller
 {
     /*
@@ -20,21 +17,19 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
-
     public function showRegistrationForm() {
+        $estados = Estado::all();
+        $cidades = Cidade::all();
         $niveis = Nivel::all();
-        return view('auth.register', compact('niveis'));
+        return view('auth.register', compact('niveis','estados','cidades'));
     }
-
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = '/home';
-
     /**
      * Create a new controller instance.
      *
@@ -44,7 +39,6 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -57,10 +51,9 @@ class RegisterController extends Controller
             'nome' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:usuarios'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'nivel_id' => ['required']
+            'nivel_id' => ['required'],
         ]);
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -69,12 +62,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        return Usuario::create([
+        $usuario = Usuario::create([
             'nome' => $data['nome'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'nivel_id' => $data['nivel_id']
         ]);
+
+        Endereco::create([
+            'cep' => $data['cep'],
+            'logradouro' => $data['logradouro'],
+            'bairro' => $data['bairro'],
+            'numero' => $data['numero'],
+            'complemento' => $data['complemento'],
+            'usuario_id' => $usuario->id,
+            'cidade_id' => $data['cidade_id'],
+        ]);
+
+        Telefone::create([
+            'numero' => $data['telefone'],
+            'usuario_id' => $usuario->id,
+        ]);
+
+        return $usuario;
+        
     }
 }

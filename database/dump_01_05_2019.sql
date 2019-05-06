@@ -19,6 +19,10 @@
 -- Table structure for table `cidades`
 --
 
+CREATE DATABASE centromedico;
+
+USE centromedico;
+
 DROP TABLE IF EXISTS `cidades`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
