@@ -9,12 +9,10 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
+
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -59,7 +57,28 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+
+                @if(Session::get('success'))
+                <div class="alert alert-success" role="alert">
+                    <p>{{Session::get('success')}}</p>
+                </div>
+                @endif
+
+                @if(Session::get('warning'))
+                <div class="alert alert-warning" role="alert">
+                    <p>{{Session::get('warning')}}</p>
+                </div>
+                @endif
+
+                @if(Session::get('error'))
+                <div class="alert alert-error" role="alert">
+                    <p>{{Session::get('error')}}</p>
+                </div>
+                @endif
+
+                @yield('content')
+            </div>
         </main>
     </div>
     <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>

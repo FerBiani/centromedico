@@ -15,8 +15,8 @@ class Endereco extends Model
 
     public $timestamps = false;
 
-    public function usuarios()
+    public function usuario()
     {
-        return $this->hasOne('App\Usuario');
+        return $this->belongsTo('App\Usuario');
     }
 }

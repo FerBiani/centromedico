@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,14 +23,18 @@ class Usuario extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function enderecos()
+    public function endereco()
     {
-        return $this->belongsTo('App\Endereco');
+        return $this->hasOne('App\Endereco');
     }
 
     public function telefones()
     {
         return $this->hasMany('App\Telefone');
+    }
+
+    public function setPasswordAttribute($val) {
+        $this->attributes['password'] = Hash::needsRehash($val) ? Hash::make($val) : $val;
     }
 
 }

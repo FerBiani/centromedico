@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/senha/{senha}', function ($senha) {
+    return Hash::make($senha);
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('usuario', 'UsuarioController');
