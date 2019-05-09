@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone};
+use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao};
 use DB;
 use Illuminate\Http\Request;
 
@@ -25,7 +25,8 @@ class UsuarioController extends Controller
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
             'estados' => Estado::all(),
-            'cidades' => Cidade::all()
+            'cidades' => Cidade::all(),
+            'especializacoes' => Especializacao::all()
         ];
 
         return view('usuario.form', compact('data'));
@@ -43,6 +44,7 @@ class UsuarioController extends Controller
 
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
+            $usuario->especializacoes()->attach($request->especializacoes_id);
 
             foreach($request['telefone'] as $telefone) {
                 $usuario->telefones()->save(new Telefone(['numero' => $telefone]));

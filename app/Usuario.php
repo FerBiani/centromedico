@@ -33,6 +33,10 @@ class Usuario extends Authenticatable
         return $this->hasMany('App\Telefone');
     }
 
+    public function especializacoes(){
+        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuarios_id', 'especializacoes_id');
+    }
+
     public function setPasswordAttribute($val) {
         $this->attributes['password'] = Hash::needsRehash($val) ? Hash::make($val) : $val;
     }

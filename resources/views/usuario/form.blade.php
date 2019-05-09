@@ -9,6 +9,8 @@
             <div class="card-body">
                 <form method="POST" action="{{url($data['url'])}}">
                     @csrf
+
+                    <h6>Dados Pessoais</h6>
                     <div class="form-group row">
                         <label for="usuario[nome]" class="col-md-4 col-form-label text-md-right">Nome</label>
 
@@ -45,9 +47,21 @@
                         <label for="usuario[nivel_id]" class="col-md-4 col-form-label text-md-right">Nível</label>
 
                         <div class="col-md-6">
-                            <select required class="form-control" name="usuario[nivel_id]">
+                            <select required class="form-control" id="options" onchange="optionCheck()" name="usuario[nivel_id]">
                                 @foreach($data['niveis'] as $nivel)
                                     <option value="{{$nivel->id}}">{{$nivel->nome}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="usuario[especializacoes]" style="display: none" class="col-md-4 col-form-label text-md-right espacializacao">Especialização</label>
+                        
+                        <div class="espacializacao col-md-6" style="display: none" >
+                            <select required class="form-control" name="especializacoes_id" >
+                                @foreach($data['especializacoes'] as $especializacao)
+                                    <option value="{{$especializacao->id}}">{{$especializacao->especializacao}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -122,7 +136,7 @@
                         <label for="telefone[numero]" class="col-md-4 col-form-label text-md-right">Telefone</label>
 
                         <div class="col-md-6">
-                            <input id="telefone" type="text" class="form-control" name="telefone[numero]" required>
+                            <input id="telefone" type="text" class="form-control" name="telefone[numero]" required> 
                         </div>
                     </div>
 
@@ -139,3 +153,16 @@
     </div>
 </div>
 @endsection
+@section('js')
+     <script type="text/javascript">
+        
+        function optionCheck(){
+            var option = document.getElementById("options").value;
+            if(option == 2){
+                $('.espacializacao').show();
+            }else{
+                $('.espacializacao').hide();
+            }
+        }
+     </script>
+@stop
