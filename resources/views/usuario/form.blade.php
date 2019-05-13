@@ -17,6 +17,7 @@
                         <div class="col-md-6">
                             <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{old('nome') }}" required>
                         </div>
+                        <span class="errors"{{ $errors->first('usuario.nome') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -25,6 +26,7 @@
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="usuario[email]" value="{{old('email')}}" required>
                         </div>
+                        <span class="errors"{{ $errors->first('usuario.email') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -33,6 +35,7 @@
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control" name="usuario[password]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('usuario.password') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -53,6 +56,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        <span class="errors"{{ $errors->first('usuario.nivel_id') }}</span>>
                     </div>
 
                     <div class="form-group row">
@@ -65,6 +69,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        <span class="errors"{{ $errors->first('usuario.especializacoes') }}</span>
                     </div>
 
                     <hr>
@@ -75,6 +80,7 @@
                         <div class="col-md-6">
                             <input id="cep" type="text" class="form-control" name="endereco[cep]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.cep') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[estado_id]" class="col-md-4 col-form-label text-md-right">Estado</label>
@@ -85,6 +91,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.estado_id') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
@@ -96,6 +103,7 @@
                                 @endforeach
                         </select>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.cidade_id') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
@@ -103,6 +111,7 @@
                         <div class="col-md-6">
                             <input id="bairro" type="text" class="form-control" name="endereco[bairro]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.bairro') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -111,6 +120,7 @@
                         <div class="col-md-6">
                             <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.logradouro') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -119,6 +129,7 @@
                         <div class="col-md-6">
                             <input id="numero" type="text" class="form-control" name="endereco[numero]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.numero') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -127,6 +138,7 @@
                         <div class="col-md-6">
                             <input id="complemento" type="text" class="form-control" name="endereco[complemento]" required>
                         </div>
+                        <span class="errors"{{ $errors->first('endereco.complemento') }}</span>
                     </div>
 
                     <hr>
@@ -138,6 +150,7 @@
                         <div class="col-md-6">
                             <input id="telefone" type="text" class="form-control" name="telefone[numero]" required> 
                         </div>
+                        <span class="errors"{{ $errors->first('telefone.numero') }}</span>
                     </div>
 
                     <div class="form-group row mb-0">

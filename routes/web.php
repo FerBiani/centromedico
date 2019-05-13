@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/senha/{senha}', function ($senha) {
