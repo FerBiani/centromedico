@@ -16,11 +16,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="text-right">
-                            <a class="btn btn-info" href="{{url('usuario/create')}}">Novo</a>
-                        </div>
-                    </div>
                 </div>
 
                 <table class="table table striped">

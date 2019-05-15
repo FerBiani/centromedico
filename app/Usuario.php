@@ -34,7 +34,7 @@ class Usuario extends Authenticatable
     }
 
     public function especializacoes(){
-        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuarios_id', 'especializacoes_id');
+        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
     }
 
     public function setPasswordAttribute($val) {

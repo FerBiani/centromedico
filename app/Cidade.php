@@ -12,7 +12,7 @@ class Cidade extends Model
         'nome', 'estado_id'
     ];
 
-    public function estados()
+    public function estado()
     {
         return $this->belongsTo('App\Estados');
     }

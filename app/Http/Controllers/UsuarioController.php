@@ -21,12 +21,15 @@ class UsuarioController extends Controller
 
         $data = [
             'usuario' => '',
+            'method' => '',
             'url' => 'usuario',
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
             'estados' => Estado::all(),
             'cidades' => Cidade::all(),
-            'especializacoes' => Especializacao::all()
+            'especializacoes' => Especializacao::all(),
+            'especializacoes_usuario' => [new Especializacao],
+            'telefones' => [new Telefone]
         ];
 
         return view('usuario.form', compact('data'));
@@ -47,7 +50,7 @@ class UsuarioController extends Controller
             $usuario->especializacoes()->attach($request['especializacoes']);
 
             foreach($request['telefone'] as $telefone) {
-                $usuario->telefones()->save(new Telefone(['numero' => $telefone]));
+                $usuario->telefones()->save(new Telefone([ 'numero' => $telefone['numero'] ]));
             }
 
             DB::commit();
@@ -72,15 +75,19 @@ class UsuarioController extends Controller
     public function edit($id)
     {
 
+        $usuario = Usuario::findOrFail($id);
+
         $data = [
-            'usuario' => old('usuario') ? old('usuario') : Usuario::findOrFail($id),
+            'usuario' => $usuario,
             'method' => 'PUT',
             'url' => 'usuario/'.$id,
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
             'estados' => Estado::all(),
             'cidades' => Cidade::all(),
-            'especializacoes' => Especializacao::all()
+            'especializacoes' => Especializacao::all(),
+            'especializacoes_usuario' => count($usuario->especializacoes) ? $usuario->especializacoes : [new Especializacao],
+            'telefones' => count($usuario->telefones) ? $usuario->telefones : [new Telefone]
         ];
 
         return view('usuario.form', compact('data'));
@@ -90,11 +97,24 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::findOrFail($id);
 
+        $validatedData = $request->validate([
+            'usuario.nome' => 'required|min:5',
+        ]);
+
         DB::beginTransaction();
         try {
 
             $usuario->update($request->input('usuario'));
             $usuario->endereco->update($request->input('endereco'));
+            $usuario->especializacoes()->sync($request['especializacoes']);
+      
+            foreach($request->input('telefone') as $telefone){
+                if($telefone['id'])
+                    Telefone::find($telefone['id'])->update($telefone);
+                else {
+                    $usuario->telefones()->save(new Telefone($telefone));
+                }
+            }
 
             DB::commit();
 

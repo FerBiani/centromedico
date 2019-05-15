@@ -7,6 +7,14 @@
             <div class="card-header">Dashboard</div>
             <div class="card-body">
 
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <a class="btn btn-info" href="{{url('usuario/create')}}">Novo Usuário</a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
 
                     <div class="col-md-3">
