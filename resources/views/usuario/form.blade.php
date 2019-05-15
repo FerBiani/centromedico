@@ -21,7 +21,6 @@
                         <div class="col-md-6">
                             <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? old('usuario.nome', $data['usuario']->nome) : '' }}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('usuario.nome') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -30,7 +29,6 @@
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? old('usuario.email', $data['usuario']->email) : '' }}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('usuario.email') }}</span>
                     </div>
 
                     @if(!$data['usuario'])
@@ -39,16 +37,15 @@
                         <label for="usuario[password]" class="col-md-4 col-form-label text-md-right">Senha</label>
 
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="usuario[password]" required>
+                            <input id="password" type="password" class="form-control" name="usuario[password]" >
+                            <small class="errors font-text text-danger">{{ $errors->first('usuario.password') }}</small>
                         </div>
-                        <span class="errors">{{ $errors->first('usuario.password') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="usuario[password-confirm]" class="col-md-4 col-form-label text-md-right">Confirmar a Senha</label>
-
                         <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="usuario[password_confirmation]" required>
+                            <input id="password-confirm" type="password" class="form-control" name="usuario[password_confirmation]" >
                         </div>
                     </div>
 
@@ -56,15 +53,14 @@
 
                     <div class="form-group row">
                         <label for="usuario[nivel_id]" class="col-md-4 col-form-label text-md-right">Nível</label>
-
                         <div class="col-md-6">
-                            <select required class="form-control" id="niveis" name="usuario[nivel_id]">
+                            <select  class="form-control" id="niveis" name="usuario[nivel_id]">
                                 @foreach($data['niveis'] as $nivel)
                                     <option {{ $data['usuario'] && $nivel->id == old('usuario.nivel_id', $data['usuario']->nivel_id) ? 'selected' : '' }} value="{{$nivel->id}}">{{$nivel->nome}}</option>
                                 @endforeach
                             </select>
+                            <small class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
                         </div>
-                        <span class="errors">{{ $errors->first('usuario.nivel_id') }}</span>
                     </div>
 
                     <div id="especializacoes" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'hidden'}}>
@@ -97,14 +93,14 @@
 
                     <hr>
                     <h6>Dados de Endereço</h6>
+                    
                     <div class="form-group row">
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
-
                         <div class="col-md-6">
                             <input id="cep" type="text" class="form-control" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.cep') }}</span>
                     </div>
+                    
                     <div class="form-group row">
                         <label for="endereco[estado_id]" class="col-md-4 col-form-label text-md-right">Estado</label>
                         <div class="col-md-6">
@@ -113,55 +109,48 @@
                                     <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
                                 @endforeach
                             </select>
+                            <small id="NomeHelp" class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.estado_id') }}</span>
                     </div>
+
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
-
                         <div class="col-md-6">
-                        <select required class="form-control" name="endereco[cidade_id]">
+                        <select  class="form-control" name="endereco[cidade_id]">
                                 @foreach($data['cidades'] as $cidade)
                                     <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
                                 @endforeach
                         </select>
+                        <small class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.cidade_id') }}</span>
                     </div>
+
                     <div class="form-group row">
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
-
                         <div class="col-md-6">
                             <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? old('endereco.bairro', $data['usuario']->endereco->bairro) : ''}}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.bairro') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
-
                         <div class="col-md-6">
                             <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? old('endereco.logradouro', $data['usuario']->endereco->logradouro) : ''}}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.logradouro') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
-
                         <div class="col-md-6">
                             <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? old('endereco.numero', $data['usuario']->endereco->numero) : ''}}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.numero') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
-
                         <div class="col-md-6">
                             <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? old('endereco.complemento', $data['usuario']->endereco->complemento) : ''}}" required>
                         </div>
-                        <span class="errors">{{ $errors->first('endereco.complemento') }}</span>
                     </div>
 
                     <hr>
