@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao};
 use DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\{ UsuarioCreateRequest, UsuarioUpdateRequest };
 
 class UsuarioController extends Controller
 {
@@ -33,11 +34,11 @@ class UsuarioController extends Controller
     }
 
    
-    public function store(Request $request)
+    public function store(UsuarioCreateRequest $request)
     {
         if($request['usuario']['password'] !== $request['usuario']['password_confirmation']) {
             return back()->with('warning', 'As senhas informadas devem ser iguais!');
-        }
+        }   
 
         DB::beginTransaction();
         try {
@@ -86,7 +87,7 @@ class UsuarioController extends Controller
         return view('usuario.form', compact('data'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UsuarioUpdateRequest $request, $id)
     {
         $usuario = Usuario::findOrFail($id);
 
