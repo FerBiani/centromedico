@@ -24,4 +24,8 @@ Route::get('/senha/{senha}', function ($senha) {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('usuario')->group(function () {
+    Route::get('listar/{nivel}', 'UsuarioController@listar');
+});
 Route::resource('usuario', 'UsuarioController');

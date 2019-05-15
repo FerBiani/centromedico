@@ -9,20 +9,35 @@
 
                 <div class="row">
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="card">
-                            <div class="card-header">Usuários</div>
+                            <div class="card-header">Pacientes</div>
                             <div class="card-body text-center">
-                                <a class="btn" href="{{url('usuario')}}"><i class="fas fa-6x fa-users"></i></a>
+                                <a class="btn" href="{{url('usuario/listar/4')}}"><i class="fas fa-6x fa-user-injured"></i></a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="card">
-                            <div class="card-header">Consultas</div>
+                            <div class="card-header">Médicos</div>
                             <div class="card-body text-center">
-                                <a class="btn" href="#"><i class="fas fa-6x fa-calendar-alt"></i></a>
+                                <a class="btn" href="{{url('usuario/listar/3')}}"><i class="fas fa-6x fa-user-md"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header">Atendentes</div>
+                            <div class="card-body text-center">
+                                <a class="btn" href="{{url('usuario/listar/2')}}"><i class="fas fa-6x fa-headset"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header">Administradores</div>
+                            <div class="card-body text-center">
+                                <a class="btn" href="{{url('usuario/listar/1')}}"><i class="fas fa-6x fa-users-cog"></i></a>
                             </div>
                         </div>
                     </div>

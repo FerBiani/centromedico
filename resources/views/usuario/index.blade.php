@@ -38,7 +38,7 @@
                             <td>{{$usuario->nome}}</td>
                             <td>{{$usuario->telefones->first()->numero}}</td>
                             <td>{{$usuario->email}}</td>
-                            <td><a class="btn btn-warning" href="#">Editar</a></td>
+                            <td><a class="btn btn-warning" href="{{url('usuario/'.$usuario->id.'/edit')}}">Editar</a></td>
                             <td><a class="btn btn-danger" href="#">Excluir</a></td>
                         </tr>
                         @endforeach

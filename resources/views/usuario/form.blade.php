@@ -9,25 +9,30 @@
             <div class="card-body">
                 <form method="POST" action="{{url($data['url'])}}">
                     @csrf
+                    @if(isset($data['method']))
+                        @method($data['method'])
+                    @endif
 
                     <h6>Dados Pessoais</h6>
                     <div class="form-group row">
                         <label for="usuario[nome]" class="col-md-4 col-form-label text-md-right">Nome</label>
 
                         <div class="col-md-6">
-                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{old('nome') }}" required>
+                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? $data['usuario']->nome : '' }}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('usuario.nome') }}</span>
+                        <span class="errors">{{ $errors->first('usuario.nome') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="usuario[email]" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
                         <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{old('email')}}" required>
+                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? $data['usuario']->email : '' }}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('usuario.email') }}</span>
+                        <span class="errors">{{ $errors->first('usuario.email') }}</span>
                     </div>
+
+                    @if(!$data['usuario'])
 
                     <div class="form-group row">
                         <label for="usuario[password]" class="col-md-4 col-form-label text-md-right">Senha</label>
@@ -35,7 +40,7 @@
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control" name="usuario[password]" required>
                         </div>
-                        <span class="errors"{{ $errors->first('usuario.password') }}</span>
+                        <span class="errors">{{ $errors->first('usuario.password') }}</span>
                     </div>
 
                     <div class="form-group row">
@@ -46,30 +51,50 @@
                         </div>
                     </div>
 
+                    @endif
+
                     <div class="form-group row">
                         <label for="usuario[nivel_id]" class="col-md-4 col-form-label text-md-right">Nível</label>
 
                         <div class="col-md-6">
-                            <select required class="form-control" id="options" onchange="optionCheck()" name="usuario[nivel_id]">
+                            <select required class="form-control" id="niveis" name="usuario[nivel_id]">
                                 @foreach($data['niveis'] as $nivel)
                                     <option value="{{$nivel->id}}">{{$nivel->nome}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <span class="errors"{{ $errors->first('usuario.nivel_id') }}</span>>
+                        <span class="errors">{{ $errors->first('usuario.nivel_id') }}</span>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="usuario[especializacoes]" style="display: none" class="col-md-4 col-form-label text-md-right espacializacao">Especialização</label>
-                        
-                        <div class="espacializacao col-md-6" style="display: none" >
-                            <select required class="form-control" name="especializacoes_id" >
-                                @foreach($data['especializacoes'] as $especializacao)
-                                    <option value="{{$especializacao->id}}">{{$especializacao->especializacao}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <span class="errors"{{ $errors->first('usuario.especializacoes') }}</span>
+                    <?php
+
+                        if($data['usuario'] && $data['usuario']->nivel_id == 3) {
+                            $especializacoes_usuario = $data['usuario']->especializacoes;
+                        } else {
+                            $especializacoes_usuario = ['especializacoes'];
+                        }
+
+                    ?>
+
+                     <div class="especializacoes" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'hidden'}}>
+
+                            @foreach($especializacoes_usuario as $especializacao_usuario)
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label text-md-right">Especialização</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control especializacoes" name="especializacoes['id']" $data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'>
+                                            @foreach($data['especializacoes'] as $especializacao)
+                                                <option value="{{$especializacao->id}}" {{($data['usuario'] && $data['usuario']->nivel_id == 3 && $especializacao_usuario->id == $especializacao->id) ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 mt-2">
+                                        <i id="add-especializacao" class="fa fa-plus"></i>
+                                    </div>
+                                </div>
+                            @endforeach
+                        <span class="errors">{{ $errors->first('usuario.especializacoes') }}</span>
                     </div>
 
                     <hr>
@@ -78,9 +103,9 @@
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
 
                         <div class="col-md-6">
-                            <input id="cep" type="text" class="form-control" name="endereco[cep]" required>
+                            <input id="cep" type="text" class="form-control" name="endereco[cep]" value="{{$data['usuario'] ? $data['usuario']->endereco->cep : ''}}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.cep') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.cep') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[estado_id]" class="col-md-4 col-form-label text-md-right">Estado</label>
@@ -91,7 +116,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.estado_id') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.estado_id') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
@@ -103,42 +128,42 @@
                                 @endforeach
                         </select>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.cidade_id') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.cidade_id') }}</span>
                     </div>
                     <div class="form-group row">
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
 
                         <div class="col-md-6">
-                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" required>
+                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? $data['usuario']->endereco->bairro : ''}}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.bairro') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.bairro') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
 
                         <div class="col-md-6">
-                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" required>
+                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? $data['usuario']->endereco->logradouro : ''}}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.logradouro') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.logradouro') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
 
                         <div class="col-md-6">
-                            <input id="numero" type="text" class="form-control" name="endereco[numero]" required>
+                            <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? $data['usuario']->endereco->numero : ''}}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.numero') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.numero') }}</span>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
 
                         <div class="col-md-6">
-                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" required>
+                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? $data['usuario']->endereco->complemento : ''}}" required>
                         </div>
-                        <span class="errors"{{ $errors->first('endereco.complemento') }}</span>
+                        <span class="errors">{{ $errors->first('endereco.complemento') }}</span>
                     </div>
 
                     <hr>
@@ -150,7 +175,7 @@
                         <div class="col-md-6">
                             <input id="telefone" type="text" class="form-control" name="telefone[numero]" required> 
                         </div>
-                        <span class="errors"{{ $errors->first('telefone.numero') }}</span>
+                        <span class="errors">{{ $errors->first('telefone.numero') }}</span>
                     </div>
 
                     <div class="form-group row mb-0">
@@ -167,15 +192,15 @@
 </div>
 @endsection
 @section('js')
-     <script type="text/javascript">
-        
-        function optionCheck(){
-            var option = document.getElementById("options").value;
-            if(option == 2){
-                $('.espacializacao').show();
-            }else{
-                $('.espacializacao').hide();
+    <script type="text/javascript">
+        $(document).on('change', '#niveis', function() {
+            if($(this).find('option:selected').val() == '3') {
+                $('select.especializacoes').removeAttr('disabled')
+                $('div.especializacoes').removeAttr('hidden')
+            } else {
+                $('select.especializacoes').attr('disabled', 'disabled')
+                $('div.especializacoes').attr('hidden', 'hidden')
             }
-        }
-     </script>
+        })
+    </script>
 @stop

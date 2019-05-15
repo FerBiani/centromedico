@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
-    
-    public function index()
-    {
-        $usuarios = Usuario::all();
+
+    public function listar($nivel) {
+        $usuarios = Usuario::where('nivel_id', $nivel)->get();
 
         return view('usuario.index', compact('usuarios'));
     }
@@ -21,6 +20,7 @@ class UsuarioController extends Controller
     {
 
         $data = [
+            'usuario' => '',
             'url' => 'usuario',
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
@@ -44,7 +44,7 @@ class UsuarioController extends Controller
 
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
-            $usuario->especializacoes()->attach($request->especializacoes_id);
+            $usuario->especializacoes()->attach($request['especializacoes']);
 
             foreach($request['telefone'] as $telefone) {
                 $usuario->telefones()->save(new Telefone(['numero' => $telefone]));
@@ -71,12 +71,42 @@ class UsuarioController extends Controller
 
     public function edit($id)
     {
-        
+
+        $data = [
+            'usuario' => old('usuario') ? old('usuario') : Usuario::findOrFail($id),
+            'method' => 'PUT',
+            'url' => 'usuario/'.$id,
+            'title' => 'Cadastro de Usuário',
+            'niveis' => Nivel::all(),
+            'estados' => Estado::all(),
+            'cidades' => Cidade::all(),
+            'especializacoes' => Especializacao::all()
+        ];
+
+        return view('usuario.form', compact('data'));
     }
 
     public function update(Request $request, $id)
     {
-        
+        $usuario = Usuario::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+
+            $usuario->update($request->input('usuario'));
+            $usuario->endereco->update($request->input('endereco'));
+
+            DB::commit();
+
+            return back()->with('success', 'Usuário cadastrado com sucesso!');
+
+        } catch(Exception $e) {
+
+            DB::rollBack();
+            return back()->with('error', 'Erro no servidor!');
+
+        }
+
     }
 
     
