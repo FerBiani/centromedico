@@ -19,4 +19,14 @@ class Telefone extends Model
     {
         return $this->belongsTo('App\Usuario');
     }
+
+    // public function setNumeroAttribute($val){
+        
+    // }
+
+    // public function getNumeroAttribute($val){
+       
+    // }
+
+
 }

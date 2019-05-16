@@ -23,6 +23,7 @@ class UsuarioController extends Controller
         $data = [
             'usuario' => '',
             'method' => '',
+            'button' => 'Cadastrar',
             'url' => 'usuario',
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
@@ -81,6 +82,7 @@ class UsuarioController extends Controller
         $data = [
             'usuario' => $usuario,
             'method' => 'PUT',
+            'button' => 'Atualizar',
             'url' => 'usuario/'.$id,
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),

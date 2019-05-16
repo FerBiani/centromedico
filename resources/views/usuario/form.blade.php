@@ -7,7 +7,7 @@
             <div class="card-header">{{$data['title']}}</div>
 
             <div class="card-body">
-                <form method="POST" action="{{url($data['url'])}}">
+                <form id="form" method="POST" action="{{url($data['url'])}}">
                     @csrf
                     
                     @if($data['method'])
@@ -20,6 +20,7 @@
 
                         <div class="col-md-6">
                             <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? old('usuario.nome', $data['usuario']->nome) : '' }}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('usuario.nome') }}</small>
                         </div>
                     </div>
 
@@ -28,6 +29,7 @@
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? old('usuario.email', $data['usuario']->email) : '' }}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('usuario.email') }}</small>
                         </div>
                     </div>
 
@@ -46,6 +48,7 @@
                         <label for="usuario[password-confirm]" class="col-md-4 col-form-label text-md-right">Confirmar a Senha</label>
                         <div class="col-md-6">
                             <input id="password-confirm" type="password" class="form-control" name="usuario[password_confirmation]" >
+                            <small class="errors font-text text-danger">{{ $errors->first('usuario.password_confirm') }}</small>
                         </div>
                     </div>
 
@@ -74,17 +77,18 @@
                                 <label class="col-md-4 col-form-label text-md-right">Especialização</label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <select class="form-control especializacoes" name="especializacoes[{{$offset}}]" $data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'>
+                                        <select class="form-control especializacoes" name="especializacoes[{{$offset}}]" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'}}>
+                                            <option value="">Selecione</option>
                                             @foreach($data['especializacoes'] as $especializacao)
-                                                <option value="{{$especializacao->id}}" {{($especializacao_usuario->id == old('especializacoes', $especializacao->id)) ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
+                                                <option value="{{$especializacao->id}}" {{($especializacao_usuario->id == old('especializacoes.'.$offset, $especializacao->id)) ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
                                             @endforeach
                                         </select>
                                         <div class="input-group-append">
                                             <span class="btn btn-outline-secondary add-esp"><i class="fa fa-plus"></i></span>
                                         </div>
                                     </div>
+                                    <small class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                                 </div>
-                                <span class="errors">{{ $errors->first('especializacoes') }}</span>
                             </div>
                             
                         @endforeach
@@ -97,7 +101,8 @@
                     <div class="form-group row">
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
                         <div class="col-md-6">
-                            <input id="cep" type="text" class="form-control" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" required>
+                            <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.cep') }}</small>
                         </div>
                     </div>
                     
@@ -116,11 +121,11 @@
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
                         <div class="col-md-6">
-                        <select  class="form-control" name="endereco[cidade_id]">
-                                @foreach($data['cidades'] as $cidade)
-                                    <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
-                                @endforeach
-                        </select>
+                            <select  class="form-control" name="endereco[cidade_id]">
+                                    @foreach($data['cidades'] as $cidade)
+                                        <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
+                                    @endforeach
+                            </select>
                         <small class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
                         </div>
                     </div>
@@ -129,6 +134,7 @@
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
                         <div class="col-md-6">
                             <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? old('endereco.bairro', $data['usuario']->endereco->bairro) : ''}}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.bairro') }}</small>
                         </div>
                     </div>
 
@@ -136,6 +142,7 @@
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
                         <div class="col-md-6">
                             <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? old('endereco.logradouro', $data['usuario']->endereco->logradouro) : ''}}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.logradouro') }}</small>
                         </div>
                     </div>
 
@@ -143,6 +150,7 @@
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
                         <div class="col-md-6">
                             <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? old('endereco.numero', $data['usuario']->endereco->numero) : ''}}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.numero') }}</small>
                         </div>
                     </div>
 
@@ -150,6 +158,7 @@
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
                         <div class="col-md-6">
                             <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? old('endereco.complemento', $data['usuario']->endereco->complemento) : ''}}" required>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.complemento') }}</small>
                         </div>
                     </div>
 
@@ -161,53 +170,76 @@
                         @foreach($data['telefones'] as $offset => $telefone)
                         
                         <div class="form-group row tel">
-                            <label for="telefone[numero]" class="col-md-4 col-form-label text-md-right">Telefone</label>
+                            <label for="telefone[{{$offset}}][numero]" class="col-md-4 col-form-label text-md-right">Telefone</label>
 
                             <div class="col-md-6">
                                 <div class="input-group">
                                     @if($data['usuario'])
                                         <input type="hidden" name="telefone[{{$offset}}][id]" value="{{isset($telefone->id) ? $telefone->id : ''}}">
                                     @endif
-                                    <input id="telefone" type="text" class="form-control" name="telefone[{{$offset}}][numero]" value="{{$data['usuario'] ? old('telefone.'.$offset.'.numero', $telefone->numero) : ''}}" required> 
+                                    <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$data['usuario'] ? old('telefone.'.$offset.'.numero', $telefone->numero) : ''}}" required> 
                                     <div class="input-group-append">
                                         <span class="btn btn-outline-secondary add-tel"><i class="fa fa-plus"></i></span>
                                     </div>
                                 </div>
+                                <small class="errors font-text text-danger">{{ $errors->first('telefone.'.$offset.'.numero') }}</small>
                             </div>
-                            <span class="errors">{{ $errors->first('telefone.numero') }}</span>
                         </div>
 
                         @endforeach
 
                     </div>
-
-                    <div class="form-group row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                Cadastrar
-                            </button>
-                        </div>
-                    </div>
                 </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group row mb-0">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-success send-form">
+                            {{$data['button']}}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
 @section('js')
+    <script type="text/javascript" src="{{ asset('js/jquery-validator/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            //INSERINDO OS BOTÕES DE DELETAR NO CARREGAMENTO DA PÁGINA
+            let newSufix = ""
+            $('span[class*="add-"]').each(function(i, e) {
+                let sufix = $(e).attr('class').match('add-[^-]*$')[0].split('-')[1]
+                if(sufix !== newSufix) {
+                    i = 0
+                }
+                if(i > 0) {
+                    $(e).removeClass('add-'+sufix)
+                        .addClass('del-'+sufix)
+                        .find('i')
+                        .removeClass('fa-plus')
+                        .addClass('fa-trash') 
+                }
+                newSufix = sufix
+            })
+        })
+
         $(document).on('change', '#niveis', function() {
             if($(this).find('option:selected').val() == '3') {
-                $('div.especializacoes').removeAttr('disabled')
+                $('select.especializacoes').removeAttr('disabled')
                 $('#especializacoes').removeAttr('hidden')
             } else {
-                $('div.especializacoes').attr('disabled', 'disabled')
+                $('select.especializacoes').attr('disabled', 'disabled')
                 $('#especializacoes').attr('hidden', 'hidden')
             }
         })
 
         function clonar(target, local, indices) {
-            $(target).last().clone().appendTo(local)
+            $(target).last().clone().appendTo(local).hide().fadeIn()
 
             if(indices) {
                 $(target).last().find('input, select').each(function() {
@@ -218,14 +250,14 @@
         }
 
         function remover(target, buttonClicked) {
-            $(buttonClicked).closest(target).remove()
+            $(buttonClicked).closest(target).fadeOut('fast')
         }
 
         $(document).on('click', '.add-tel', function() {
             if($('.tel').length < 4) {
                 clonar('.tel', '#telefones', true)
                 $('.tel').last().find('input').val('')
-                // $('.tel').last().find('input').mask('(00) 0000-0000')
+                mascararTel($('.tel').last().find('input'))
                 $('.tel').last().find('.add-tel')
                     .removeClass('add-tel')
                     .addClass('del-tel')
@@ -265,6 +297,30 @@
             } else {
                 alert('Deve conter no mínimo 1 especialização')
             }
+        })
+
+        $(document).on('click', '.send-form', function() {
+            if($("#form").valid()){
+                $(".send-form").prop("disabled",true) 
+                $("#form").submit()
+            }
+        })
+
+        //MÁSCARAS
+        function mascararTel(input) {
+            $(input).last().mask('(00) 0000-00009');
+            $(input).last().keyup(function(event) {
+                if($(this).val().length == 15){
+                        $(input).last().mask('(00) 00000-0009');
+                } else {
+                        $(input).last().mask('(00) 0000-00009');
+                }
+            });
+        }
+
+        $('.cep').mask('00000-000')
+        $('.telefone').each(function(i,tel){
+            mascararTel(tel)
         })
     </script>
 @stop
