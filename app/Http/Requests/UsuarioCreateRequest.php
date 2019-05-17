@@ -19,14 +19,14 @@ class UsuarioCreateRequest extends FormRequest
             'usuario.password'              => 'required|min:6|max:10',
             'usuario.password_confirmation' => 'required|same:usuario.password',
             'usuario.nivel_id'              => 'required',
-            'endereco.cep'                  => 'required|numeric',
+            'endereco.cep'                  => 'required',
             'endereco.estado_id'            => 'required',
             'endereco.cidade_id'            => 'required',
             'endereco.bairro'               => 'required|max:100',
             'endereco.logradouro'           => 'required|max:100',
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
-            'telefone.*.numero'             => 'required|min:10|max:11'
+            'telefone.*.numero'             => 'required|size:14'
         ];
     }
 

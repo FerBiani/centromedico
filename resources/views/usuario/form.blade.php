@@ -19,7 +19,7 @@
                         <label for="usuario[nome]" class="col-md-4 col-form-label text-md-right">Nome</label>
 
                         <div class="col-md-6">
-                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? old('usuario.nome', $data['usuario']->nome) : '' }}" required>
+                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? old('usuario.nome', $data['usuario']->nome) : '' }}">
                             <small class="errors font-text text-danger">{{ $errors->first('usuario.nome') }}</small>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <label for="usuario[email]" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
                         <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? old('usuario.email', $data['usuario']->email) : '' }}" required>
+                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? old('usuario.email', $data['usuario']->email) : '' }}" >
                             <small class="errors font-text text-danger">{{ $errors->first('usuario.email') }}</small>
                         </div>
                     </div>
@@ -72,7 +72,6 @@
                     <h6>Especializações</h6>
                         
                         @foreach($data['especializacoes_usuario'] as $offset => $especializacao_usuario)
-
                             <div class="form-group row esp">
                                 <label class="col-md-4 col-form-label text-md-right">Especialização</label>
                                 <div class="col-md-6">
@@ -87,12 +86,10 @@
                                             <span class="btn btn-outline-secondary add-esp"><i class="fa fa-plus"></i></span>
                                         </div>
                                     </div>
-                                    <small class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                                 </div>
+                                <small class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                             </div>
-                            
                         @endforeach
-                       
                     </div>
 
                     <hr>
@@ -101,7 +98,7 @@
                     <div class="form-group row">
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
                         <div class="col-md-6">
-                            <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" required>
+                            <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.cep') }}</small>
                         </div>
                     </div>
@@ -109,12 +106,12 @@
                     <div class="form-group row">
                         <label for="endereco[estado_id]" class="col-md-4 col-form-label text-md-right">Estado</label>
                         <div class="col-md-6">
-                            <select required class="form-control" name="endereco[estado_id]">
+                            <select class="form-control" name="endereco[estado_id]">
                                 @foreach($data['estados'] as $estado)
                                     <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
                                 @endforeach
                             </select>
-                            <small id="NomeHelp" class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
+                            <small class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
                         </div>
                     </div>
 
@@ -133,7 +130,7 @@
                     <div class="form-group row">
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
                         <div class="col-md-6">
-                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? old('endereco.bairro', $data['usuario']->endereco->bairro) : ''}}" required>
+                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? old('endereco.bairro', $data['usuario']->endereco->bairro) : ''}}">
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.bairro') }}</small>
                         </div>
                     </div>
@@ -141,7 +138,7 @@
                     <div class="form-group row">
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
                         <div class="col-md-6">
-                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? old('endereco.logradouro', $data['usuario']->endereco->logradouro) : ''}}" required>
+                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? old('endereco.logradouro', $data['usuario']->endereco->logradouro) : ''}}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.logradouro') }}</small>
                         </div>
                     </div>
@@ -149,7 +146,7 @@
                     <div class="form-group row">
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
                         <div class="col-md-6">
-                            <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? old('endereco.numero', $data['usuario']->endereco->numero) : ''}}" required>
+                            <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? old('endereco.numero', $data['usuario']->endereco->numero) : ''}}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.numero') }}</small>
                         </div>
                     </div>
@@ -157,7 +154,7 @@
                     <div class="form-group row">
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
                         <div class="col-md-6">
-                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? old('endereco.complemento', $data['usuario']->endereco->complemento) : ''}}" required>
+                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? old('endereco.complemento', $data['usuario']->endereco->complemento) : ''}}">
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.complemento') }}</small>
                         </div>
                     </div>
@@ -177,7 +174,7 @@
                                     @if($data['usuario'])
                                         <input type="hidden" name="telefone[{{$offset}}][id]" value="{{isset($telefone->id) ? $telefone->id : ''}}">
                                     @endif
-                                    <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$data['usuario'] ? old('telefone.'.$offset.'.numero', $telefone->numero) : ''}}" required> 
+                                    <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$data['usuario'] ? old('telefone.'.$offset.'.numero', $telefone->numero) : ''}}"> 
                                     <div class="input-group-append">
                                         <span class="btn btn-outline-secondary add-tel"><i class="fa fa-plus"></i></span>
                                     </div>
@@ -232,6 +229,7 @@
             if($(this).find('option:selected').val() == '3') {
                 $('select.especializacoes').removeAttr('disabled')
                 $('#especializacoes').removeAttr('hidden')
+                $('select.especializacoes').prop('required',true);
             } else {
                 $('select.especializacoes').attr('disabled', 'disabled')
                 $('#especializacoes').attr('hidden', 'hidden')
