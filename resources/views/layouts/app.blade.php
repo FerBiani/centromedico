@@ -19,7 +19,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="#">Centro Médico</a>
+                <a class="navbar-brand" href="{{url('/')}}">Centro Médico</a>
 
                 <ul class="navbar-nav ml-auto">
                     @auth

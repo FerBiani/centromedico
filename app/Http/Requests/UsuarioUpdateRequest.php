@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UsuarioUpdateRequest extends FormRequest
+class UsuarioUpdateRequest extends BaseFormRequest
 {
 
     public function authorize()
@@ -36,6 +34,14 @@ class UsuarioUpdateRequest extends FormRequest
             'min'           => 'Este campo deve conter no mínimo :min caracteres',
             'max'           => 'Este campo deve conter no máximo :max caracteres',
             'numeric'       => 'Este campo deve conter apenas números'
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'endereco.cep'      => 'digit',
+            'telefone.*.numero' => 'digit'
         ];
     }
 }

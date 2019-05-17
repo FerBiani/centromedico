@@ -13,17 +13,17 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('login');
 
 Route::get('/senha/{senha}', function ($senha) {
     return Hash::make($senha);
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::prefix('usuario')->group(function () {
     Route::get('listar/{nivel}', 'UsuarioController@listar');

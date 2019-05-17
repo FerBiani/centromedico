@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UsuarioCreateRequest extends FormRequest
+class UsuarioCreateRequest extends BaseFormRequest
 {
     public function authorize()
     {
@@ -26,7 +24,7 @@ class UsuarioCreateRequest extends FormRequest
             'endereco.logradouro'           => 'required|max:100',
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
-            'telefone.*.numero'             => 'required|size:14'
+            'telefone.*.numero'             => 'required|size:11'
         ];
     }
 
@@ -37,6 +35,14 @@ class UsuarioCreateRequest extends FormRequest
             'min'           => 'Este campo deve conter no mínimo :min caracteres',
             'max'           => 'Este campo deve conter no máximo :max caracteres',
             'numeric'       => 'Este campo deve conter apenas números'
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'endereco.cep'      => 'digit',
+            'telefone.*.numero' => 'digit'
         ];
     }
 }
