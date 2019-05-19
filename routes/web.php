@@ -13,19 +13,24 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
+Route::get('/senha/{senha}', function ($senha) {
+    return Hash::make($senha);
+});
+
 Auth::routes();
 
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/senha/{senha}', function ($senha) {
-    return Hash::make($senha);
-});
-
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::prefix('usuario')->group(function () {
-    Route::get('listar/{nivel}', 'UsuarioController@listar');
+Route::middleware(['auth', 'role:1'])->group(function () {
+
+    Route::prefix('usuario')->group(function () {
+        Route::get('list/{status}', 'UsuarioController@list');
+    });
+
+    Route::resource('usuario', 'UsuarioController');
+
 });
-Route::resource('usuario', 'UsuarioController')->except(['index']);

@@ -13,7 +13,7 @@ class UsuarioUpdateRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'usuario.nome'                  => 'required|max:100',
+            'usuario.nome'                  => 'required|min:2|max:100',
             'usuario.email'                 => 'required|email',
             'usuario.nivel_id'              => 'required',
             'endereco.cep'                  => 'required|numeric',

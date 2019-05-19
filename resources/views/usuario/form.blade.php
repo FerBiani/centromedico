@@ -19,7 +19,7 @@
                         <label for="usuario[nome]" class="col-md-4 col-form-label text-md-right">Nome</label>
 
                         <div class="col-md-6">
-                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{$data['usuario'] ? old('usuario.nome', $data['usuario']->nome) : '' }}">
+                            <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{old('usuario.nome', $data['usuario'] ? $data['usuario']->nome : '')}}">
                             <small class="errors font-text text-danger">{{ $errors->first('usuario.nome') }}</small>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <label for="usuario[email]" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
                         <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{$data['usuario'] ? old('usuario.email', $data['usuario']->email) : '' }}" >
+                            <input id="email" type="email" class="form-control" name="usuario[email]" value="{{old('usuario.email', $data['usuario'] ? $data['usuario']->email : '')}}">
                             <small class="errors font-text text-danger">{{ $errors->first('usuario.email') }}</small>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="col-md-6">
                             <select  class="form-control" id="niveis" name="usuario[nivel_id]">
                                 @foreach($data['niveis'] as $nivel)
-                                    <option {{ $data['usuario'] && $nivel->id == old('usuario.nivel_id', $data['usuario']->nivel_id) ? 'selected' : '' }} value="{{$nivel->id}}">{{$nivel->nome}}</option>
+                                    <option {{$nivel->id == old('usuario.nivel_id', $data['usuario'] ? $data['usuario']->nivel_id : '') ? 'selected' : '' }} value="{{$nivel->id}}">{{$nivel->nome}}</option>
                                 @endforeach
                             </select>
                             <small class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
@@ -71,7 +71,7 @@
                     <hr>
                     <h6>Especializações</h6>
                         
-                        @foreach($data['especializacoes_usuario'] as $offset => $especializacao_usuario)
+                        @foreach(old('especializacoes', $data['especializacoes_usuario']) as $offset => $especializacao_usuario)
                             <div class="form-group row esp">
                                 <label class="col-md-4 col-form-label text-md-right">Especialização</label>
                                 <div class="col-md-6">
@@ -79,7 +79,7 @@
                                         <select class="form-control especializacoes" name="especializacoes[{{$offset}}]" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'}}>
                                             <option value="">Selecione</option>
                                             @foreach($data['especializacoes'] as $especializacao)
-                                                <option value="{{$especializacao->id}}" {{($especializacao_usuario->id == old('especializacoes.'.$offset, $especializacao->id)) ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
+                                                <option value="{{$especializacao->id}}" {{$especializacao->id == (old('especializacoes') ? $especializacao_usuario : ($data['usuario'] ? $especializacao_usuario->id : '')) ? 'selected' : ''}} >{{$especializacao->especializacao}}</option>
                                             @endforeach
                                         </select>
                                         <div class="input-group-append">
@@ -98,7 +98,7 @@
                     <div class="form-group row">
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
                         <div class="col-md-6">
-                            <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{$data['usuario'] ? old('endereco.cep', $data['usuario']->endereco->cep) : '' }}" >
+                            <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{old('endereco.cep', $data['usuario'] ? $data['usuario']->endereco->cep : '')}}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.cep') }}</small>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                     <div class="form-group row">
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
                         <div class="col-md-6">
-                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{$data['usuario'] ? old('endereco.bairro', $data['usuario']->endereco->bairro) : ''}}">
+                            <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{old('endereco.bairro', $data['usuario'] ? $data['usuario']->endereco->bairro : '')}}">
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.bairro') }}</small>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                     <div class="form-group row">
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
                         <div class="col-md-6">
-                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{$data['usuario'] ? old('endereco.logradouro', $data['usuario']->endereco->logradouro) : ''}}" >
+                            <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{old('endereco.logradouro', $data['usuario'] ? $data['usuario']->endereco->logradouro : '')}}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.logradouro') }}</small>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                     <div class="form-group row">
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
                         <div class="col-md-6">
-                            <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{$data['usuario'] ? old('endereco.numero', $data['usuario']->endereco->numero) : ''}}" >
+                            <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{old('endereco.numero', $data['usuario'] ? $data['usuario']->endereco->numero : '')}}" >
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.numero') }}</small>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                     <div class="form-group row">
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
                         <div class="col-md-6">
-                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{$data['usuario'] ? old('endereco.complemento', $data['usuario']->endereco->complemento) : ''}}">
+                            <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{old('endereco.complemento', $data['usuario'] ? $data['usuario']->endereco->complemento : '')}}">
                             <small class="errors font-text text-danger">{{ $errors->first('endereco.complemento') }}</small>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
 
                     <div id="telefones">
 
-                        @foreach($data['telefones'] as $offset => $telefone)
+                        @foreach(old('telefone', $data['telefones']) as $offset => $telefone)
                         
                         <div class="form-group row tel">
                             <label for="telefone[{{$offset}}][numero]" class="col-md-4 col-form-label text-md-right">Telefone</label>
@@ -174,7 +174,7 @@
                                     @if($data['usuario'])
                                         <input type="hidden" name="telefone[{{$offset}}][id]" value="{{isset($telefone->id) ? $telefone->id : ''}}">
                                     @endif
-                                    <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$data['usuario'] ? old('telefone.'.$offset.'.numero', $telefone->numero) : ''}}"> 
+                                    <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$telefone['numero'] ? $telefone['numero'] : ''}}"> 
                                     <div class="input-group-append">
                                         <span class="btn btn-outline-secondary add-tel"><i class="fa fa-plus"></i></span>
                                     </div>
@@ -223,6 +223,16 @@
                 }
                 newSufix = sufix
             })
+
+            if($('#niveis').find('option:selected').val() == '3') {
+                $('select.especializacoes').removeAttr('disabled')
+                $('#especializacoes').removeAttr('hidden')
+                $('select.especializacoes').prop('required',true);
+            } else {
+                $('select.especializacoes').attr('disabled', 'disabled')
+                $('#especializacoes').attr('hidden', 'hidden')
+            }
+        
         })
 
         $(document).on('change', '#niveis', function() {

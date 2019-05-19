@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Usuario extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $fillable = [
         'nome', 'email', 'password', 'nivel_id',
@@ -31,6 +32,10 @@ class Usuario extends Authenticatable
     public function telefones()
     {
         return $this->hasMany('App\Telefone');
+    }
+
+    public function nivel() {
+        return $this->belongsTo('App\Nivel');
     }
 
     public function especializacoes(){

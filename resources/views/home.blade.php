@@ -15,7 +15,7 @@
                             <div class="card">
                                 <div class="card-header">Usuários</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('usuario/listar/4')}}"><i class="fas fa-6x fa-users"></i></a>
+                                    <a class="btn" href="{{url('usuario')}}"><i class="fas fa-6x fa-users"></i></a>
                                 </div>
                             </div>
                         </div>

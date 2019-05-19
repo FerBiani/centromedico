@@ -3,17 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao};
-use DB;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use App\Http\Requests\{ UsuarioCreateRequest, UsuarioUpdateRequest };
+use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
+use DB;
 
 class UsuarioController extends Controller
 {
 
-    public function listar($nivel) {
-        $usuarios = Usuario::where('nivel_id', $nivel)->get();
+    public function index() {
+        $usuarios = Usuario::paginate(10);
+        $niveis = Nivel::all();
 
-        return view('usuario.index', compact('usuarios'));
+        return view('usuario.index', compact('usuarios', 'niveis'));
+    }
+
+    public function list(Request $request, $status) {
+        $usuarios = new Usuario;
+
+        if($request['pesquisa']) {
+            $usuarios = $usuarios->where('nome', 'like', '%'.$request['pesquisa'].'%');
+        }
+
+        if($request['nivel'] !== 'all') {
+            $usuarios = $usuarios->where('nivel_id', 'like', '%'.$request['nivel'].'%');
+        }
+
+        if($status == 'inativos'){
+            $usuarios = $usuarios->onlyTrashed();
+        }
+
+        $usuarios = $usuarios->paginate(10);
+        return view('usuario.table', compact('usuarios', 'status'));
     }
 
    
@@ -131,6 +152,13 @@ class UsuarioController extends Controller
     
     public function destroy($id)
     {
-        
+        $usuario = Usuario::withTrashed()->findOrFail($id);
+        if($usuario->trashed()) {
+            $usuario->restore();
+            return back()->with('success', 'Usuário ativado com sucesso!');
+        } else {
+            $usuario->delete();
+            return back()->with('success', 'Usuário desativado com sucesso!');
+        }
     }
 }
