@@ -20,7 +20,7 @@
 
                         <div class="col-md-6">
                             <input id="nome" type="text" class="form-control" name="usuario[nome]" value="{{old('usuario.nome', $data['usuario'] ? $data['usuario']->nome : '')}}">
-                            <small class="errors font-text text-danger">{{ $errors->first('usuario.nome') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.nome') }}</small>
                         </div>
                     </div>
 
@@ -29,7 +29,7 @@
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="usuario[email]" value="{{old('usuario.email', $data['usuario'] ? $data['usuario']->email : '')}}">
-                            <small class="errors font-text text-danger">{{ $errors->first('usuario.email') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.email') }}</small>
                         </div>
                     </div>
 
@@ -40,15 +40,15 @@
 
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control" name="usuario[password]" >
-                            <small class="errors font-text text-danger">{{ $errors->first('usuario.password') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.password') }}</small>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="usuario[password-confirm]" class="col-md-4 col-form-label text-md-right">Confirmar a Senha</label>
                         <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="usuario[password_confirmation]" >
-                            <small class="errors font-text text-danger">{{ $errors->first('usuario.password_confirm') }}</small>
+                            <input id="passwordconfirm" type="password" class="form-control" name="usuario[password_confirmation]" >
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.password_confirm') }}</small>
                         </div>
                     </div>
 
@@ -57,12 +57,12 @@
                     <div class="form-group row">
                         <label for="usuario[nivel_id]" class="col-md-4 col-form-label text-md-right">Nível</label>
                         <div class="col-md-6">
-                            <select  class="form-control" id="niveis" name="usuario[nivel_id]">
+                            <select class="form-control" id="niveis" name="usuario[nivel_id]">
                                 @foreach($data['niveis'] as $nivel)
                                     <option {{$nivel->id == old('usuario.nivel_id', $data['usuario'] ? $data['usuario']->nivel_id : '') ? 'selected' : '' }} value="{{$nivel->id}}">{{$nivel->nome}}</option>
                                 @endforeach
                             </select>
-                            <small class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
                         </div>
                     </div>
 
@@ -76,7 +76,7 @@
                                 <label class="col-md-4 col-form-label text-md-right">Especialização</label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <select class="form-control especializacoes" name="especializacoes[{{$offset}}]" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'}}>
+                                        <select class="form-control especializacoes" id="especializacoes" name="especializacoes[{{$offset}}]" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'}}>
                                             <option value="">Selecione</option>
                                             @foreach($data['especializacoes'] as $especializacao)
                                                 <option value="{{$especializacao->id}}" {{$especializacao->id == (old('especializacoes') ? $especializacao_usuario : ($data['usuario'] ? $especializacao_usuario->id : '')) ? 'selected' : ''}} >{{$especializacao->especializacao}}</option>
@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                             </div>
                         @endforeach
                     </div>
@@ -99,31 +99,31 @@
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
                         <div class="col-md-6">
                             <input id="cep" type="text" class="form-control cep" name="endereco[cep]" value="{{old('endereco.cep', $data['usuario'] ? $data['usuario']->endereco->cep : '')}}" >
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.cep') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cep') }}</small>
                         </div>
                     </div>
                     
                     <div class="form-group row">
                         <label for="endereco[estado_id]" class="col-md-4 col-form-label text-md-right">Estado</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="endereco[estado_id]">
+                            <select class="form-control" id="estado" name="endereco[estado_id]">
                                 @foreach($data['estados'] as $estado)
                                     <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
                                 @endforeach
                             </select>
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
                         <div class="col-md-6">
-                            <select  class="form-control" name="endereco[cidade_id]">
+                            <select id="cidade" class="form-control" name="endereco[cidade_id]">
                                     @foreach($data['cidades'] as $cidade)
                                         <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
                                     @endforeach
                             </select>
-                        <small class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
+                        <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
                         </div>
                     </div>
 
@@ -131,7 +131,7 @@
                         <label for="endereco[bairro]" class="col-md-4 col-form-label text-md-right">Bairro</label>
                         <div class="col-md-6">
                             <input id="bairro" type="text" class="form-control" name="endereco[bairro]" value="{{old('endereco.bairro', $data['usuario'] ? $data['usuario']->endereco->bairro : '')}}">
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.bairro') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.bairro') }}</small>
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@
                         <label for="endereco[logradouro]" class="col-md-4 col-form-label text-md-right">Logradouro</label>
                         <div class="col-md-6">
                             <input id="logradouro" type="text" class="form-control" name="endereco[logradouro]" value="{{old('endereco.logradouro', $data['usuario'] ? $data['usuario']->endereco->logradouro : '')}}" >
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.logradouro') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.logradouro') }}</small>
                         </div>
                     </div>
 
@@ -147,7 +147,7 @@
                         <label for="endereco[numero]" class="col-md-4 col-form-label text-md-right">Número</label>
                         <div class="col-md-6">
                             <input id="numero" type="text" class="form-control" name="endereco[numero]" value="{{old('endereco.numero', $data['usuario'] ? $data['usuario']->endereco->numero : '')}}" >
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.numero') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.numero') }}</small>
                         </div>
                     </div>
 
@@ -155,7 +155,7 @@
                         <label for="endereco[complemento]" class="col-md-4 col-form-label text-md-right">Complemento</label>
                         <div class="col-md-6">
                             <input id="complemento" type="text" class="form-control" name="endereco[complemento]" value="{{old('endereco.complemento', $data['usuario'] ? $data['usuario']->endereco->complemento : '')}}">
-                            <small class="errors font-text text-danger">{{ $errors->first('endereco.complemento') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.complemento') }}</small>
                         </div>
                     </div>
 
@@ -179,7 +179,7 @@
                                         <span class="btn btn-outline-secondary add-tel"><i class="fa fa-plus"></i></span>
                                     </div>
                                 </div>
-                                <small class="errors font-text text-danger">{{ $errors->first('telefone.'.$offset.'.numero') }}</small>
+                                <small id="error" id="error" class="errors font-text text-danger">{{ $errors->first('telefone.'.$offset.'.numero') }}</small>
                             </div>
                         </div>
 
@@ -330,5 +330,123 @@
         $('.telefone').each(function(i,tel){
             mascararTel(tel)
         })
+
+        ///// VALIDATE /////
+        $("#form").validate({
+            highlight:function(input){
+                jQuery(input).addClass('is-invalid');
+            },
+
+            unhighlight:function(input){
+                jQuery(input).removeClass('is-invalid');
+                jQuery(input).addClass('is-valid');
+            },
+
+            errorPlacement:function(error, element)
+            {
+                jQuery(element).parents('.form-group').find('#error').append(error);
+            },
+
+            rules: {
+                "usuario[nome]": "required",
+
+                "usuario[email]": {
+                    required:true,
+                    email:true, 
+                },
+            
+                "usuario[password]": {
+                    required: true,
+					minlength: 6,
+                    maxlength: 10
+                },
+
+                "usuario[password_confirmation]":{
+                    required: true,
+					minlength: 6,
+                    maxlength: 10,
+					equalTo: "#password"
+                },
+
+                "usuario[nivel_id]": "required",
+                "endereco[cep]": "required",
+                "endereco[estado]": "required",
+                "endereco[cidade]": "required",
+                "endereco[bairro]": { required: true, maxlength: 100 },
+                "endereco[logradouro]": { required: true, maxlength:100 },
+                "endereco[numero]":{ required: true, digits: true },
+                "endereco[complemento]": { required: true, maxlength:255 },
+                "telefone[numero]": { required: true, minlength:10, maxlength:11 }
+
+            },
+
+            messages: {
+
+                "usuario[nome]":{
+                    required: 'Este campo é obrigatório',
+                },
+
+                "usuario[email]":{
+                    email:'Digite um email válido', 
+                    required: 'O campo e-mail é obrigatório',
+                },
+
+                "usuario[password]":{
+                    required:  'Este campo é obrigatório',
+                    minlength: 'Sua senha deve ter pelo menos 6 caracteres.',
+                    maxlength: 'Sua senha não deve ter mais de 10 caracteres'
+
+                },
+
+                "usuario[password_confirmation]":{
+                    required: 'Este campo é obrigatório',
+                    minlength: 'Sua senha deve ter pelo menos 6 caracteres.',
+                    maxlength: 'Sua senha não deve ter mais de 10 caracteres',
+					equalTo: 'As duas senhas devem ser iguais'
+                },
+
+                "usuario[nivel_id]": { 
+                    required: 'Este campo é obrigatório'
+                },
+                
+                "endereco[cep]": {
+                    required: 'Este campo é obrigatório'
+                },
+                
+                "endereco[estado]": {
+                    required: 'Este campo é obrigatório'
+                },
+                
+                "endereco[cidade]": {
+                    required: 'Este campo é obrigatório'
+                },
+                
+                "endereco[bairro]": {
+                    required: 'Este campo é obrigatório',
+                    maxlength: 'Este campo não pode ter mais de 100 caracteres'
+                },
+
+                "endereco[logradouro]":{
+                    required: 'Este campo é obrigatório',
+                    maxlength: 'Este campo não pode ter mais de 100 caracteres'
+                },
+
+                "endereco[numero]":{
+                    required: 'O campo número é obrigatório',
+                    digits:   'Este campo deve ter somente valores numericos',
+                },
+
+                "endereco[complemento]": { 
+                    required: 'Este campo é obrigatório' 
+                },
+
+                "telefone[numero]": { 
+                    required: 'Este campo é obrigatório',
+                    minlength: 'Este campo deve ter pelo menos 10 caracteres',
+                    maxlength: 'Este campo não pode passar de 11 caracteres'
+                },
+            },
+        });
+
     </script>
 @stop
