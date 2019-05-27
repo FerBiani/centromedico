@@ -182,7 +182,36 @@
                                 <small id="error" id="error" class="errors font-text text-danger">{{ $errors->first('telefone.'.$offset.'.numero') }}</small>
                             </div>
                         </div>
+                        @endforeach
+                    </div>
+                    <hr>
+                    <h6>Documentos</h6>
 
+                    <div id="documentos">
+
+                        @foreach(old('documentos', $data['documentos']) as $offset => $documento)
+                        
+                        <div class="form-group row doc">
+                            <label for="documento[{{$offset}}][numero]" class="col-md-4 col-form-label text-md-right">Documento</label>
+
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    @if($data['usuario'])
+                                        <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
+                                    @endif
+                                    <select class="form-control"  name="documento[{{$offset}}][tipo]" id="exampleFormControlSelect1">
+                                        @foreach($data['tipoDocumentos'] as $tipoDocumento)
+                                        <option value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" placeholder="Numero" class="form-control documento" name="documento[{{$offset}}][numero]" value="{{$documento['numero'] ? $documento['numero'] : ''}}"> 
+                                    <div class="input-group-append">
+                                        <span class="btn btn-outline-secondary add-doc"><i class="fa fa-plus"></i></span>
+                                    </div>
+                                </div>
+                                <small id="error" id="error" class="errors font-text text-danger">{{ $errors->first('documento.'.$offset.'.numero') }}</small>
+                            </div>
+                        </div>
                         @endforeach
 
                     </div>
@@ -304,6 +333,28 @@
                 remover(".esp", $(this))
             } else {
                 alert('Deve conter no mínimo 1 especialização')
+            }
+        })
+
+        $(document).on('click', '.add-doc', function() {
+            if($('.doc').length < 10) {
+                clonar('.doc', '#documentos', true)
+                $('.doc').last().find('.add-doc')
+                    .removeClass('add-doc')
+                    .addClass('del-doc')
+                    .find('i')
+                    .removeClass('fa fa-plus')
+                    .addClass('fa fa-trash')
+            } else {
+                alert('Podem ser adicionados no máximo '+$(".doc").length+' documentos')
+            }
+        })
+
+        $(document).on("click", ".del-doc", function() {
+            if($(".doc").length > 1) {
+                remover(".doc", $(this))
+            } else {
+                alert('Deve conter no mínimo 1 documentos')
             }
         })
 

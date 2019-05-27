@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao};
+use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao, Documento, TipoDocumento};
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
@@ -14,8 +14,9 @@ class UsuarioController extends Controller
     public function index() {
         $usuarios = Usuario::paginate(10);
         $niveis = Nivel::all();
+        $tipoDocumentos = TipoDocumento::all();
 
-        return view('usuario.index', compact('usuarios', 'niveis'));
+        return view('usuario.index', compact('usuarios', 'niveis','tipoDocumentos'));
     }
 
     public function list(Request $request, $status) {
@@ -52,7 +53,9 @@ class UsuarioController extends Controller
             'cidades' => Cidade::all(),
             'especializacoes' => Especializacao::all(),
             'especializacoes_usuario' => [new Especializacao],
-            'telefones' => [new Telefone]
+            'telefones' => [new Telefone],
+            'documentos' => [new Documento],
+            'tipoDocumentos' => TipoDocumento::all()
         ];
 
         return view('usuario.form', compact('data'));
@@ -71,6 +74,10 @@ class UsuarioController extends Controller
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
             $usuario->especializacoes()->attach($request['especializacoes']);
+            
+            foreach($request['documento'] as $documento) {
+                $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo' => $documento['tipo'] ]));
+            }
 
             foreach($request['telefone'] as $telefone) {
                 $usuario->telefones()->save(new Telefone([ 'numero' => $telefone['numero'] ]));
@@ -89,7 +96,6 @@ class UsuarioController extends Controller
 
     }
 
-   
     public function show($id)
     {
         
@@ -111,7 +117,8 @@ class UsuarioController extends Controller
             'cidades' => Cidade::all(),
             'especializacoes' => Especializacao::all(),
             'especializacoes_usuario' => count($usuario->especializacoes) ? $usuario->especializacoes : [new Especializacao],
-            'telefones' => count($usuario->telefones) ? $usuario->telefones : [new Telefone]
+            'telefones' => count($usuario->telefones) ? $usuario->telefones : [new Telefone],
+            'documentos' => count($usuario->documentos) ? $usuario->documentos : [new Documento]
         ];
 
         return view('usuario.form', compact('data'));
@@ -127,6 +134,7 @@ class UsuarioController extends Controller
             $usuario->update($request->input('usuario'));
             $usuario->endereco->update($request->input('endereco'));
             $usuario->especializacoes()->sync($request['especializacoes']);
+            $usuario->documentos()->sync($request['documentos']);
       
             foreach($request->input('telefone') as $telefone){
                 if($telefone['id'])

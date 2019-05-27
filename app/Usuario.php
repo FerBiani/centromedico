@@ -34,6 +34,11 @@ class Usuario extends Authenticatable
         return $this->hasMany('App\Telefone');
     }
 
+    public function documentos()
+    {
+        return $this->hasMany('App\Documento');
+    }
+
     public function nivel() {
         return $this->belongsTo('App\Nivel');
     }
