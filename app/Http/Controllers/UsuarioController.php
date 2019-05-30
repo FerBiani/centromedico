@@ -76,7 +76,7 @@ class UsuarioController extends Controller
             $usuario->especializacoes()->attach($request['especializacoes']);
             
             foreach($request['documento'] as $documento) {
-                $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo' => $documento['tipo'] ]));
+                $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));
             }
 
             foreach($request['telefone'] as $telefone) {

@@ -24,7 +24,9 @@ class UsuarioCreateRequest extends BaseFormRequest
             'endereco.logradouro'           => 'required|max:100',
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
-            'telefone.*.numero'             => 'required|min:10|max:11'
+            'telefone.*.numero'             => 'required|min:10|max:11',
+            'documentos.tipo_documentos_id' => 'requried',
+            'documentos.numero'             => 'required|numeric'
         ];
     }
 

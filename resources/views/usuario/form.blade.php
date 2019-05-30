@@ -199,7 +199,7 @@
                                     @if($data['usuario'])
                                         <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
                                     @endif
-                                    <select class="form-control"  name="documento[{{$offset}}][tipo]" id="exampleFormControlSelect1">
+                                    <select class="form-control"  name="documento[{{$offset}}][tipo_documentos_id]">
                                         @foreach($data['tipoDocumentos'] as $tipoDocumento)
                                         <option value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
                                         @endforeach
@@ -427,7 +427,9 @@
                 "endereco[logradouro]": { required: true, maxlength:100 },
                 "endereco[numero]":{ required: true, digits: true },
                 "endereco[complemento]": { required: true, maxlength:255 },
-                "telefone[numero]": { required: true, minlength:10, maxlength:11 }
+                "telefone[numero]": { required: true, minlength:10, maxlength:11 },
+                "documentos[tipo_documentos_id]": { required: true },
+                "documentos[numero]": { required: true }
 
             },
 
