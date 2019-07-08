@@ -375,7 +375,7 @@
                         $(input).last().mask('(00) 0000-00009');
                 }
             });
-        }
+        }git 
 
         $('.cep').mask('00000-000')
         $('.telefone').each(function(i,tel){
