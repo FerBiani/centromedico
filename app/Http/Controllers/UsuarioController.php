@@ -7,20 +7,29 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
 use DB;
+use Auth;
 
 class UsuarioController extends Controller
 {
 
     public function index() {
         $usuarios = Usuario::paginate(10);
-        $niveis = Nivel::all();
-        $tipoDocumentos = TipoDocumento::all();
 
-        return view('usuario.index', compact('usuarios', 'niveis','tipoDocumentos'));
+        if(Auth::user()->nivel_id == 1) {
+            $niveis = Nivel::all();
+        } else {
+            $niveis = Nivel::where('id', '>', 1)->get();
+        }
+
+        return view('usuario.index', compact('usuarios', 'niveis'));
     }
 
     public function list(Request $request, $status) {
         $usuarios = new Usuario;
+
+        if(Auth::user()->nivel_id > 1) {
+            $usuarios = $usuarios->where('nivel_id', '>', '1');
+        }
 
         if($request['pesquisa']) {
             $usuarios = $usuarios->where('nome', 'like', '%'.$request['pesquisa'].'%');
@@ -35,6 +44,7 @@ class UsuarioController extends Controller
         }
 
         $usuarios = $usuarios->paginate(10);
+
         return view('usuario.table', compact('usuarios', 'status'));
     }
 

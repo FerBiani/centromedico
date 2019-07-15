@@ -287,7 +287,7 @@
         }
 
         function remover(target, buttonClicked) {
-            $(buttonClicked).closest(target).fadeOut('fast')
+            $(buttonClicked).closest(target).fadeOut('fast').remove()
         }
 
         $(document).on('click', '.add-tel', function() {

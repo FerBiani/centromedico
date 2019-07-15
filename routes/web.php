@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::middleware(['auth', 'role:1'])->group(function () {
+Route::middleware(['auth', 'role:2'])->group(function () {
 
     Route::prefix('usuario')->group(function () {
         Route::get('list/{status}', 'UsuarioController@list');
