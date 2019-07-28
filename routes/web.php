@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\{Usuario, Especializacao};
 
 Route::get('/senha/{senha}', function ($senha) {
     return Hash::make($senha);
@@ -34,3 +35,20 @@ Route::middleware(['auth', 'role:2'])->group(function () {
     Route::resource('usuario', 'UsuarioController');
 
 });
+
+
+    Route::prefix('pacientes')->group(function () {
+
+        Route::get('agendamento', function(){
+            $data = [
+                'method' => '',
+                'button' => 'Agendar',
+                'url' => 'usuario',
+                'title' => 'Agendamento de Consultas',
+                'especializacoes' => Especializacao::all(),
+                'usuarios' => Usuario::withCount('especializacoes')->get()
+            ];
+            return view('usuario.pacientes.agendamento', compact('data'));
+        });
+
+    });

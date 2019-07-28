@@ -10,7 +10,7 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <form id="form-pesquisa">
-                            <div class="input-group"/>
+                            <div class="input-group">
                                 <input name="pesquisa" class="form-control" type="text"/>
                                 <div class="input-group-append">
                                     <span id="search-button" class="btn btn-outline-secondary"><i class="fas fa-search"></i></span>
