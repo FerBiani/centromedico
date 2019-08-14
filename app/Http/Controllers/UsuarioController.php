@@ -97,7 +97,6 @@ public function store(UsuarioCreateRequest $request)
         }
     }
 
-
     public function show($id)
     {
         
@@ -154,12 +153,9 @@ public function store(UsuarioCreateRequest $request)
 
             DB::rollBack();
             return back()->with('error', 'Erro no servidor!');
-
         }
-
     }
 
-    
     public function destroy($id)
     {
         $usuario = Usuario::withTrashed()->findOrFail($id);
@@ -171,4 +167,31 @@ public function store(UsuarioCreateRequest $request)
             return back()->with('success', 'Usuário desativado com sucesso!');
         }
     }
+
+    public function getCidades($uf) {
+        $estado = Estado::where('uf', $uf)->first();
+        return $estado ? $estado->cidades()->select('id','nome')->get() : [];
+    }
+
+    public function getMedicos($especializacao){
+        $especializacao = Especializacao::where('especializacao', $especializacao)->first();
+        return $especializacao ? $especializacao->usuarios()->select('id','nome')->get() : [];
+    }
+
+    public function agendamento(){
+        $data = [
+            'method' => '',
+            'button' => 'Agendar',
+            'url'    => 'pacientes/agendamento',
+            'title'  => 'Agendamento de Consultas',
+            'especializacoes' => Especializacao::all(),
+            'usuarios' => Usuario::withCount('especializacoes')->get()
+        ];
+        return view('usuario.pacientes.agendamento', compact('data'));
+    }
+    
+    public function agendar(Request $request){
+        return $request->all();
+    }
+
 }

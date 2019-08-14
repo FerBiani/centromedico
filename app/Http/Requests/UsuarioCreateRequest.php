@@ -25,8 +25,8 @@ class UsuarioCreateRequest extends BaseFormRequest
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
             'telefone.*.numero'             => 'required|min:10|max:11',
-            'documentos.tipo_documentos_id' => 'requried',
-            'documentos.numero'             => 'required|numeric'
+            // 'documentos.tipo_documentos_id' => 'required',
+            // 'documentos.numero'             => 'required|numeric'
         ];
     }
 

@@ -128,6 +128,83 @@ $(document).on('click', '.send-form', function() {
     }
 })
 
+
+//ENDEREÇO
+$('.estados').change(function() {
+    atualizarCidades($(".estados option:selected").data("uf"), $(".estados").data('cidade'))
+    $(".estados").data('cidade','')
+})
+
+function atualizarCidades(uf, selected_id = null) {
+    $.ajax({
+        url: main_url + "/usuario/get-cidades/"+uf,
+        type: 'GET',
+        success: function(data){
+            $(".cidades option").remove();
+            $(".cidades").append("<option value=''>Selecione</option>")
+            $.each(data, function(i, cidade) {
+                $(".cidades").append(`<option ${selected_id == cidade.id ? 'selected' : ''} value=${cidade.id}>${cidade.nome}</option>`)
+            })
+        }
+    })
+}
+
+function selecionarCidade(cidade) {
+    $(".cidades option").removeAttr('selected')
+    $(".cidades option").each(function() {
+        if($(this).text() == cidade){
+            $(this).attr("selected", "selected")
+        }
+    })
+}
+
+function selecionarEstado(uf) {
+    $(".estados option").removeAttr('selected')
+    $(".estados option").each(function() {
+        if($(this).data("uf") == uf){
+            $(this).attr('selected', 'selected')
+        }
+    })
+}
+
+//MEDICO/especializacoes
+$('.especialidade').change(function() {
+    atualizarMedicos($(".especialidade option:selected").data("especializacao"), $(".especialidade").data('medico'))
+    $(".especialidade").data('medico','')
+})
+
+function atualizarMedicos(especializacao, selected_id = null) {
+    $.ajax({
+        url: main_url + "/get-medicos/"+especializacao,
+        type: 'GET',
+        success: function(data){
+            $(".medicos option").remove();
+            $(".medicos").append("<option value=''>Selecione</option>")
+            $.each(data, function(i, medico) {
+                $(".medicos").append(`<option ${selected_id == medico.id ? 'selected' : ''} value=${medico.id}>${medico.nome}</option>`)
+            })
+        }
+    })
+}
+
+function selecionarMedico(medico) {
+    $(".medicos option").removeAttr('selected')
+    $(".medicos option").each(function() {
+        if($(this).text() == medico){
+            $(this).attr("selected", "selected")
+        }
+    })
+}
+
+function selecionarEspecializacao(especializacao) {
+    $(".especialidade option").removeAttr('selected')
+    $(".especialidade option").each(function() {
+        if($(this).data("especializacao") == especializacao){
+            $(this).attr('selected', 'selected')
+        }
+    })
+}
+
 //MÁSCARAS
 function mascararTel(input) {
     $(input).last().mask('(00) 0000-00009');

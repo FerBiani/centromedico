@@ -26,10 +26,13 @@ Route::get('/', function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::middleware(['auth', 'role:2'])->group(function () {
+Route::get('get-medicos/{especializacao}', 'UsuarioController@getMedicos');
 
+Route::middleware(['auth', 'role:2'])->group(function () {
+    
     Route::prefix('usuario')->group(function () {
         Route::get('list/{status}', 'UsuarioController@list');
+        Route::get('get-cidades/{uf}', 'UsuarioController@getCidades');
     });
 
     Route::resource('usuario', 'UsuarioController');
@@ -39,16 +42,21 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 
     Route::prefix('pacientes')->group(function () {
 
-        Route::get('agendamento', function(){
+        Route::get('agendamento', 'UsuarioController@agendamento');
+        Route::post('agendamento', 'UsuarioController@agendar');
+
+        Route::get('horarios', function(){
             $data = [
-                'method' => '',
-                'button' => 'Agendar',
-                'url' => 'usuario',
-                'title' => 'Agendamento de Consultas',
-                'especializacoes' => Especializacao::all(),
-                'usuarios' => Usuario::withCount('especializacoes')->get()
+                'title' => 'Meus Agendamentos'
             ];
-            return view('usuario.pacientes.agendamento', compact('data'));
+            return view('usuario.pacientes.horarios', compact('data'));
         });
 
+        Route::get('ficha', function(){
+            $data = [
+                'title'   => 'Ficha Paciente',
+                'usuario' =>  Usuario::find(Auth::user()->id),
+            ];
+            return view('usuario.pacientes.ficha', compact('data'));
+        });
     });
