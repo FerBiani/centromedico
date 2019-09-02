@@ -43,6 +43,11 @@ class Usuario extends Authenticatable
         return $this->belongsTo('App\Nivel');
     }
 
+    public function consultas()
+    {
+        return $this->belongsTo('App\Consultas');
+    }
+
     public function especializacoes(){
         return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
     }

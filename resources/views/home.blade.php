@@ -37,7 +37,7 @@
                             <div class="card">
                                 <div class="card-header">Agendar Consulta</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('pacientes/agendamento')}}"><i class="fas fa-6x fa-clock"></i></a>
+                                    <a class="btn" href="{{url('pacientes/consulta/create')}}"><i class="fas fa-6x fa-clock"></i></a>
                                 </div>
                             </div>
                         </div>

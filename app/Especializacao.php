@@ -17,4 +17,8 @@ class Especializacao extends Model
     public function usuarios(){
     	return $this->belongsToMany('App\Usuario', 'usuarios_has_especializacoes', 'especializacao_id', 'usuario_id');
     }
+
+    public function consultas(){
+        return $this->hasMany('App\Consulta');
+    }
 }

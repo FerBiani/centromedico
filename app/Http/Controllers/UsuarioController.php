@@ -178,20 +178,4 @@ public function store(UsuarioCreateRequest $request)
         return $especializacao ? $especializacao->usuarios()->select('id','nome')->get() : [];
     }
 
-    public function agendamento(){
-        $data = [
-            'method' => '',
-            'button' => 'Agendar',
-            'url'    => 'pacientes/agendamento',
-            'title'  => 'Agendamento de Consultas',
-            'especializacoes' => Especializacao::all(),
-            'usuarios' => Usuario::withCount('especializacoes')->get()
-        ];
-        return view('usuario.pacientes.agendamento', compact('data'));
-    }
-    
-    public function agendar(Request $request){
-        return $request->all();
-    }
-
 }
