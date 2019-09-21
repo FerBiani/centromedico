@@ -41,6 +41,23 @@
                                 </div>
                             </div>
                         </div>
+                        @elseif(Auth::user()->nivel_id == 3)
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header">Horários Disponíveis</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('medicos/periodo/create')}}"><i class="fas fa-6x fa-business-time"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header">Consultas Agendadas</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('medicos/consultas')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>

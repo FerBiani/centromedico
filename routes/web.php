@@ -61,3 +61,9 @@ Route::middleware(['auth', 'role:2'])->group(function () {
             return view('usuario.pacientes.ficha', compact('data'));
         });
     });
+
+    Route::prefix('medicos')->group(function () {
+        Route::resource('periodo', 'PeriodoController');
+        
+        Route::get('consultas', 'PeriodoController@consultas');
+    });

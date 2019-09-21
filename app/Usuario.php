@@ -52,6 +52,10 @@ class Usuario extends Authenticatable
         return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
     }
 
+    public function periodos(){
+        return $this->belongsTo('App\Periodo');
+    }
+
     public function setPasswordAttribute($val) {
         $this->attributes['password'] = Hash::needsRehash($val) ? Hash::make($val) : $val;
     }
