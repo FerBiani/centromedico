@@ -1,19 +1,18 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">{{$data['title']}}</div>
-            <div class="card-body">
+            <div class="card-body">            
                 <form id="form" method="POST" action="{{url($data['url'])}}">
                     @csrf
                     @if($data['method'])
                         @method($data['method'])
                     @endif
-                    <h6>Dados da Consulta</h6>
+                    <h6>Dados da agendamento</h6>
                     <div class="form-group row">
-                        <label for="consulta[especializacoes_id]" class="col-md-4 col-form-label text-md-right">Especialização Desejada</label>
+                        <label for="agendamento[especializacoes_id]" class="col-md-4 col-form-label text-md-right">Especialização Desejada</label>
                         <div class="col-md-6">
                             <div class="input-group">
                                 <select class="form-control especialidade" name="especializacoes_id">
@@ -28,12 +27,12 @@
                     </div> 
 
                     <div class="form-group row">
-                        <label for="consulta[medico_id]" class="col-md-4 col-form-label text-md-right">Médico Desejado</label>
+                        <label for="agendamento[medico_id]" class="col-md-4 col-form-label text-md-right">Médico Desejado</label>
                         <div class="col-md-6">
                             <div class="input-group">
                                 <select class="form-control medicos" name="medico_id" id="medicos_id">
                                     @foreach($data['usuarios'] as $usuario)
-                                         <option value="{{ $usuario->id }}">Selecione</option>
+                                         <option data-medico="{{$usuario->id}}" value="{{ $usuario->id }}">Selecione</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -41,20 +40,30 @@
                         <small id="error" class="errors font-text text-danger">{{ $errors->first('medicos') }}</small>
                     </div>
 
-                    <h6>Dados da Data da Consulta</h6>
+                    <h6>Dados da Data da agendamento</h6>
                     <div class="form-group row">
-                        <label for="consulta[data]" class="col-md-4 col-form-label text-md-right">Data da Consulta</label>
+                        <label for="agendamento[data]" class="col-md-4 col-form-label text-md-right data">Data da agendamento</label>
                         <div class="col-md-6">
-                            <input id="nome" type="date" class="form-control" name="inicio" >
+                            <select class="form-control dias" name="data" id="data">
+                                @foreach($data['periodos'] as $periodo)
+                                        <option data-dia="{{$periodo->dia_semana}}" value="{{ $periodo->dia_semana }}">Selecione</option>
+                                @endforeach
+                            </select>
+                            <!-- <input id="nome" type="date" class="form-control" name="data" > -->
                             <small id="error" class="errors font-text text-danger">{{$errors->first('data')}}</small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="consulta[hora]" class="col-md-4 col-form-label text-md-right">Horas Disponíveis </label>
+                        <label for="agendamento[hora]" class="col-md-4 col-form-label text-md-right">Horas Disponíveis </label>
                         <div class="col-md-6">
                             <div class="input-group">
-                            <input id="nome" type="time" class="form-control" name="fim" >
+                                <select class="form-control horas" name="hora" id="medicos_id">
+                                    @foreach($data['periodos'] as $periodo)
+                                         <option value="{{ $periodo->inicio }}">Selecione</option>
+                                    @endforeach
+                                </select>
+                            <!-- <input id="nome" type="time" class="form-control" name="hora" > -->
                             </div>
                         </div>
                         <small id="error" class="errors font-text text-danger">{{$errors->first('hora')}}</small>

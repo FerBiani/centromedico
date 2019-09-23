@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Consulta extends Model
+class Agendamento extends Model
 {
-    protected $table = 'consultas';
+    protected $table = 'agendamentos';
 
     protected $fillable = [
-        'inicio', 'fim', 'paciente_id','medico_id', 'especializacoes_id'
+        'data', 'hora', 'paciente_id','medico_id', 'especializacoes_id'
     ];
 
     public $timestamps = false;

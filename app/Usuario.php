@@ -43,9 +43,9 @@ class Usuario extends Authenticatable
         return $this->belongsTo('App\Nivel');
     }
 
-    public function consultas()
+    public function agendamentos()
     {
-        return $this->belongsTo('App\Consultas');
+        return $this->belongsTo('App\Agendamento');
     }
 
     public function especializacoes(){

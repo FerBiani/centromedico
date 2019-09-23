@@ -205,6 +205,45 @@ function selecionarEspecializacao(especializacao) {
     })
 }
 
+//datas e horario disponiveis do medico
+$('.medicos').change(function() {
+    atualizarDias($(".medicos option:selected").data("medico"), $(".medicos").data('dia'))
+    $(".medicos").data('dia','')
+})
+
+function atualizarDias(medico, selected_id = null) {
+    $.ajax({
+        url: main_url + "/pacientes/disponibilidade/"+14,
+        type: 'GET',
+        success: function(data){
+            $(".dias option").remove();
+            $(".dias").append("<option value=''>Selecione</option>")
+            $.each(JSON.parse(data), function(i, dia) {
+                //$(".dias").append(`<option ${selected_id == dia ? 'selected' : ''} value=${dia}>${dia}</option>`)
+                console.log(data)
+            })
+        }
+    })
+}
+
+function selecionarDia(dia) {
+    $(".dias option").removeAttr('selected')
+    $(".dias option").each(function() {
+        if($(this).text() == dia){
+            $(this).attr("selected", "selected")
+        }
+    })
+}
+
+function selecionarMedico(medico) {
+    $(".medicos option").removeAttr('selected')
+    $(".medicos option").each(function() {
+        if($(this).data("medico") == medico){
+            $(this).attr('selected', 'selected')
+        }
+    })
+}
+
 //MÁSCARAS
 function mascararTel(input) {
     $(input).last().mask('(00) 0000-00009');

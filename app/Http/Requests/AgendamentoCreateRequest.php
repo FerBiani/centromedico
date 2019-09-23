@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ConsultaCreateRequest extends FormRequest
+class AgendamentoCreateRequest extends FormRequest
 {
     public function authorize()
     {
