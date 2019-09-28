@@ -38,17 +38,18 @@ class PeriodoController extends Controller
     }
 
     public function store(Request $request)
-    {
-         DB::beginTransaction();
-         try{
-            $periodo = Periodo::create($request->all());
-            $periodo->usuarios_id = auth::user()->id;
-             DB::commit();
-             return back()->with('success', 'Período de trabalho registrado com sucesso');
-        }catch(\Exception $e){
-             DB::rollback();
-             return back()->with('error', $e);
-        }
+    {   
+        //dd($request->all()); 
+          DB::beginTransaction();
+          try{
+             $periodo = Periodo::create($request->all());
+             $periodo->usuarios_id = auth::user()->id;
+              DB::commit();
+              return back()->with('success', 'Período de trabalho registrado com sucesso');
+         }catch(\Exception $e){
+              DB::rollback();
+              return back()->with('error', $e);
+      }
     }
 
     public function show($id)

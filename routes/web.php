@@ -65,6 +65,5 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 
     Route::prefix('medicos')->group(function () {
         Route::resource('periodo', 'PeriodoController');
-        
         Route::get('consultas', 'PeriodoController@consultas');
     });

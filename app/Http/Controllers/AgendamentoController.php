@@ -66,11 +66,12 @@ class AgendamentoController extends Controller
 
     public function getDisponibilidade($medico){
         $disponibilidades = Periodo::where('usuarios_id',$medico)->first();
-        return $disponibilidades->id;
+        //return $disponibilidades->id;
+        echo $disponibilidades;
     }
 
     public function getDias($medico){
-        $dias = Periodo::where('usuarios_id', $medico)->first();
-        return $dias ? $dias : [];
+        $dias = Periodo::where('usuarios_id', $medico)->get();
+        echo $dias;
     }
 }

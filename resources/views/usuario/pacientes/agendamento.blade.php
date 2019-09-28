@@ -30,9 +30,10 @@
                         <label for="agendamento[medico_id]" class="col-md-4 col-form-label text-md-right">Médico Desejado</label>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <select class="form-control medicos" name="medico_id" id="medicos_id">
+                                <select class="form-control medicos" name="medico_id">
+                                    <option value="">Selecione</option>
                                     @foreach($data['usuarios'] as $usuario)
-                                         <option data-medico="{{$usuario->id}}" value="{{ $usuario->id }}">Selecione</option>
+                                         <option data-medico="{{$usuario->id}}" value="{{ $usuario->id}}">{{$usuario->nome}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -45,8 +46,9 @@
                         <label for="agendamento[data]" class="col-md-4 col-form-label text-md-right data">Data da agendamento</label>
                         <div class="col-md-6">
                             <select class="form-control dias" name="data" id="data">
+                               <option value="">Selecione</option>
                                 @foreach($data['periodos'] as $periodo)
-                                        <option data-dia="{{$periodo->dia_semana}}" value="{{ $periodo->dia_semana }}">Selecione</option>
+                                        <option data-dias="{{$periodo->dia_semana}}" value="{{ $periodo->dia_semana }}">Selecione</option>
                                 @endforeach
                             </select>
                             <!-- <input id="nome" type="date" class="form-control" name="data" > -->
