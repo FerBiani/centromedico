@@ -14,8 +14,7 @@ class AddForeignKeysToDocumentosTable extends Migration {
 	{
 		Schema::table('documentos', function(Blueprint $table)
 		{
-			$table->foreign('tipo_documentos_id', 'fk_documentos_tipo_documentos1')->references('id')->on('tipo_documentos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('usuario_id', 'fk_documentos_usuarios1')->references('id')->on('usuarios')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('tipo_documentos_id', 'fk_documentos_tipo_documentos_id')->references('id')->on('tipo_documentos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 
@@ -29,8 +28,7 @@ class AddForeignKeysToDocumentosTable extends Migration {
 	{
 		Schema::table('documentos', function(Blueprint $table)
 		{
-			$table->dropForeign('fk_documentos_tipo_documentos1');
-			$table->dropForeign('fk_documentos_usuarios1');
+			$table->dropForeign('fk_documentos_tipo_documentos_id');
 		});
 	}
 

@@ -108,7 +108,7 @@
                         <div class="col-md-6">
                             <select class="form-control estados" id="estado_id" name="endereco[estado_id]">
                                 @foreach($data['estados'] as $estado)
-                                    <option data-uf="{{$estado->uf}}" {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
+                                    <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
                                 @endforeach
                             </select>
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
@@ -120,8 +120,7 @@
                         <div class="col-md-6">
                             <select id="cidade_id" class="form-control cidades" name="endereco[cidade_id]">
                                     @foreach($data['cidades'] as $cidade)
-                                        <!-- <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option> -->
-                                        <option value="">Selecione</option>
+                                        <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
                                     @endforeach
                             </select>
                         <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
@@ -231,5 +230,6 @@
 </div>
 @endsection
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/mainForm.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/usuario/form.js') }}"></script>
 @stop

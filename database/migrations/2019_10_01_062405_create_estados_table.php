@@ -17,7 +17,6 @@ class CreateEstadosTable extends Migration {
 			$table->integer('id', true);
 			$table->string('uf', 2)->nullable();
 			$table->string('nome', 50)->nullable();
-			$table->integer('pais_id')->index('fk_estados_paises1_idx');
 		});
 	}
 

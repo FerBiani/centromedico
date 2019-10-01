@@ -16,7 +16,7 @@ class CheckNivel
     public function handle($request, Closure $next, $role)
     {
 
-        if ($request->user()->nivel_id > $role) {
+        if ($request->user()->nivel_id != $role) {
             return back()->with('warning', 'Você não tem permissões suficientes para acessar este recurso');
         }
 

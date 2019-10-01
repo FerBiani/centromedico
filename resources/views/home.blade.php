@@ -7,7 +7,7 @@
             <div class="card-header">Dashboard</div>
             <div class="card-body">
                 <div class="row">
-                    @if(Auth::user()->nivel_id <= 2)
+                    @if(Auth::user()->nivel_id <= 1)
                         <div class="col-md-3">
                             <div class="card">
                                 <div class="card-header">Usuários</div>
@@ -16,7 +16,8 @@
                                 </div>
                             </div>
                         </div>
-                    @elseif(Auth::user()->nivel_id == 4)
+                    @endif
+                    @if(Auth::user()->nivel_id == 2)
                         <div class="col-md-3">
                             <div class="card">
                                 <div class="card-header">Ficha</div>
@@ -41,12 +42,13 @@
                                 </div>
                             </div>
                         </div>
-                        @elseif(Auth::user()->nivel_id == 3)
+                    @endif
+                    @if(Auth::user()->nivel_id == 3)
                         <div class="col-md-3">
                             <div class="card">
-                                <div class="card-header">Horários Disponíveis</div>
+                                <div class="card-header">Horários</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('medicos/periodo/create')}}"><i class="fas fa-6x fa-business-time"></i></a>
+                                    <a class="btn" href="{{url('medicos/horario')}}"><i class="fas fa-6x fa-business-time"></i></a>
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,6 @@ class CreateNiveisTable extends Migration {
 		{
 			$table->integer('id')->primary();
 			$table->string('nome', 45);
-			$table->boolean('nivel');
 		});
 	}
 
