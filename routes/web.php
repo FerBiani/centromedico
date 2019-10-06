@@ -71,3 +71,9 @@ Route::middleware(['auth', 'role:1'])->group(function () {
 
         Route::get('consultas', 'HorarioController@consultas');
     });
+
+    Route::prefix('atendente')->group(function () {
+
+        //Horário
+        Route::resource('agendamento', 'AgendamentoController');
+    });

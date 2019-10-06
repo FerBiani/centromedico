@@ -21,4 +21,8 @@ class Especializacao extends Model
     public function consultas(){
         return $this->hasMany('App\Consulta');
     }
+
+    public function horarios(){
+        return $this->belongsTo('App\Horario');
+    }
 }

@@ -17,8 +17,9 @@ class CreateHorariosTable extends Migration {
 			$table->integer('id', true);
 			$table->time('inicio');
 			$table->time('fim');
-			$table->integer('dia_semana');
-			$table->integer('usuario_id')->unsigned()->index('fk_periodos_usuarios_idx');
+			$table->integer('dias_semana_id')->unsigned()->index('fk_horarios_dias_semana1_idx');
+			$table->integer('usuario_id')->unsigned()->index('fk_horarios_usuarios_idx');
+			$table->integer('especializacao_id')->unsigned()->index('fk_horarios_especializacoes_idx');
 			$table->timestamps();
 		});
 	}

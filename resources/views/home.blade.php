@@ -61,6 +61,24 @@
                             </div>
                         </div>
                     @endif
+                    @if(Auth::user()->nivel_id == 4)
+                        <div class="col-md-3">
+                            <div class="card">
+                            <div class="card-header">Agendar Consulta</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('atendente/agendamento/create')}}"><i class="fas fa-6x fa-clock"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                  <div class="card-header">Usuários</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('usuario')}}"><i class="fas fa-6x fa-users"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

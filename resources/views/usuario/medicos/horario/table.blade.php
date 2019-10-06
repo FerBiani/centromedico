@@ -11,7 +11,7 @@
         <tbody>
             @foreach($horarios as $horario)
                 <tr>
-                    <td>{{$horario->dia_semana}}</td>
+                    <td>{{\App\DiaSemana::find($horario->dias_semana_id)->dia}}</td>
                     <td>{{$horario->inicio}}</td> 
                     <td>{{$horario->fim}}</td>
 

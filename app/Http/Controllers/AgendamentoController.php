@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Periodo };
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario };
 use Illuminate\Http\Request;
 use App\Http\Requests\{AgendamentoCreateRequest};
 use DB;
@@ -24,7 +24,7 @@ class AgendamentoController extends Controller
             'title'  => 'Agendamento de Consultas',
             'especializacoes' => Especializacao::all(),
             'usuarios' => Usuario::withCount('especializacoes')->get(),
-            'periodos' => Periodo::all()
+            'horarios' => Horario::all(),
         ];
         return view('usuario.pacientes.agendamento', compact('data'));
     }
