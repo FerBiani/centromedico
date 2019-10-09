@@ -25,7 +25,7 @@
                         <form action="{{url('usuario', [$usuario->id])}}" class="input-group" method="POST">
                             {{method_field('DELETE')}}
                             {{ csrf_field() }}
-                                <input type="submit" class="btn btn-{{$usuario->trashed() ? 'success' : 'danger'}}" value="{{$usuario->trashed() ? 'Restaurar' : 'Deletar'}}"/>
+                            <input type="submit" class="btn btn-{{$usuario->trashed() ? 'success' : 'danger'}}" value="{{$usuario->trashed() ? 'Restaurar' : 'Deletar'}}"/>
                         </form>
                     </td>
                 </tr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\{ Usuario, Horario, Agendamento, DiaSemana };
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use App\Http\Requests\{HorarioCreateRequest};
 use DB;
 use Auth;
 use DateTime;
@@ -53,26 +54,37 @@ class HorarioController extends Controller
     } 
 
 
-    public function store(Request $request)
+    public function store(HorarioCreateRequest $request)
     { 
+        
         DB::beginTransaction();
         try{ 
-            $inicio = new DateTime($request['horario']['inicio']);
-            $fim = new DateTime($request['horario']['fim']);
-
-            $intervalo = DateInterval::createFromDateString($request['horario']['duracao'].' min');
-            $horarios = new DatePeriod($inicio, $intervalo, $fim);
-            foreach ($horarios as $horarios) {
+            if($request['horario']['tipo'] == 2){
+                $inicio = new DateTime($request['horario']['inicio']);
+                $fim = new DateTime($request['horario']['fim']);
+    
+                $intervalo = DateInterval::createFromDateString($request['horario']['duracao'].' min');
+                $horarios = new DatePeriod($inicio, $intervalo, $fim);
+                foreach ($horarios as $horarios) {
+                    Horario::create([
+                        'inicio' => $horarios->format('H:i'),
+                        'fim' => $horarios->add($intervalo)->format('H:i'),
+                        'dias_semana_id' => $request['horario']['dia_semana'],
+                        'usuario_id' => Auth::user()->id,
+                        'especializacao_id' => $request['horario']['especializacao_id' ]
+                    ]);
+                }
+            }else{
                 Horario::create([
-                    'inicio' => $horarios->format('H:i'),
-                    'fim' => $horarios->add($intervalo)->format('H:i'),
+                    'inicio' => $request['horario']['inicio'],
+                    'fim' => $request['horario']['fim'],
                     'dias_semana_id' => $request['horario']['dia_semana'],
                     'usuario_id' => Auth::user()->id,
                     'especializacao_id' => $request['horario']['especializacao_id' ]
                 ]);
             }
             DB::commit();
-            return redirect('medicos/horario')->with('success', 'horário registrado com sucesso!');
+            return redirect('medicos/horario')->with('success', 'Horário registrado com sucesso!');
          }catch(\Exception $e){
             DB::rollback();
             return back()->with('error', $e);
@@ -97,8 +109,13 @@ class HorarioController extends Controller
 
     public function destroy($id)
     {
-        $horario = Horario::findOrFail($id);
-        $horario->delete();
-        return back();
+        $horario = Horario::withTrashed()->findOrFail($id);
+        if($horario->trashed()) {
+            $horario->restore();
+            return back()->with('success', 'Horario ativado com sucesso!');
+        } else {
+            $horario->delete();
+            return back()->with('success', 'Horario desativado com sucesso!');
+        }
     }
 }

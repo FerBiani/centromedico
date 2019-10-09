@@ -21,6 +21,7 @@ class CreateHorariosTable extends Migration {
 			$table->integer('usuario_id')->unsigned()->index('fk_horarios_usuarios_idx');
 			$table->integer('especializacao_id')->unsigned()->index('fk_horarios_especializacoes_idx');
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

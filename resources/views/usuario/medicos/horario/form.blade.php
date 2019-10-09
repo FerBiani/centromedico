@@ -10,13 +10,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="dia-semana">Dia da semana</label>
-                            <select class="form-control dia_semana" id="dia-semana" name="horario[dia_semana]">
-                                <option selected>Selecione</option>
-                            @foreach($data['dias'] as $dia)
-                                <option value="{{$dia->id}}">{{$dia->dia}}</option>
-                            @endforeach
-                            </select> 
+                            <label for="dia-semana">Tipo de horário</label>
+                            <select class="form-control" id="duracao" name="horario[tipo]">
+                                <option value="1">Apenas um horário</option>
+                                <option value="2">Diversos horário</option>
+                            </select>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="tipo">
+                        <div class="form-group">
+                            <label for="dia-semana">Duração da consulta</label>
+                            <input class="form-control duracao" name="horario[duracao]">
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>
                         </div>
                     </div>
@@ -32,30 +37,24 @@
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>
                         </div>
                     </div>
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="dia-semana">Duração da consulta</label>
-                            <input class="form-control duracao" id="duracao" name="horario[duracao]">
+                            <label for="dia-semana">Dia da semana</label>
+                            <select class="form-control dia_semana" id="dia-semana" name="horario[dia_semana]">
+                                <option selected>Selecione</option>
+                            @foreach($data['dias'] as $dia)
+                                <option value="{{$dia->id}}">{{$dia->dia}}</option>
+                            @endforeach
+                            </select> 
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="inicio">Início</label>
-                            <select class="form-control especialidade" id="inicio" name="horario[inicio]">
-                                <option value="07:00:00">7:00</option>
-                                <option value="08:00:00">8:00</option>
-                                <option value="09:00:00">9:00</option>
-                                <option value="10:00:00">10:00</option>
-                                <option value="11:00:00">11:00</option>
-                                <option value="12:00:00">12:00</option>
-                                <option value="13:00:00">13:00</option>
-                                <option value="14:00:00">14:00</option>
-                                <option value="15:00:00">15:00</option>
-                                <option value="16:00:00">16:00</option>
-                                <option value="17:00:00">17:00</option>
-                                <option value="18:00:00">18:00</option>
-                            </select>
+                            <input type="text" class="form-control inicio" id="inicio" name="horario[inicio]">
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.nome') }}</small>
                         </div>    
                     </div>
@@ -63,21 +62,7 @@
                         <div class="form-group">
                             
                             <label for="fim">Fim</label>
-                            <select class="form-control especialidade" id="fim" name="horario[fim]">
-                                <option value="07:00:00">7:00</option>
-                                <option value="08:00:00">8:00</option>
-                                <option value="09:00:00">9:00</option>
-                                <option value="10:00:00">10:00</option>
-                                <option value="11:00:00">11:00</option>
-                                <option value="12:00:00">12:00</option>
-                                <option value="13:00:00">13:00</option>
-                                <option value="14:00:00">14:00</option>
-                                <option value="15:00:00">15:00</option>
-                                <option value="16:00:00">16:00</option>
-                                <option value="17:00:00">17:00</option>
-                                <option value="18:00:00">18:00</option>
-                            </select>
-                        
+                            <input type="text" class="form-control fim" id="fim" name="horario[fim]">                        
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.nome') }}</small>
                         </div>
                     </div>
@@ -97,5 +82,76 @@
 </div>
 @endsection
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/mainForm.js') }}"></script>
+    <script>
+        $(document).on('click', '.send-form', function() {
+            if($("#form").valid()){
+                $(".send-form").prop("disabled",true) 
+                $("#form").submit()
+            }
+        })
+        
+        $(document).ready(function() {
+            $('#tipo').hide();
+            $('#duracao').change(function() {
+                if ($('#duracao').val() == '2') {
+                $('#tipo').show();
+                } else {
+                $('#tipo').hide();
+                }
+            });
+        });
+
+        //MÁSCARAS
+        $('.inicio').mask('00:00:00')
+        $('.fim').mask('00:00:00')
+
+        ///// VALIDATE /////
+        $("#form").validate({
+            highlight:function(input){
+                jQuery(input).addClass('is-invalid');
+            },
+
+            unhighlight:function(input){
+                jQuery(input).removeClass('is-invalid');
+                jQuery(input).addClass('is-valid');
+            },
+
+            errorPlacement:function(error, element)
+            {
+                jQuery(element).parents('.form-group').find('#error').append(error);
+            },
+
+            rules: {
+                "horario[dia_semana]": "required",
+                "horario[tipo]": "required",
+                "horario[especializacao_id]":"required",
+                "horario[duracao]": "required",
+                "horario[inicio]": "required",
+                "horario[fim]": "required",
+            },
+
+            messages: {
+
+                "horario[dia_semana]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "horario[tipo]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "horario[especializacao_id]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "horario[duracao]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "horario[inicio]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "horario[fim]":{
+                    required: 'Este campo é obrigatório',
+                },
+
+            },
+        });
+    </script>
 @stop

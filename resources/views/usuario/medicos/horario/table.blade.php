@@ -14,10 +14,12 @@
                     <td>{{\App\DiaSemana::find($horario->dias_semana_id)->dia}}</td>
                     <td>{{$horario->inicio}}</td> 
                     <td>{{$horario->fim}}</td>
-
+                    <td class="min"> 
+                        <a class="btn btn-warning" href='{{ url("horario/$horario->id/edit") }}'>Editar</a>
+                    </td>
                     <td class="min"> 
                         <form action="{{url('horario', [$horario->id])}}" class="input-group" method="POST">
-                            {{method_field('DELETE')}}
+                            {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                             <input type="submit" class="btn btn-danger" value="Deletar"/>
                         </form>
