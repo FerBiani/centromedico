@@ -6,32 +6,32 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class HorarioCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    
     public function authorize()
     {
-        return [
-            'horario.dia_semana' => 'required',
-            'horario.tipo' => 'required',
-            'horario.especializacoe_id' => 'required',
-            'horario.duracao' => 'duracao',
-            'horario.inicio' => 'required|date_format:H:i',
-            'horario.fim' => 'required|gt:horario[inicio]'
-        ];
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            //
+            'horario.dia_semana' => ['required'],
+            'horario.tipo' => ['required_with: horario.duracao'],
+            'horario.especializacao_id' => ['required'],
+            'horario.duracao' => ['required_with: horario.tipo', 'required_if:horario.tipo,==,2'],
+            'horario.inicio' => ['required', 'before:horario.fim', 'date_format:H:i'],
+            'horario.fim' => ['required', 'after:horario.inicio', 'date_format:H:i']
+        ];
+    }
+
+    public function messages(){
+        return [
+            'required' => 'Este campo é obrigatorio',
+            'required_if' => 'Este campo é obrigatorio',
+            'required_with' => 'Este campo é obrigatorio',
+            'date_format' => 'Horário inválido',
+            'after'    => 'Este horário deve ser maior que a hora inicial',
+            'before'    => 'Este horário deve ser menor que a hora final',
         ];
     }
 }

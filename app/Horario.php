@@ -29,4 +29,13 @@ class Horario extends Model
         return $this->hasOne('App\Especializacao'); 
     }
 
+    //MUTATORS
+    public function getInicioAttribute($val) {
+        return substr($val, 0, 5);
+    }
+
+    public function getFimAttribute($val) {
+        return substr($val, 0, 5);
+    }
+
 }

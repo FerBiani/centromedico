@@ -117,12 +117,8 @@
 
                     <div class="form-group row">
                         <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
-                        <div class="col-md-6">
-                            <select id="cidade_id" class="form-control cidades" name="endereco[cidade_id]">
-                                    @foreach($data['cidades'] as $cidade)
-                                        <option {{ $data['usuario'] && $cidade->id == old('endereco.cidade_id', $data['usuario']->endereco->cidade_id) ? 'selected' : '' }} value="{{$cidade->id}}">{{$cidade->nome}}</option>
-                                    @endforeach
-                            </select>
+                        <div class="col-md-6">                        
+                        <input id="cidade_id" type="text" class="form-control" name="endereco[cidade_id]">
                         <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
                         </div>
                     </div>

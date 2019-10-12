@@ -46,6 +46,7 @@ class HorarioController extends Controller
             'button' => 'Enviar',
             'url'    => 'medicos/horario',
             'title'  => 'Cadastrar novo horario',
+            'horario' => '',
             'dias'   =>  DiaSemana::all(),
             'especializacoes' => Auth::user()->especializacoes
         ];
@@ -87,7 +88,7 @@ class HorarioController extends Controller
             return redirect('medicos/horario')->with('success', 'Horário registrado com sucesso!');
          }catch(\Exception $e){
             DB::rollback();
-            return back()->with('error', $e);
+            return back()->with('error', 'Erro no servidor');
         }
      
     }
@@ -99,12 +100,44 @@ class HorarioController extends Controller
 
     public function edit($id)
     {
-        //
+
+        $horario = Horario::findOrFail($id);
+
+        $data = [
+            'method' => 'PUT',
+            'button' => 'Atualizar',
+            'url'    => 'medicos/horario/'.$id,
+            'title'  => 'Editar horario',
+            'horario' => $horario,
+            'dias'   =>  DiaSemana::all(),
+            'especializacoes' => Auth::user()->especializacoes
+        ];
+  
+        return view('usuario.medicos.horario.form', compact('data'));
     }
 
-    public function update(Request $request, $id)
+    public function update(HorarioCreateRequest $request, $id)
     {
-        //
+        $horario = Horario::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            $horario->update([
+                'inicio' => $request['horario']['inicio'],
+                'fim'   => $request['horario']['fim'],
+                'usuario_id' => Auth::user()->id,
+                'dias_semana_id' => $request['horario']['dia_semana'],
+                'especializacao_id' => $request['horario']['especializacao_id']
+            ]);
+
+            DB::commit();
+
+            return redirect('medicos/horario')->with('success', 'Horário atualizado com sucesso!');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return $e;
+            return back()->with('error', 'Erro no servidor');
+        }
     }
 
     public function destroy($id)
