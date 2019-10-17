@@ -10,10 +10,25 @@
                     @if($data['method'])
                         @method($data['method'])
                     @endif
-                    <h6>Dados da agendamento</h6>
                     <div class="form-group row">
-                        <label for="agendamento[especializacoes_id]" class="col-md-4 col-form-label text-md-right">Especialização Desejada</label>
+                        <div class="col-md-8">
+                            <label for="agendamento[nome]" class="col-form-label">Especialização Desejada</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control especialidade" name="especializacoes_id">
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.nome') }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="" class="col-form-label">Dia</label>
+                            <div class="input-group">
+                            <input type="date" class="form-control" id="validationCustom01" name="data" required>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <div class="col-md-6">
+                        <label for="agendamento[especializacoes_id]" class="col-form-label">Especialização Desejada</label>
                             <div class="input-group">
                                 <select class="form-control especialidade" name="especializacoes_id">
                                     <option value="">Selecione</option>
@@ -24,11 +39,8 @@
                             </div>
                         </div>
                         <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.nome') }}</small>
-                    </div> 
-
-                    <div class="form-group row">
-                        <label for="agendamento[medico_id]" class="col-md-4 col-form-label text-md-right">Médico Desejado</label>
                         <div class="col-md-6">
+                        <label for="agendamento[medico_id]" class="col-form-label">Médico Desejado</label>
                             <div class="input-group">
                                 <select class="form-control medicos" name="medico_id">
                                     <option value="">Selecione</option>
@@ -40,41 +52,10 @@
                         </div>
                         <small id="error" class="errors font-text text-danger">{{ $errors->first('medicos') }}</small>
                     </div>
-
-                    <h6>Dados da Data da agendamento</h6>
-                    <div class="form-group row">
-                        <label for="agendamento[data]" class="col-md-4 col-form-label text-md-right data">Data da agendamento</label>
-                        <div class="col-md-6">
-                            <select class="form-control dias" name="data" id="data">
-                               <option value="">Selecione</option>
-                                @foreach($data['horarios'] as $horario)
-                                        <option data-dias="{{$horario->dias_semana_id}}" value="{{ $horario->dias_semana_id }}">Selecione</option>
-                                @endforeach
-                            </select>
-                            <!-- <input id="nome" type="date" class="form-control" name="data" > -->
-                            <small id="error" class="errors font-text text-danger">{{$errors->first('data')}}</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="agendamento[hora]" class="col-md-4 col-form-label text-md-right">Horas Disponíveis </label>
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <select class="form-control horas" name="hora" id="medicos_id">
-                                    @foreach($data['horarios'] as $horario)
-                                         <option value="{{ $horario->inicio }}">Selecione</option>
-                                    @endforeach
-                                </select>
-                            <!-- <input id="nome" type="time" class="form-control" name="hora" > -->
-                            </div>
-                        </div>
-                        <small id="error" class="errors font-text text-danger">{{$errors->first('hora')}}</small>
-                    </div>
-                </div>
-                <input type="hidden" name="paciente_id" value="{{ auth::user()->id }}">
             </div>
         </div>
         </form>
+        </div>
         </div>
             <div class="card-footer">
                 <div class="form-group row mb-0">
