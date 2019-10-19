@@ -33,8 +33,9 @@ class AgendamentoController extends Controller
     {   
         DB::beginTransaction();
         try{
-            $agendamento = Agendamento::create($request->all());
-            $agendamento->paciente_id = auth::user()->id;
+            // $agendamento = Agendamento::create($request->all());
+            // $agendamento->paciente_id = auth::user()->id;
+
             DB::commit();
             return back()->with('success', 'Consulta Marcada com sucesso');
         }catch(\Exception $e){

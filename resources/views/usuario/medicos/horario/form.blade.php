@@ -17,7 +17,7 @@
                                 <label for="dia-semana">Tipo de horário</label>
                                 <select class="form-control" id="duracao" name="horario[tipo]">
                                     <option value="1">Apenas um horário</option>
-                                    <option value="2">Diversos horário</option>
+                                    <option value="2">Diversos horários</option>
                                 </select>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('horario.tipo') }}</small>
                             </div>
@@ -35,7 +35,7 @@
                             <label for="dia-semana">Especialização do atendimento</label>
                             <select class="form-control especializacao_id" id="especializacao_id" name="horario[especializacao_id]">
                             @foreach($data['especializacoes'] as $especializacao)
-                                <option {{$data['horario']->especializacao_id == $especializacao->id ? 'selected' : ''}} value="{{$especializacao->id}}" >{{$especializacao->especializacao}}</option>
+                                <option {{$data['horario'] && $data['horario']->especializacao_id == $especializacao->id ? 'selected' : ''}} value="{{$especializacao->id}}" >{{$especializacao->especializacao}}</option>
                             @endforeach
                             </select> 
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>
@@ -47,7 +47,7 @@
                             <label for="dia-semana">Dia da semana</label>
                             <select class="form-control dia_semana" id="dia-semana" name="horario[dia_semana]">
                             @foreach($data['dias'] as $dia)
-                                <option {{$data['horario']->dias_semana_id == $dia->id ? 'selected' : ''}} value="{{$dia->id}}">{{$dia->dia}}</option>
+                                <option {{$data['horario'] && $data['horario']->dias_semana_id == $dia->id ? 'selected' : ''}} value="{{$dia->id}}">{{$dia->dia}}</option>
                             @endforeach
                             </select> 
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('') }}</small>

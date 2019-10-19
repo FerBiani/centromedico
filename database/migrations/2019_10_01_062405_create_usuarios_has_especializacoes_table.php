@@ -15,8 +15,7 @@ class CreateUsuariosHasEspecializacoesTable extends Migration {
 		Schema::create('usuarios_has_especializacoes', function(Blueprint $table)
 		{
 			$table->integer('usuario_id')->unsigned();
-			$table->integer('especializacao_id')->index('fk_usuarios_has_especializacoes_especializacao_id_idx');
-			$table->primary(['usuario_id','especializacao_id']);
+			$table->integer('especializacao_id');
 		});
 	}
 

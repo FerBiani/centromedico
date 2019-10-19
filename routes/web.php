@@ -18,6 +18,25 @@ Route::get('/senha/{senha}', function ($senha) {
     return Hash::make($senha);
 });
 
+Route::get('/criar-agendamento', function() {
+
+     //Criando um agendamento de teste
+     $agendamento = Agendamento::create([
+        'inicio' => '2019-10-13 08:00:00',
+        'fim' => '2019-10-13 09:00:00',
+        'paciente_id' => 3,
+        'medico_id' => 2,
+        'especializacao_id' => 2,
+        'codigo_check_in' => '123456'
+    ]);
+
+    return $agendamento;
+});
+
+Route::get('/criar-check-in', function() {
+   return event(new App\Events\CheckInAgendamento('123456'));
+});
+
 Auth::routes();
 
 Route::get('/', function () {

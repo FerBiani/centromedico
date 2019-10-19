@@ -9,16 +9,26 @@ class Agendamento extends Model
     protected $table = 'agendamentos';
 
     protected $fillable = [
-        'data', 'hora', 'paciente_id','medico_id', 'especializacoes_id'
+        'inicio', 'fim', 'paciente_id', 'medico_id', 'especializacao_id', 'codigo_check_in', 'check_in_id'
     ];
 
-    public $timestamps = false;
-
-    public function usuarios(){
-        return $this->hasMany('App\Usuario');
+    public function paciente()
+    {
+        return $this->belongsTo('App\Usuario', 'paciente_id');
     }
 
-    public function especializacoes(){
+    public function medico()
+    {
+        return $this->belongsTo('App\Usuario', 'medico_id');
+    }
+
+    public function checkIn() {
+        return $this->belongsTo('App\CheckIn');
+    }
+
+    public function especializacao()
+    {
         return $this->belongsTo('App\Especializacao');
     }
+
 }
