@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
 
         //Custom...
         'role' => \App\Http\Middleware\CheckNivel::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 
     /**
