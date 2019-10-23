@@ -15,11 +15,13 @@ class CreateAgendamentosTable extends Migration {
 		Schema::create('agendamentos', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->date('data');
-			$table->time('hora');
+			$table->dateTime('inicio');
+			$table->dateTime('fim');
 			$table->integer('paciente_id')->index('fk_agendamentos_usuarios_idx');
 			$table->integer('medico_id')->index('fk_agendamentos_usuarios1_idx');
 			$table->integer('especializacao_id')->index('fk_periodos_especializacoes_idx');
+			$table->string('codigo_check_in', 45);
+			$table->integer('check_in_id')->unsigned()->nullable()->index('fk_agendamentos_check_in_id_idx');
 			$table->timestamps();
 			$table->softDeletes();
 		});
