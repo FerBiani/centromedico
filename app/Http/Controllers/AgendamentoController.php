@@ -34,21 +34,32 @@ class AgendamentoController extends Controller
         $data = [
             'method'  => '',
             'button'  => 'Confirmar',
-            'url'     => '',
+            'url'     => 'atendente/agendamento/',
             'title'   => 'Confirmação de agendamento de consulta',
             'horario' => Horario::find($id),
-            'medico'  => Usuario::find($medico),
-            'pacientes' => Usuario::where('nivel_id',2)->get()
+            'medico'  => Usuario::find($medico)
         ];
         return view('usuario.pacientes.confirmacao', compact('data'));
+    }
+
+    public function pacientes(){
+        $pacientes = Usuario::where('nivel_id',2)->get();
+        return $pacientes;
     }
 
     public function store(Request $request)
     {   
         DB::beginTransaction();
         try{
-            // $agendamento = Agendamento::create($request->all());
-            // $agendamento->paciente_id = auth::user()->id;
+             $agendamento = Agendamento::create([
+                'inicio' => $request['inicio'],
+                'fim' => $request['fim'],
+                'paciente_id' => $request['paciente_id'],
+                'medico_id'  => $request['medico_id'],
+                'especializacao_id' => $request['especializacao_id'],
+                'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
+                'check_in_id' => 2
+              ]);
 
             DB::commit();
             return back()->with('success', 'Consulta Marcada com sucesso');

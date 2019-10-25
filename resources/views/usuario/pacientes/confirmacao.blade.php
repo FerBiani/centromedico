@@ -6,17 +6,13 @@
         <div class="card">
             <div class="card-header">{{$data['title']}}</div>   
             <div class="card-body">
-                <form id="form" method="post" action="">
+                <form id="form" method="post" action="{{url($data['url'])}}">
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="" class="col-form-label">Nome do paciente</label>
                             <div class="input-group">
-                                <select class="js-example-basic-single" name="paciente_id">
-                                   @foreach($data['pacientes'] as $paciente)
-                                    <option value="$paciente->id">{{ $paciente->nome }}</option>
-                                   @endforeach
-                                </select>
+                                <select class="js-example-basic-single form-control pacientes" name="paciente_id"></select>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
                             </div> 
                         </div>
@@ -52,37 +48,51 @@
                             <label for="" class="col-form-label">Especialização</label>
                             <div class="input-group">
                                 <?php $especializacao = \App\Especializacao::find($data['horario']->especializacao_id); ?>
-                                <input type="text" class="form-control" id="validationCustom01" name="especializacao_id" value="{{ $especializacao->especializacao }}">
+                                <input type="text" class="form-control" value="{{ $especializacao->especializacao }}">
+                                <input type="hidden" class="form-control" id="validationCustom01" name="especializacao_id" value="{{ $especializacao->id }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
                             </div> 
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-md-6">
-                            <label for="" class="col-form-label">Código Check-in</label>
-                            <div class="input-group">
-                                <?php $codigo = Session::getId()?>
-                                <input type="text" class="form-control" id="validationCustom01" name="codigo_check_im" value="">
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
-                            </div> 
+                </div> 
+                <div class="card-footer">
+                    <div class="form-group row mb-0">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-success send-form">
+                                {{$data['button']}}
+                            </button>
                         </div>
                     </div>
-                </form>
-            </div> 
+                </div>
+            </form>
         </div>
     </div>
 </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.11/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.11/js/select2.min.js"></script>
+
 
 @section('js') 
-<script>
-$(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            ajax: {
+                url: "{{url('atendente/pacientes')}}",
+                type: 'GET',
+                success: function(data){
+                    $.each(data, function(i, paciente) {
+                        $(".pacientes:not(:has(a))").append(`<option value="${paciente.id}">${paciente.nome}</option>`)
+                    })
+                }
+            }   
+        });
+    });
+
+        
+    $(document).on('click', '.send-form', function() {
+        if($("#form").valid()){
+            $(".send-form").prop("disabled",true) 
+            $("#form").submit()
+        }
+    })
 </script>
 @stop

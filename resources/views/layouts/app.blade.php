@@ -77,6 +77,8 @@
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-validator/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
+    <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
+<script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
     <!-- FullCalendar -->
     <script src="{{ asset('js/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
