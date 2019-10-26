@@ -9,26 +9,17 @@
                 <form id="form" method="post" action="{{url($data['url'])}}">
                     @csrf
                     <div class="form-group row">
-                        <div class="col-md-12">
-                            <label for="" class="col-form-label">Nome do paciente</label>
-                            <div class="input-group">
-                                <select class="js-example-basic-single form-control pacientes" name="paciente_id"></select>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
-                            </div> 
-                        </div>
-                    </div>
-                      <div class="form-group row">
                         <div class="col-md-6">
                             <label for="agendamento[inicio]" class="col-form-label">Início</label>
                             <div class="input-group">
-                                <input type="text" class="form-control especialidade" name="inicio" value="{{ $data['horario']->inicio }}">
+                                <input readonly id="inicio" type="text" class="form-control especialidade" name="inicio" value="{{ $data['horario']->inicio }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.inicio') }}</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="" class="col-form-label">Fim</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="validationCustom01" name="fim" value="{{ $data['horario']->fim }}">
+                                <input readonly id="fim" type="text" class="form-control" id="validationCustom01" name="fim" value="{{ $data['horario']->fim }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.fim') }}</small>
                             </div> 
                         </div>
@@ -37,8 +28,8 @@
                         <div class="col-md-12">
                             <label for="agendamento[medico]" class="col-form-label">Medico</label>
                             <div class="input-group">
-                                <input type="text" class="form-control especialidade"  value="{{ $data['medico']->nome }}">
-                                <input type="hidden"  name="medico_id" value="{{ $data['medico']->id }}">
+                                <input readonly type="text" class="form-control especialidade"  value="{{ $data['horario']->usuario->nome }}">
+                                <input type="hidden"  name="medico_id" value="{{ $data['horario']->usuario->id }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.inicio') }}</small>
                             </div>
                         </div>
@@ -47,11 +38,27 @@
                         <div class="col-md-12">
                             <label for="" class="col-form-label">Especialização</label>
                             <div class="input-group">
-                                <?php $especializacao = \App\Especializacao::find($data['horario']->especializacao_id); ?>
-                                <input type="text" class="form-control" value="{{ $especializacao->especializacao }}">
-                                <input type="hidden" class="form-control" id="validationCustom01" name="especializacao_id" value="{{ $especializacao->id }}">
+                                <input readonly type="text" class="form-control" value="{{ $data['horario']->especializacoes->especializacao }}">
+                                <input type="hidden"  name="especializacao_id" value="{{ $data['horario']->especializacoes->id }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
                             </div> 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="" class="col-form-label">Paciente</label>
+                            <div class="input-group">
+                                <select id="paciente-select" class="form-control form-lg" name="paciente_id"></select>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
+                            </div> 
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="col-form-label">Dia</label>
+                            <select id="select-data" class="form-control">
+                                @foreach($data['horario']->diasDoMes() as $dia)
+                                    <option>{{$dia->format('d/m/Y')}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div> 
@@ -73,19 +80,97 @@
 
 @section('js') 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2({
-            ajax: {
-                url: "{{url('atendente/pacientes')}}",
-                type: 'GET',
-                success: function(data){
-                    $.each(data, function(i, paciente) {
-                        $(".pacientes:not(:has(a))").append(`<option value="${paciente.id}">${paciente.nome}</option>`)
-                    })
-                }
-            }   
-        });
+
+    var inicio = $("#inicio").val()
+    var fim = $("#fim").val()
+
+    function atualizaInicioFim() {
+        let dataSelecionada = $("#select-data option:selected").val()
+        
+        $('#inicio').val(dataSelecionada+' '+inicio)
+        $('#fim').val(dataSelecionada+' '+fim)
+    }
+
+    $("#select-data").change(function(){
+        atualizaInicioFim()
+    })
+
+    $(document).ready(function(){
+        atualizaInicioFim()
+    })
+   
+   $("#paciente-select").select2({
+        width: '100%',
+        language: {
+        errorLoading: function() {
+            return "Erro ao carregar os resultados";
+        },
+        loadingMore: function() {
+            return "Carregando mais resultados...";
+        },
+        noResults: function() {
+            return "Nenhum resultado encontrado";
+        },
+        searching: function() {
+            return "Procurando...";
+        },
+        // maximumSelected: function(args) {
+        //   // args.maximum is the maximum number of items the user may select
+        //   return "Error loading results";
+        // }
+        },
+        ajax: {
+        url: main_url+'/atendente/pacientes',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            q: params.term, // search term
+            page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = data.current_page || 1;
+
+            return {
+            results: data.data,
+            pagination: {
+                more: (params.page * 30) < data.total
+            }
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Procure por um paciente',
+        minimumInputLength: 1,
+        templateResult: format,
+        templateSelection: formatSelection
     });
+
+    function format (data) {
+        console.log(data)
+        if (data.loading) {
+        return data.text;
+        }
+
+        var $container = $(
+        "<div class='d-flex align-items-center'>" +
+            "<div><p class='nome_paciente h6 ml-2 text-dark'></p></div>" +
+        "</div>"
+        );
+
+        $container.find(".nome_paciente").text(data.nome);
+
+        return $container;
+    }
+
+    function formatSelection (repo) {
+        return repo.nome || repo.text;
+    }
 
         
     $(document).on('click', '.send-form', function() {

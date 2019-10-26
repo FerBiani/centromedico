@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Horario };
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
 use App\Http\Requests\{AgendamentoCreateRequest};
@@ -23,43 +23,41 @@ class AgendamentoController extends Controller
             'button' => 'Buscar',
             'url'    => 'pacientes/agendamento',
             'title'  => 'Agendamento de Consultas',
+            'dias'   => DiaSemana::all(),
             'especializacoes' => Especializacao::all(),
-            'usuarios' => Usuario::withCount('especializacoes')->get(),
-            'horarios' => Horario::all(),
         ];
         return view('usuario.pacientes.agendamento', compact('data'));
     }
 
-    public function confirma($id, $medico){
+    public function confirma($id){
         $data = [
             'method'  => '',
             'button'  => 'Confirmar',
             'url'     => 'atendente/agendamento/',
             'title'   => 'Confirmação de agendamento de consulta',
             'horario' => Horario::find($id),
-            'medico'  => Usuario::find($medico)
         ];
         return view('usuario.pacientes.confirmacao', compact('data'));
     }
 
     public function pacientes(){
-        $pacientes = Usuario::where('nivel_id',2)->get();
+        $pacientes = Usuario::where('nivel_id',2)->paginate(10);
         return $pacientes;
     }
 
     public function store(Request $request)
     {   
+
         DB::beginTransaction();
         try{
-             $agendamento = Agendamento::create([
+            Agendamento::create([
                 'inicio' => $request['inicio'],
                 'fim' => $request['fim'],
-                'paciente_id' => $request['paciente_id'],
-                'medico_id'  => $request['medico_id'],
-                'especializacao_id' => $request['especializacao_id'],
+                'paciente_id' => (int)$request['paciente_id'],
+                'medico_id'  => (int)$request['medico_id'],
+                'especializacao_id' => (int)$request['especializacao_id'],
                 'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
-                'check_in_id' => 2
-              ]);
+            ]);
 
             DB::commit();
             return back()->with('success', 'Consulta Marcada com sucesso');
@@ -70,21 +68,23 @@ class AgendamentoController extends Controller
     }
 
     public function filtro(Request $request) {
-        $usuarios = new Usuario;
 
-        if($request['medico']) {
-            $usuarios = $usuarios->where('nome', 'like', '%'.$request['medico'].'%')->with('horarios');
-        }
+        $horarios = new Horario;
+
         if($request['especializacoes_id']){
-            $especializacao = Especializacao::find($request['especializacoes_id']);   
-            $usuarios= $especializacao->usuarios()->where('id',$especializacao->id);  
+            $especializacao = Especializacao::findOrFail($request['especializacoes_id']);
+
+            $horarios = $horarios->where('especializacao_id', $especializacao->id);
         }
-        if($request['medico_id']){
-            $usuarios = $usuarios->where('id',$request['medico_id'])->with('horarios');    
+
+        if($request['dias_semana_id']){
+            $horarios = $horarios->where('dias_semana_id', $request['dias_semana_id']);
         }
-        $usuarios = $usuarios->paginate(10);
-        return view('usuario.pacientes.resultados', compact('usuarios'));
+
+        $horarios = $horarios->paginate(10);
+        return view('usuario.pacientes.resultados', compact('horarios'));
     }
+
 
 
     public function show($id)

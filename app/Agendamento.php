@@ -31,4 +31,24 @@ class Agendamento extends Model
         return $this->belongsTo('App\Especializacao');
     }
 
+    public function setFimAttribute($val) {
+        $horario = explode(' ', $val)[1];
+        $this->attributes['fim'] = implode('-', array_reverse(explode('/', explode(' ', $val)[0]))).' '.$horario;
+    }
+
+    public function getFimAttribute($val) {
+        $horario = explode(' ', $val)[1];
+        return $this->attributes['fim'] = implode('/', array_reverse(explode('-', explode(' ', $val)[0]))).' '.$horario;
+    }
+
+    public function setInicioAttribute($val) {
+        $horario = explode(' ', $val)[1];
+        $this->attributes['inicio'] = implode('-', array_reverse(explode('/', explode(' ', $val)[0]))).' '.$horario;
+    }
+
+    public function getInicioAttribute($val) {
+        $horario = explode(' ', $val)[1];
+        return $this->attributes['inicio'] = implode('/', array_reverse(explode('-', explode(' ', $val)[0]))).' '.$horario;
+    }
+
 }

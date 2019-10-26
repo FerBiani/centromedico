@@ -11,23 +11,8 @@
                         @method($data['method'])
                     @endif
                     <div class="form-group row">
-                        <div class="col-md-8">
-                            <label for="agendamento[medico]" class="col-form-label">Procure pelo nome do médico desejado</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control especialidade" name="medico">
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.medico') }}</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="" class="col-form-label">Dia</label>
-                            <div class="input-group">
-                            <input type="date" class="form-control" id="validationCustom01" name="data">
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                       <div class="col-md-4">
-                            <label for="agendamento[especializacoes_id]" class="col-form-label">Especialização Desejada</label>
+                       <div class="col-md-5">
+                            <label for="agendamento[especializacoes_id]" class="col-form-label">Especialização</label>
                             <div class="input-group">
                                 <select class="form-control especialidade" name="especializacoes_id">
                                     <option value="">Selecione</option>
@@ -35,21 +20,19 @@
                                         <option data-especializacao="{{$especializacao->especializacao}}" value="{{$especializacao->id}}">{{$especializacao->especializacao}}</option>
                                     @endforeach
                                 </select>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.nome') }}</small>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacoes_id') }}</small>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                        <label for="agendamento[medico_id]" class="col-form-label">Médico Desejado</label>
+                        <div class="col-md-5">
+                            <label for="agendamento[dias_semana_id]" class="col-form-label">Dia da semana</label>
                             <div class="input-group">
-                                <select class="form-control medicos" name="medico_id">
+                                <select class="form-control especialidade" name="dias_semana_id">
                                     <option value="">Selecione</option>
-                                    @foreach($data['usuarios'] as $usuario)
-                                        @if($usuario->especializacoes_count > 0)
-                                         <option data-medico="{{$usuario->id}}" value="{{ $usuario->id}}">{{ $usuario->nome }}</option>
-                                        @endif
+                                    @foreach($data['dias'] as $dia)
+                                        <option value="{{$dia->id}}">{{$dia->dia}}</option>
                                     @endforeach
                                 </select>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('medicos') }}</small>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.dias_semana_id') }}</small>
                             </div>
                         </div>
                         <div class="col-md-2" style="margin-top: 35px">

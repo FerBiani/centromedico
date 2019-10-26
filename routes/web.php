@@ -96,5 +96,5 @@ Route::middleware(['auth', 'role:1'])->group(function () {
         Route::resource('agendamento', 'AgendamentoController');
         Route::get('pacientes', 'AgendamentoController@pacientes');
         Route::get('filtro','AgendamentoController@filtro');
-        Route::get('confirma/{id}/{medico}', 'AgendamentoController@confirma');
+        Route::get('confirma/{id}', 'AgendamentoController@confirma');
     });
