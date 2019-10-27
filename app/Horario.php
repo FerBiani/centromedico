@@ -32,8 +32,6 @@ class Horario extends Model
     function diasDoMes() {
 
         $dayId = $this->dias_semana_id;
-        $year = date('Y');
-        $month = date('m');
         $daysError = 3;
 
         switch ($dayId) {
@@ -74,12 +72,26 @@ class Horario extends Model
         // if ($startDay->format('j') > $daysError) {
         //     $startDay->modify('- 7 days');
         // }
+
+        $horariosIndisponiveis = [];
+
+        $agendamentosMedico = $this->usuario->agendamentosMedico;
+
+        foreach($agendamentosMedico as $agendamento) {
+            $horariosIndisponiveis[] = $agendamento->inicio;
+        }
     
         $days = array();
+
+        $count = 0;
     
-        while ($startDay->format('Y-m') <= $year.'-'.str_pad($year, 2, 0, STR_PAD_LEFT)) {
-            $days[] = clone($startDay);
+        while ($count < 5) {
+
+            if(!in_array($startDay->format('d/m/Y').' '.$this->inicio.':00', $horariosIndisponiveis)) {
+                $days[] = clone($startDay);
+            }
             $startDay->modify('+ 7 days');
+            $count++;
         }
     
         return $days;

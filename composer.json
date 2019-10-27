@@ -12,6 +12,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "~3.0",
         "waavi/sanitizer": "~1.0"
     },
     "require-dev": {

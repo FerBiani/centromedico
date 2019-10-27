@@ -15,15 +15,16 @@ class UsuarioUpdateRequest extends BaseFormRequest
         return [
             'usuario.nome'                  => 'required|min:2|max:100',
             'usuario.email'                 => 'required|email',
-            'usuario.nivel_id'              => 'required',
             'endereco.cep'                  => 'required|numeric',
             'endereco.estado_id'            => 'required',
-            'endereco.cidade_id'            => 'required',
+            'endereco.cidade'               => 'required',
             'endereco.bairro'               => 'required|max:100',
             'endereco.logradouro'           => 'required|max:100',
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
-            'telefone.*.numero'             => 'required|min:10|max:11'
+            'telefone.*.numero'             => 'required|min:10|max:11',
+            'documento.*.tipo_documentos_id' => 'required',
+            'documento.*.numero'            => 'required'
         ];
     }
 

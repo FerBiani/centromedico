@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="" class="col-form-label">Dia</label>
-                            <select id="select-data" class="form-control">
+                            <select id="select-data" class="form-control" name="data">
                                 @foreach($data['horario']->diasDoMes() as $dia)
                                     <option>{{$dia->format('d/m/Y')}}</option>
                                 @endforeach
@@ -80,28 +80,13 @@
 
 @section('js') 
 <script type="text/javascript">
-
-    var inicio = $("#inicio").val()
-    var fim = $("#fim").val()
-
-    function atualizaInicioFim() {
-        let dataSelecionada = $("#select-data option:selected").val()
-        
-        $('#inicio').val(dataSelecionada+' '+inicio)
-        $('#fim').val(dataSelecionada+' '+fim)
-    }
-
-    $("#select-data").change(function(){
-        atualizaInicioFim()
-    })
-
-    $(document).ready(function(){
-        atualizaInicioFim()
-    })
    
    $("#paciente-select").select2({
         width: '100%',
         language: {
+        inputTooShort: function() {
+            return "Insira pelo menos 4 caracteres";
+        },
         errorLoading: function() {
             return "Erro ao carregar os resultados";
         },
@@ -146,7 +131,7 @@
         cache: true
         },
         placeholder: 'Procure por um paciente',
-        minimumInputLength: 1,
+        minimumInputLength: 4,
         templateResult: format,
         templateSelection: formatSelection
     });

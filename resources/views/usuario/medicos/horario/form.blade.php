@@ -3,7 +3,7 @@
 @section('content')
 <div class="justify-content-center">
     <div class="card">
-        <div class="card-header">{{$data['title']}}</div>
+        <div class="card-header bg-info text-white h5">{{$data['title']}}</div>
         <div class="card-body">
             <form id="form" method="POST" action="{{url($data['url'])}}">
                 @csrf
@@ -72,10 +72,10 @@
                 </div>          
             </form>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bg-info">
             <div class="form-group row mb-0">
                 <div class="col-md-12 text-right">
-                    <button type="submit" class="btn btn-success send-form">
+                    <button type="submit" class="btn btn-dark send-form">
                         Enviar
                     </button>
                 </div>

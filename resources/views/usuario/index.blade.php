@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">Dashboard</div>
+            <div class="card-header bg-info text-white h5">Usuários</div>
             <div class="card-body">
 
                 <div class="row mb-4">
@@ -30,7 +30,7 @@
                             </div>
                         </form>
                     <div class="col-md-3 text-right">
-                        <a class="btn btn-secondary" href="{{url('usuario/create')}}">Novo</a>
+                        <a class="btn btn-dark" href="{{url('usuario/create')}}">Novo</a>
                     </div>
                 </div>
 

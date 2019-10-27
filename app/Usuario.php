@@ -43,9 +43,9 @@ class Usuario extends Authenticatable
         return $this->belongsTo('App\Nivel');
     }
 
-    public function agendamentos()
+    public function agendamentosMedico()
     {
-        return $this->belongsTo('App\Agendamento');
+        return $this->hasMany('App\Agendamento', 'medico_id');
     }
 
     public function especializacoes(){

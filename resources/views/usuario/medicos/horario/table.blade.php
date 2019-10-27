@@ -15,7 +15,7 @@
                     <td>{{$horario->inicio}}</td> 
                     <td>{{$horario->fim}}</td>
                     <td class="min"> 
-                        <a class="btn btn-warning" href='{{ url("medicos/horario/$horario->id/edit") }}'>Editar</a>
+                        <a class="btn btn-warning text-white" href='{{ url("medicos/horario/$horario->id/edit") }}'>Editar</a>
                     </td>
                     <td class="min"> 
                         <form action="{{url('medicos/horario', [$horario->id])}}" class="input-group" method="POST">

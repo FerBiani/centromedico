@@ -4,13 +4,13 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">Horários</div>
+            <div class="card-header bg-info text-white h5">Horários</div>
             <div class="card-body">
 
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <div class="text-right">
-                            <a class="btn btn-success" href="{{url('medicos/horario/create')}}">Novo</a>
+                            <a class="btn btn-dark" href="{{url('medicos/horario/create')}}">Novo</a>
                         </div>
                     </div>
                 </div>

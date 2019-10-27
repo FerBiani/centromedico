@@ -48,11 +48,26 @@ class AgendamentoController extends Controller
     public function store(Request $request)
     {   
 
+        $inicio = $request['data'].' '.$request['inicio'];
+        $fim = $request['data'].' '.$request['fim'];
+
+        $horariosIndisponiveis = [];
+
+        $agendamentosMedico = Usuario::findOrFail($request['medico_id'])->agendamentosMedico;
+
+        foreach($agendamentosMedico as $agendamento) {
+            $horariosIndisponiveis[] = $agendamento->inicio;
+        }
+
+        if(in_array($inicio.':00', $horariosIndisponiveis)) {
+            return redirect('/')->with('error', 'Não é possível marcar uma consulta nesta data!');
+        }
+
         DB::beginTransaction();
         try{
             Agendamento::create([
-                'inicio' => $request['inicio'],
-                'fim' => $request['fim'],
+                'inicio' => $inicio,
+                'fim' => $fim,
                 'paciente_id' => (int)$request['paciente_id'],
                 'medico_id'  => (int)$request['medico_id'],
                 'especializacao_id' => (int)$request['especializacao_id'],

@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">{{$data['title']}}</div>
+            <div class="card-header bg-info text-white h5">{{$data['title']}}</div>
 
             <div class="card-body">
                 <form id="form" method="POST" action="{{url($data['url'])}}">
@@ -52,8 +52,6 @@
                         </div>
                     </div>
 
-                    @endif
-
                     <div class="form-group row">
                         <label for="usuario[nivel_id]" class="col-md-4 col-form-label text-md-right">Nível</label>
                         <div class="col-md-6">
@@ -65,6 +63,8 @@
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
                         </div>
                     </div>
+
+                    @endif
 
                     <div id="especializacoes" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'hidden'}}>
 
@@ -108,7 +108,7 @@
                         <div class="col-md-6">
                             <select class="form-control estados" id="estado_id" name="endereco[estado_id]">
                                 @foreach($data['estados'] as $estado)
-                                    <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->cidade->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
+                                    <option {{ $data['usuario'] && $estado->id == old('estado.id', $data['usuario']->endereco->estado_id) ? 'selected' : '' }} value="{{$estado->id}}">{{$estado->uf}}</option>
                                 @endforeach
                             </select>
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.estado_id') }}</small>
@@ -116,10 +116,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="endereco[cidade_id]" class="col-md-4 col-form-label text-md-right">Cidade</label>
+                        <label for="endereco[cidade]" class="col-md-4 col-form-label text-md-right">Cidade</label>
                         <div class="col-md-6">                        
-                        <input id="cidade_id" type="text" class="form-control" name="endereco[cidade_id]">
-                        <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cidade_id') }}</small>
+                        <input id="cidade" type="text" class="form-control" name="endereco[cidade]" value="{{old('endereco.cidade', $data['usuario'] ? $data['usuario']->endereco->cidade : '')}}">
+                        <small id="error" class="errors font-text text-danger">{{ $errors->first('endereco.cidade') }}</small>
                         </div>
                     </div>
 
@@ -185,7 +185,7 @@
 
                     <div id="documentos">
 
-                        @foreach(old('documentos', $data['documentos']) as $offset => $documento)
+                        @foreach(old('documento', $data['documentos']) as $offset => $documento)
                         
                         <div class="form-group row doc">
                             <label for="documento[{{$offset}}][numero]" class="col-md-4 col-form-label text-md-right">Documento</label>
@@ -195,7 +195,7 @@
                                     @if($data['usuario'])
                                         <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
                                     @endif
-                                    <select class="form-control"  name="documento[{{$offset}}][tipo_documentos_id]">
+                                    <select class="form-control documento" name="documento[{{$offset}}][tipo_documentos_id]">
                                         @foreach(\App\TipoDocumento::all() as $tipoDocumento)
                                         <option value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
                                         @endforeach

@@ -19,14 +19,13 @@ class UsuarioCreateRequest extends BaseFormRequest
             'usuario.nivel_id'              => 'required',
             'endereco.cep'                  => 'required',
             'endereco.estado_id'            => 'required',
-            'endereco.cidade_id'            => 'required',
             'endereco.bairro'               => 'required|max:100',
             'endereco.logradouro'           => 'required|max:100',
             'endereco.numero'               => 'required|numeric',
             'endereco.complemento'          => 'max:255',
             'telefone.*.numero'             => 'required|min:10|max:11',
-            // 'documentos.tipo_documentos_id' => 'required',
-            // 'documentos.numero'             => 'required|numeric'
+            'documento.*.tipo_documentos_id' => 'required',
+            'documento.*.numero'            => 'required'
         ];
     }
 

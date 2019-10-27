@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Estado, Cidade, Endereco, Telefone, Especializacao, Documento, TipoDocumento};
+use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento};
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
@@ -18,7 +18,7 @@ class UsuarioController extends Controller
         if(Auth::user()->nivel_id == 1) {
             $niveis = Nivel::all();
         } else {
-            $niveis = Nivel::where('id', '>', 1)->get();
+            $niveis = Nivel::where('id', 2)->get();
         }
 
         return view('usuario.index', compact('usuarios', 'niveis'));
@@ -27,8 +27,10 @@ class UsuarioController extends Controller
     public function list(Request $request, $status) {
         $usuarios = new Usuario;
 
-        if(Auth::user()->nivel_id > 1) {
+        if(Auth::user()->nivel_id == 1) {
             $usuarios = $usuarios->where('nivel_id', '>', '1');
+        } else {
+            $usuarios = $usuarios->where('nivel_id', 2);
         }
 
         if($request['pesquisa']) {
@@ -60,7 +62,6 @@ class UsuarioController extends Controller
             'title' => 'Cadastro de Usuário',
             'niveis' => Nivel::all(),
             'estados' => Estado::all(),
-            'cidades' => Cidade::all(),
             'especializacoes' => Especializacao::all(),
             'documentos' => [new Documento],
             'especializacoes_usuario' => [new Especializacao],
@@ -113,9 +114,8 @@ public function store(UsuarioCreateRequest $request)
             'button' => 'Atualizar',
             'url' => 'usuario/'.$id,
             'title' => 'Cadastro de Usuário',
-            'niveis' => Nivel::all(),
+            'niveis' => '',
             'estados' => Estado::all(),
-            'cidades' => Cidade::all(),
             'especializacoes' => Especializacao::all(),
             'especializacoes_usuario' => count($usuario->especializacoes) ? $usuario->especializacoes : [new Especializacao],
             'telefones' => count($usuario->telefones) ? $usuario->telefones : [new Telefone],
@@ -135,10 +135,17 @@ public function store(UsuarioCreateRequest $request)
             $usuario->update($request->input('usuario'));
             $usuario->endereco->update($request->input('endereco'));
             $usuario->especializacoes()->sync($request['especializacoes']);
-            $usuario->documentos()->sync($request['documentos']);
+
+            foreach($request->input('documento') as $documento){
+                if($documento['id'] !== null)
+                    Documento::find($documento['id'])->update($documento);
+                else {
+                    $usuario->documentos()->save(new Documento($documento));
+                }
+            }
       
             foreach($request->input('telefone') as $telefone){
-                if($telefone['id'])
+                if($telefone['id'] !== null)
                     Telefone::find($telefone['id'])->update($telefone);
                 else {
                     $usuario->telefones()->save(new Telefone($telefone));
@@ -147,7 +154,7 @@ public function store(UsuarioCreateRequest $request)
 
             DB::commit();
 
-            return back()->with('success', 'Usuário cadastrado com sucesso!');
+            return back()->with('success', 'Usuário atualizado com sucesso!');
 
         } catch(Exception $e) {
 
