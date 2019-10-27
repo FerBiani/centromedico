@@ -105,12 +105,18 @@ class AgendamentoController extends Controller
 
     public function destroy($id)
     {
-        //
+        $agendamento = Agendamento::find($id);
+        if(date($agendamento->inicio, strtotime('-24 hours', time()))){
+            $agendamento->delete();    
+            return back()->with('success', 'Consulta cancelada com sucesso');
+        }else{
+            return back()->with('success', 'Falha ao cancelar a consulta');
+        }
+        
     }
 
     public function getDisponibilidade($medico){
         $disponibilidades = Periodo::where('usuarios_id',$medico)->first();
-        //return $disponibilidades->id;
         echo $disponibilidades;
     }
 
@@ -118,4 +124,5 @@ class AgendamentoController extends Controller
         $dias = Periodo::where('usuarios_id', $medico)->get();
         echo $dias;
     }
+
 }

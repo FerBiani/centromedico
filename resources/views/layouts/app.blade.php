@@ -14,8 +14,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- FullCalendar -->
-    <link href="{{ asset('css/fullcalendar.css')}}" rel='stylesheet' />
 </head>
 <body>
     <div id="app">
@@ -77,13 +75,9 @@
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-validator/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
+    <!-- Select2 -->
     <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
-<script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
-    <!-- FullCalendar -->
-    <script src="{{ asset('js/fullcalendar/moment.min.js') }}"></script>
-    <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('js/fullcalendar/core/main.min.js') }}"></script>
-    <script src="{{ asset('js/fullcalendar/core/locales/pt-br.js') }}"></script>
+    <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
     <script> var main_url="{{url('')}}"; </script>
     @yield('js')
 </body>

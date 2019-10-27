@@ -33,7 +33,7 @@ class HorarioController extends Controller
          */
         $data = [
             'title' => 'Consultas Agendadas',
-            'consultas' => Agendamento::where('medico_id',auth::user()->id)
+            'consultas' => Agendamento::where('medico_id',auth::user()->id)->get()
         ];
 
         return view('usuario.medicos.consultas', compact('data'));

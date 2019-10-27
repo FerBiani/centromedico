@@ -30,15 +30,7 @@
                             <div class="card">
                                 <div class="card-header">Meus Agendamentos</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('pacientes/horarios')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card">
-                                <div class="card-header">Agendar Consulta</div>
-                                <div class="card-body text-center">
-                                    <a class="btn" href="{{url('pacientes/agendamento/create')}}"><i class="fas fa-6x fa-clock"></i></a>
+                                    <a class="btn" href="{{url('pacientes/agendamentos')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +48,7 @@
                             <div class="card">
                                 <div class="card-header">Consultas Agendadas</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('medicos/agendamento')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
+                                    <a class="btn" href="{{url('medicos/consultas')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
                                 </div>
                             </div>
                         </div>
