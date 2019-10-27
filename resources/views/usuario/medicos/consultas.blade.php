@@ -8,34 +8,37 @@
                 Consultas Agendadas
             </div>
             <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Paciente</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Harario</th>
-                        <th scope="col">Confirmar</th>
-                    </tr>
-                </thead>
-                <tbody>
                 @foreach($data['consultas'] as $consulta)
-                <?php $paciente = App\Usuario::find($consulta->paciente_id) ?> 
-                    <tr>
-                        <td>{{$paciente->nome}}</td >
-                        <td><?php echo date('d/m/Y', strtotime($consulta->inicio));?></td>
-                        <td><?php echo date('H:i', strtotime($consulta->inicio));?></td>
-                        <td><button class="btn btn-success"><i class="fas fa-check"></i></button></td>
-                    </tr>
+                <div class="alert alert-secondary" role="alert">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-info" >Status da Consulta</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
+                        <div class="col-md-6"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p></div>
+                        <div class="col-md-6"><p><i class="fas fa-stethoscope"></i> {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}</p></div>
+                    </div>
+                </div>
                 @endforeach
-                </tbody>
-                </table>
-            </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+<script>
+    $( ".btn" ).click(function() {
+        Swal.fire({
+            title: "Selecione o status da consulta", 
+            html: "<button class='btn btn-danger'>Finalizada</button> <button class='btn btn-warning'>Paciente não compareceu</button> <button class='btn btn-dark'>Próximo Paciente</button> ",             
+            confirmButtonText: "Fechar"
+        });
+    });
+</script>
 @stop
