@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         \App\Events\CheckInAgendamento::class => [
-            \App\Listeners\CriarCheckIn::class,
+            \App\Listeners\CheckInListener::class,
         ],
     ];
 

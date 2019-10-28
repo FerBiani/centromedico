@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 Route::namespace('API')->group(function () {
     Route::prefix('check-in')->group(function () {
 
-        Route::post('/', 'CheckInController@store')->middleware(['cors']);
+        Route::post('/', 'CheckInController@store');
 
     });
 });

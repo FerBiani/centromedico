@@ -9,28 +9,22 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Agendamento;
 
-class CheckInEfetuado implements ShouldBroadcast
+class CheckInEfetuado
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($message)
+    public $agendamento;
+
+    public function __construct(Agendamento $agendamento)
     {
-      $this->message = $message;
+        $this->agendamento = $agendamento;
     }
 
     public function broadcastOn()
     {
-        return ['my-channel'];
+        return new PrivateChannel('channel-name');
     }
-
-    public function broadcastAs()
-    {
-        return 'my-event';
-    }
+    
 }

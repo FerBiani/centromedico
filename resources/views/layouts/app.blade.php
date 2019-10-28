@@ -13,10 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-<<<<<<< HEAD
     <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
-=======
->>>>>>> 18a1c271ee6129d1c62479115e1e0c99d5644219
 </head>
 <body>
     <div id="app">
@@ -80,6 +77,9 @@
     <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
     <script> var main_url="{{url('')}}"; </script>
+    <script>
+        var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
+    </script>
     @yield('js')
 </body>
 </html>
