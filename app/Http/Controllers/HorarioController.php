@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\{ Usuario, Horario, Agendamento, DiaSemana };
+use App\{ Usuario, Horario, Agendamento, DiaSemana, Status };
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{HorarioCreateRequest};
@@ -33,7 +33,8 @@ class HorarioController extends Controller
          */
         $data = [
             'title' => 'Consultas Agendadas',
-            'consultas' => Agendamento::where('medico_id',auth::user()->id)->get()
+            'consultas' => Agendamento::where('medico_id',auth::user()->id)->get(),
+            'status' => Status::all()
         ];
 
         return view('usuario.medicos.consultas', compact('data'));

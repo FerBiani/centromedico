@@ -89,6 +89,7 @@ Route::middleware(['auth', 'role:1 4'])->group(function () {
         Route::get('horario/list', 'HorarioController@list');
         Route::resource('horario', 'HorarioController');
         Route::get('consultas', 'HorarioController@consultas');
+        Route::post('status/{id}', 'AgendamentoController@setStatus');
     });
 
     Route::prefix('atendente')->group(function () {

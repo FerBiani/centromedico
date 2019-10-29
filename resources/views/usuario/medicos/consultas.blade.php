@@ -11,7 +11,7 @@
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
                     <div class="col-md-12 text-right">
-                        <button class="btn btn-info" >Status da Consulta</button>
+                        <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
                     </div>
                     <div class="row">
                         <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
@@ -31,6 +31,7 @@
                         </div>
                     </div>
                 </div>
+                <a href=""></a>
                 @endforeach
             </div>
         </div>
@@ -57,13 +58,40 @@
     
 </script>
 <script>
-    $( ".btn" ).click(function() {
-        Swal.fire({
-            title: "Selecione o status da consulta", 
-            html: "<button class='btn btn-danger'>Finalizada</button> <button class='btn btn-warning'>Paciente não compareceu</button> <button class='btn btn-dark'>Próximo Paciente</button> ",             
-            confirmButtonText: "Fechar"
+    function status(id){
+        $( ".btn" ).click(function() {
+            const { value: fruit } = Swal.fire({
+            title: 'Status da Consulta',
+            input: 'select',
+            inputOptions: {
+            <?php foreach($data['status'] as $status) {?>
+                {{ $status->id }}: '{{ $status->nome }}',
+            <?php } ?>
+            },
+            inputPlaceholder: 'Selecione o status',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Enviar',
+            confirmButtonColor: '#28a745',
+            inputValidator: (value) => {
+            var form = $(this); 
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{url('medicos/status')}}/"+id,
+                data: { 'status_id': value }, 
+                success: function(data)
+                {
+                    Swal.fire('O status da consulta foi alterado')
+                }
+            });
+            }
+            
+        })
         });
-    });
+    }
 </script>
-
 @stop

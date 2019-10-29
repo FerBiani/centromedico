@@ -77,9 +77,11 @@
     <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
     <script> var main_url="{{url('')}}"; </script>
-    <script>
-        var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
-    </script>
+    @auth
+        <script>
+            var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
+        </script>
+    @endauth
     @yield('js')
 </body>
 </html>

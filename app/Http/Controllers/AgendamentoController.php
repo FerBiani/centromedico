@@ -118,6 +118,12 @@ class AgendamentoController extends Controller
         return back();
     }
 
+    public function setStatus(Request $request, $id){
+      
+        $agendamento = Agendamento::whereId($id)->update(['status_id' => $request->input('status_id')]);
+       
+    }
+
     public function destroy($id)
     {
         $agendamento = Agendamento::find($id);
