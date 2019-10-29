@@ -17,11 +17,12 @@ class CreateEnderecosTable extends Migration {
 			$table->integer('id', true);
 			$table->string('cep', 10);
 			$table->string('logradouro', 191);
+			$table->string('cidade', 150);
 			$table->string('bairro', 45);
 			$table->string('numero', 10);
 			$table->text('complemento', 65535)->nullable();
 			$table->integer('usuario_id')->unsigned()->index('fk_enderecos_usuarios1_idx');
-			$table->integer('cidade_id')->index('fk_enderecos_cidades1_idx');
+			$table->integer('estado_id')->index('fk_enderecos_estado_id_idx');
 		});
 	}
 

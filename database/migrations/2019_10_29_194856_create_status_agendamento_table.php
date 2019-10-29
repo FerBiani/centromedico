@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateCidadesTable extends Migration {
+class CreateStatusAgendamentoTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,10 @@ class CreateCidadesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('cidades', function(Blueprint $table)
+		Schema::create('status_agendamento', function(Blueprint $table)
 		{
-			$table->integer('id', true);
-			$table->string('nome', 120);
-			$table->integer('estado_id')->index('fk_cidades_estados1_idx');
+			$table->integer('id')->primary();
+			$table->string('nome', 45);
 		});
 	}
 
@@ -28,7 +27,7 @@ class CreateCidadesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('cidades');
+		Schema::drop('status_agendamento');
 	}
 
 }
