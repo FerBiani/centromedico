@@ -26,7 +26,7 @@ class AgendamentoController extends Controller
             'dias'   => DiaSemana::all(),
             'especializacoes' => Especializacao::all(),
         ];
-        return view('usuario.pacientes.agendamento', compact('data'));
+        return view('usuario.atendente.agendamento', compact('data'));
     }
 
     public function confirma($id){
@@ -37,7 +37,7 @@ class AgendamentoController extends Controller
             'title'   => 'Confirmação de agendamento de consulta',
             'horario' => Horario::find($id),
         ];
-        return view('usuario.pacientes.confirmacao', compact('data'));
+        return view('usuario.atendente.confirmacao', compact('data'));
     }
 
     public function pacientes(){
@@ -97,7 +97,7 @@ class AgendamentoController extends Controller
         }
 
         $horarios = $horarios->paginate(10);
-        return view('usuario.pacientes.resultados', compact('horarios'));
+        return view('usuario.atendente.resultados', compact('horarios'));
     }
 
 
