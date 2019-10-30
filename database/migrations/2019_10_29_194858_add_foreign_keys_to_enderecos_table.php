@@ -14,7 +14,7 @@ class AddForeignKeysToEnderecosTable extends Migration {
 	{
 		Schema::table('enderecos', function(Blueprint $table)
 		{
-			$table->foreign('cidade_id', 'fk_enderecos_cidades1')->references('id')->on('cidades')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('estado_id', 'fk_enderecos_estado_id')->references('id')->on('estados')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('usuario_id', 'fk_enderecos_usuarios1')->references('id')->on('usuarios')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
@@ -29,7 +29,7 @@ class AddForeignKeysToEnderecosTable extends Migration {
 	{
 		Schema::table('enderecos', function(Blueprint $table)
 		{
-			$table->dropForeign('fk_enderecos_cidades1');
+			$table->dropForeign('fk_enderecos_estado_id');
 			$table->dropForeign('fk_enderecos_usuarios1');
 		});
 	}
