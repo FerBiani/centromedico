@@ -16,6 +16,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">Relatórios</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('usuario/relatorios')}}"><i class="fas fa-6x fa-sticky-note"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">Logs</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('usuario')}}"><i class="fas fa-6x fa-filter"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                     @if(Auth::user()->nivel_id == 2)
                         <div class="col-md-3">
