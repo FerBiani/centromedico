@@ -26,70 +26,77 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function() {
 
-Route::get('get-medicos/{especializacao}', 'UsuarioController@getMedicos');
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('get-medicos/{especializacao}', 'UsuarioController@getMedicos');
 
-Route::middleware(['auth', 'role:1 4'])->group(function () {
-    
-    Route::prefix('usuario')->group(function () {
-        Route::get('list/{status}', 'UsuarioController@list');
-        Route::get('get-cidades/{uf}', 'UsuarioController@getCidades');
-        Route::get('relatorios', 'UsuarioController@relatorios');
-        Route::get('status', 'UsuarioController@relatorioStatus');
+    Route::middleware('role:1')->group(function () {
+
+        Route::get('relatorios', 'RelatorioController@index');
+
     });
 
-    Route::resource('usuario', 'UsuarioController');
-    Route::get('agendamentos', 'AgendamentoController@index');
-    Route::post('check-in', 'CheckInController@store');
+    Route::middleware('role:1 4')->group(function () {
 
-});
+        Route::middleware('role:1 4')->group(function () {
+        
+            Route::prefix('usuario')->group(function () {
+                Route::get('list/{status}', 'UsuarioController@list');
+            });
 
-Route::middleware(['auth', 'role:2'])->group(function () {
+            Route::resource('usuario', 'UsuarioController');
+            Route::get('agendamentos', 'AgendamentoController@index');
+            Route::post('check-in', 'CheckInController@store');
 
-    Route::prefix('pacientes')->group(function () {
-
-        //Route::resource('agendamento', 'AgendamentoController');
-        // Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
-        // Route::get('dias/{id}', 'AgendamentoController@getDias');
-        // Route::get('horarios', function(){
-         
-        Route::get('agendamentos', 'AgendamentoController@index');
-
-        Route::get('ficha', function(){
-            $data = [
-                'title'   => 'Ficha Paciente',
-                'usuario' =>  Usuario::find(Auth::user()->id),
-            ];
-            return view('usuario.pacientes.ficha', compact('data'));
         });
+    
     });
 
-});
+    Route::middleware('role:2')->group(function () {
 
-Route::middleware(['auth', 'role:3'])->group(function () {
+        Route::prefix('pacientes')->group(function () {
 
-    Route::prefix('medicos')->group(function () {
+            //Route::resource('agendamento', 'AgendamentoController');
+            // Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
+            // Route::get('dias/{id}', 'AgendamentoController@getDias');
+            // Route::get('horarios', function(){
+            
+            Route::get('agendamentos', 'AgendamentoController@index');
 
-        //Horário
-        Route::get('horario/list', 'HorarioController@list');
-        Route::resource('horario', 'HorarioController');
-        Route::get('agendamentos', 'AgendamentoController@index');
-        Route::post('status/{id}', 'AgendamentoController@setStatus');
+            Route::get('ficha', function(){
+                $data = [
+                    'title'   => 'Ficha Paciente',
+                    'usuario' =>  Usuario::find(Auth::user()->id),
+                ];
+                return view('usuario.pacientes.ficha', compact('data'));
+            });
+        });
+
     });
 
-});
+    Route::middleware('role:3')->group(function () {
 
-Route::middleware(['auth', 'role:4'])->group(function () {
+        Route::prefix('medicos')->group(function () {
+            Route::get('horario/list', 'HorarioController@list');
+            Route::resource('horario', 'HorarioController');
+            Route::get('agendamentos', 'AgendamentoController@index');
+            Route::post('status/{id}', 'AgendamentoController@setStatus');
+        });
 
-    Route::prefix('atendente')->group(function () {
+    });
 
-        Route::resource('agendamento', 'AgendamentoController');
-        Route::get('pacientes', 'AgendamentoController@pacientes');
-        Route::get('filtro','AgendamentoController@filtro');
-        Route::get('confirma/{id}', 'AgendamentoController@confirma');
-        Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
-        Route::get('dias/{id}', 'AgendamentoController@getDias');
+    Route::middleware('role:4')->group(function () {
+
+        Route::prefix('atendente')->group(function () {
+            Route::resource('agendamento', 'AgendamentoController');
+            Route::get('pacientes', 'AgendamentoController@pacientes');
+            Route::get('filtro','AgendamentoController@filtro');
+            Route::get('confirma/{id}', 'AgendamentoController@confirma');
+            Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
+            Route::get('dias/{id}', 'AgendamentoController@getDias');
+        });
+
     });
 
 });

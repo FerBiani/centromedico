@@ -59,15 +59,9 @@
     })
 
     function chamarPaciente(consultaId, nomePaciente, especializacao) {
-
-        console.log(consultaId)
-        console.log(nomePaciente)
-        console.log(especializacao)
         
         var now = new Date();
         var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+now.getMinutes();
-
-        console.log(date)
 
         $.ajax({
             headers: {

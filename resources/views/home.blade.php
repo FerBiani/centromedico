@@ -20,7 +20,7 @@
                             <div class="card">
                                 <div class="card-header bg-info text-white">Relatórios</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('usuario/relatorios')}}"><i class="fas fa-6x fa-sticky-note"></i></a>
+                                    <a class="btn" href="{{url('relatorios')}}"><i class="fas fa-6x fa-sticky-note"></i></a>
                                 </div>
                             </div>
                         </div>

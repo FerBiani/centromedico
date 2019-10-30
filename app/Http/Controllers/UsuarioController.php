@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento, Agendamento, Status};
+use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento, Agendamento, StatusAgendamento};
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
@@ -183,19 +183,6 @@ public function store(UsuarioCreateRequest $request)
     public function getMedicos($especializacao){
         $especializacao = Especializacao::where('especializacao', $especializacao)->first();
         return $especializacao ? $especializacao->usuarios()->select('id','nome')->get() : [];
-    }
-
-    public function relatorios(){
-        $data = [
-            'title' => 'Relatórios',
-            'status' => Status::all()
-        ];
-        return view('usuario.relatorios', compact('data'));
-    }
-
-    public function relatorioStatus(Request $request){
-        $agendamento = Agendamento::where('status_id', $request->input('status'))->get();
-        return view('usuario.relatorios', compact('agendamento'));
     }
 
 }
