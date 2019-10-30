@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana};
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
 use App\Http\Requests\{AgendamentoCreateRequest};
@@ -11,9 +11,32 @@ use Auth;
 
 class AgendamentoController extends Controller
 {
-    public function index()
-    {
-        //
+    public function index(){
+        
+        if(Auth::user()->nivel_id == 2) {   
+            $data = [
+                'title' => 'Meus Agendamentos',
+                'consultas' => Agendamento::where('paciente_id',Auth::user()->id)->paginate(10)
+            ];
+            return view('usuario.pacientes.agendamentos', compact('data'));
+        }
+        else if(Auth::user()->nivel_id == 3) {
+            $data = [
+                'title' => 'Meus agendamentos',
+                'consultas' => Agendamento::where('medico_id',auth::user()->id)->paginate(10),
+                'status' => StatusAgendamento::all()
+            ];
+
+            return view('usuario.medicos.agendamentos', compact('data'));
+        } else {
+            $data = [
+                'title' => 'Agendamentos',
+                'consultas' => Agendamento::paginate(10),
+                'status' => StatusAgendamento::all()
+            ];
+            return view('agendamento.index', compact('data'));
+        }
+
     }
 
     public function create()

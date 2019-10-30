@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class StatusAgendamento extends Model
 {
     
-    protected $table = 'status';
+    protected $table = 'status_agendamento';
 
     protected $fillable = [
         'nome',

@@ -46,14 +46,22 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card">
-                                <div class="card-header bg-info text-white">Consultas Agendadas</div>
+                                <div class="card-header bg-info text-white">Meus Agendamentos</div>
                                 <div class="card-body text-center">
-                                    <a class="btn" href="{{url('medicos/consultas')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
+                                    <a class="btn" href="{{url('medicos/agendamentos')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
                                 </div>
                             </div>
                         </div>
                     @endif
                     @if(Auth::user()->nivel_id == 4)
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">Todos os Agendamentos</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('agendamentos')}}"><i class="fas fa-6x fa-calendar-check"></i></a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="card">
                             <div class="card-header bg-info text-white">Agendar Consulta</div>

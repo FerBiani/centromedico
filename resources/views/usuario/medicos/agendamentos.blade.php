@@ -11,7 +11,10 @@
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
                     <div class="col-md-12 text-right">
-                        <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                        @if($consulta->check_in_id && $consulta->status_id == 1)
+                            <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
+                        @endif
+                        <button class="btn btn-info btn-status" onClick="status({{$consulta->id}})">Status da Consulta</button>
                     </div>
                     <div class="row">
                         <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
@@ -55,11 +58,45 @@
             .text('Check-in efetuado')
     })
 
+    function chamarPaciente(consultaId, nomePaciente, especializacao) {
+
+        console.log(consultaId)
+        console.log(nomePaciente)
+        console.log(especializacao)
+        
+        var now = new Date();
+        var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+now.getMinutes();
+
+        console.log(date)
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            type: "POST",
+            url: "http://localhost:8888/chamado",
+            data: {
+                'id': consultaId,
+                'nome_paciente': nomePaciente,
+                'especialidade': especializacao,
+                'horario': date
+            }, 
+            success: function(data)
+            {
+                Swal.fire('Paciente chamado com sucesso!')
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        });
+
+    }
+
     
 </script>
 <script>
     function status(id){
-        $( ".btn" ).click(function() {
+        $( ".btn-status" ).click(function() {
             const { value: fruit } = Swal.fire({
             title: 'Status da Consulta',
             input: 'select',

@@ -27,19 +27,6 @@ class HorarioController extends Controller
         return view('usuario.medicos.horario.table', compact('horarios'));
     }
 
-    public function consultas(){
-        /**
-         * consultas marcadas, e o usuarios.
-         */
-        $data = [
-            'title' => 'Consultas Agendadas',
-            'consultas' => Agendamento::where('medico_id',auth::user()->id)->get(),
-            'status' => Status::all()
-        ];
-
-        return view('usuario.medicos.consultas', compact('data'));
-    }
-
     public function create()
     {
         $data = [

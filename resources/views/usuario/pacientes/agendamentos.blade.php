@@ -7,12 +7,8 @@
             <div class="card-body">
             	@foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
-                    <div class="col-md-12">
-                        <form action="{{url('atendente/agendamento', [$consulta->id])}}" class="input-group pull-right" method="POST">
-                            {{method_field('DELETE')}}
-                            {{ csrf_field() }}
-                            <input type="submit" class="btn btn-danger" value="Cancelar Consulta"/>
-                        </form>
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-danger" onClick="status({{$consulta->id}})">Cancelar</button>
                     </div>
                     <div class="row">
                         <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
