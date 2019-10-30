@@ -52,10 +52,11 @@ Route::middleware(['auth', 'role:1 4'])->group(function () {
     Route::prefix('usuario')->group(function () {
         Route::get('list/{status}', 'UsuarioController@list');
         Route::get('get-cidades/{uf}', 'UsuarioController@getCidades');
+        Route::get('relatorios', 'UsuarioController@relatorios');
+        Route::get('status', 'UsuarioController@relatorioStatus');
     });
 
     Route::resource('usuario', 'UsuarioController');
-
 });
 
 
