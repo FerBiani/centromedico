@@ -129,6 +129,7 @@ public function store(UsuarioCreateRequest $request)
     {
         $usuario = Usuario::findOrFail($id);
 
+
         DB::beginTransaction();
         try {
 
@@ -136,20 +137,50 @@ public function store(UsuarioCreateRequest $request)
             $usuario->endereco->update($request->input('endereco'));
             $usuario->especializacoes()->sync($request['especializacoes']);
 
+            $documentosRequestIds = [];
+
             foreach($request->input('documento') as $documento){
-                if($documento['id'] !== null)
+                if($documento['id'] !== null) {
                     Documento::find($documento['id'])->update($documento);
-                else {
+                } else {
                     $usuario->documentos()->save(new Documento($documento));
                 }
+                $documentosRequestIds[] = $documento['id'];
             }
-      
+
+            $documentosARemover = $usuario->documentos()->whereNotIn('id', $documentosRequestIds)->get();
+
+            if(count($documentosARemover) > 0){
+                
+                foreach($documentosARemover as $documento) {
+                    $documento = Documento::findOrFail($documento['id']);
+                    $documento->delete();
+                }
+
+            }
+            
+            $telefonesRequestIds = [];
+
             foreach($request->input('telefone') as $telefone){
-                if($telefone['id'] !== null)
+                if($telefone['id'] !== null) {
+            
                     Telefone::find($telefone['id'])->update($telefone);
-                else {
+
+                } else {
                     $usuario->telefones()->save(new Telefone($telefone));
                 }
+                $telefonesRequestIds[] = $telefone['id'];
+            }
+
+            $telefonesARemover = $usuario->telefones()->whereNotIn('id', $telefonesRequestIds)->get();
+
+            if(count($telefonesARemover) > 0){
+                
+                foreach($telefonesARemover as $telefone) {
+                    $telefone = Telefone::findOrFail($telefone['id']);
+                    $telefone->delete();
+                }
+
             }
 
             DB::commit();

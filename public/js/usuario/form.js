@@ -131,14 +131,14 @@ $(document).ready(function() {
         }
     })
 
-    if($('#niveis').find('option:selected').val() == '3') {
-        $('select.especializacoes').removeAttr('disabled')
-        $('#especializacoes').removeAttr('hidden')
-        $('select.especializacoes').prop('required',true);
-    } else {
-        $('select.especializacoes').attr('disabled', 'disabled')
-        $('#especializacoes').attr('hidden', 'hidden')
-    }
+    // if($('#niveis').find('option:selected').val() == '3') {
+    //     $('select.especializacoes').removeAttr('disabled')
+    //     $('#especializacoes').removeAttr('hidden')
+    //     $('select.especializacoes').prop('required',true);
+    // } else {
+    //     $('select.especializacoes').attr('disabled', 'disabled')
+    //     $('#especializacoes').attr('hidden', 'hidden')
+    // }
 
     $(document).on('click', '.add-tel', function() {
         if($('.tel').length < 4) {

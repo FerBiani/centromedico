@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EspecializacoesSeeder::class);
         $this->call(NiveisSeeder::class);
         $this->call(StatusAgendamentoSeeder::class);
+        $this->call(UsuariosSeeder::class);
     }
 }

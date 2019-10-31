@@ -34,7 +34,7 @@
                     </div>
 
                     @if(!$data['usuario'])
-
+                     
                     <div class="form-group row">
                         <label for="usuario[password]" class="col-md-4 col-form-label text-md-right">Senha</label>
 
@@ -63,7 +63,6 @@
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.nivel_id') }}</small>
                         </div>
                     </div>
-
                     @endif
 
                     <div id="especializacoes" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'hidden'}}>
@@ -197,7 +196,7 @@
                                     @endif
                                     <select class="form-control documento" name="documento[{{$offset}}][tipo_documentos_id]">
                                         @foreach(\App\TipoDocumento::all() as $tipoDocumento)
-                                        <option value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                        <option {{$documento->tipo_documentos_id == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
                                         @endforeach
                                     </select>
                                     <input type="text" placeholder="Numero" class="form-control documento" name="documento[{{$offset}}][numero]" value="{{$documento['numero'] ? $documento['numero'] : ''}}"> 
