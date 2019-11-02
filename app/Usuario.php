@@ -47,13 +47,17 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany('App\Agendamento', 'medico_id');
     }
-
+    
     public function especializacoes(){
         return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
     }
 
     public function horarios(){
         return $this->hasMany('App\Horario');
+    }
+
+    public function logs(){
+        return $this->hasMany('App\Log');
     }
 
     public function setPasswordAttribute($val) {

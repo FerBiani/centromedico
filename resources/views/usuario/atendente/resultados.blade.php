@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <table id="usuario-table" class="table table-hover">
-        <thead class="thead thead-dark">
+        <thead class="thead thead-light">
             <tr>
                 <th>Médico</th>
                 <th>Dia</th>

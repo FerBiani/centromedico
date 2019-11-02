@@ -2,54 +2,55 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-info text-white h5">{{ $data['title'] }}</div>
-            <div class="card-body">
-                <h4 class="text-center">Agendamentos</h4>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header bg-info text-white text-center h6">Confirmados</div>
-                            <div class="card-body">
-                                <p class="text-center h2 my-0">
-                                    {{$data['agendamentos']['confirmados']}}
-                                </p>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header bg-info text-white text-center h6">Cancelados</div>
-                            <div class="card-body">
-                                <p class="text-center h2 my-0">
-                                    {{$data['agendamentos']['cancelados']}}
-                                </p>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header bg-info text-white text-center h6">Não compareceu</div>
-                            <div class="card-body">
-                                <p class="text-center h2 my-0">
-                                    {{$data['agendamentos']['naoCompareceu']}}
-                                </p>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header bg-info text-white text-center h6">Finalizados</div>
-                            <div class="card-body">
-                                <p class="text-center h2 my-0">
-                                    {{$data['agendamentos']['finalizados']}}
-                                </p>
-                            </div> 
-                        </div>
-                    </div>
+    <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-white bg-primary">
+                        <p class="text-center h4 my-0">Confirmados  <i class="fas fa-user-check"></i></p>
+                        <p class="text-center h2 my-0">
+                            {{$data['agendamentos']['confirmados']}}
+                            
+                        </p>
+                    </div> 
                 </div>
-            </div> 
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-white bg-danger">
+                    <p class="text-center h4 my-0">Cancelados  <i class="far fa-window-close"></i></p>
+                        <p class="text-center h2 my-0">
+                            {{$data['agendamentos']['cancelados']}}
+                            
+                        </p>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-white bg-dark">
+                    <p class="text-center h5 my-0">Não compareceu <i class="fas fa-user-slash"></i></p>
+                        <p class="text-center h2 my-0">
+                            {{$data['agendamentos']['naoCompareceu']}}
+                        </p>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-white bg-success">
+                    <p class="text-center h4 my-0">Finalizado  <i class="far fa-check-circle"></i></p>
+                        <p class="text-center h2 my-0">
+                            {{$data['agendamentos']['finalizados']}}
+                        </p>
+                    </div> 
+                </div>
+            </div>
+        </div>     
+        <div class="card mt-3">
+            <div class="card-header">Gráfico</div>
+            <div class="card-body">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -68,6 +69,45 @@
                 console.log(data); 
             }
             });
+        });
+
+        // CHART
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Confirmados', 'Cancelados', 'Não Compareceu','Finalizados'],
+                datasets: [{
+                    label: '# agendamentos',
+                    data: [{{$data['agendamentos']['confirmados']}}, {{$data['agendamentos']['cancelados']}}, {{$data['agendamentos']['naoCompareceu']}}, {{$data['agendamentos']['finalizados']}}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
         });
 </script>
 @stop

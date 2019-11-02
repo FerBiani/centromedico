@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento, Agendamento, StatusAgendamento};
+use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento, Agendamento, StatusAgendamento, LOg};
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
@@ -14,41 +14,33 @@ class UsuarioController extends Controller
 
     public function index() {
         $usuarios = Usuario::paginate(10);
-
         if(Auth::user()->nivel_id == 1) {
             $niveis = Nivel::all();
         } else {
             $niveis = Nivel::where('id', 2)->get();
         }
-
         return view('usuario.index', compact('usuarios', 'niveis'));
     }
-
     public function list(Request $request, $status) {
         $usuarios = new Usuario;
-
         if(Auth::user()->nivel_id == 1) {
             $usuarios = $usuarios->where('nivel_id', '>', '1');
         } else {
             $usuarios = $usuarios->where('nivel_id', 2);
         }
-
         if($request['pesquisa']) {
             $usuarios = $usuarios->where('nome', 'like', '%'.$request['pesquisa'].'%');
         }
-
         if($request['nivel'] !== 'all') {
             $usuarios = $usuarios->where('nivel_id', 'like', '%'.$request['nivel'].'%');
         }
-
         if($status == 'inativos'){
             $usuarios = $usuarios->onlyTrashed();
         }
-
         $usuarios = $usuarios->paginate(10);
-
         return view('usuario.table', compact('usuarios', 'status'));
     }
+
 
    
     public function create()
@@ -91,6 +83,11 @@ public function store(UsuarioCreateRequest $request)
                 $usuario->telefones()->save(new Telefone([ 'numero' => $telefone['numero'] ]));
             }
             DB::commit();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Inclusão',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um usuário'
+            ]); 
             return back()->with('success', 'Usuário cadastrado com sucesso!');
         } catch(Exception $e) {
             DB::rollBack();
@@ -184,7 +181,11 @@ public function store(UsuarioCreateRequest $request)
             }
 
             DB::commit();
-
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Alteração',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' alterou um usuário'
+            ]); 
             return back()->with('success', 'Usuário atualizado com sucesso!');
 
         } catch(Exception $e) {
@@ -199,9 +200,19 @@ public function store(UsuarioCreateRequest $request)
         $usuario = Usuario::withTrashed()->findOrFail($id);
         if($usuario->trashed()) {
             $usuario->restore();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Ativição',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' reativou um usuário'
+            ]); 
             return back()->with('success', 'Usuário ativado com sucesso!');
         } else {
             $usuario->delete();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Exclusão',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' deletou um usuário'
+            ]); 
             return back()->with('success', 'Usuário desativado com sucesso!');
         }
     }

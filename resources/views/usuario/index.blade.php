@@ -54,14 +54,12 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-
 function setLoading(target) {
     var loading = $('<h3></h3>').attr({'class': 'text-center'})
     // var img = $('<img />').attr({'src': main_url+"/modules/funcionario/img/load.svg"})
     // img.appendTo(loading)
     target.html(loading)
 }
-
 search = (url, target, ) => {
     setLoading(target)
     $.ajax({
@@ -76,26 +74,21 @@ search = (url, target, ) => {
         },
     })
 }
-
 ativosInativos = (url) => {
     search(`${url}/ativos`, $("#ativos"))
     search(`${url}/inativos`, $("#inativos"))
-
     $("#ativos").on('click', 'ul.pagination a', function(e){
         e.preventDefault()
         search($(this).attr('href'), $("#ativos"))
     })
-
     $("#inativos").on('click', 'ul.pagination a', function(e){
         e.preventDefault()
         search($(this).attr('href'), $("#inativos"))
     })
 }
-
 $(document).on("click", "#search-button", function() {
     ativosInativos(`${main_url}/usuario/list`)
 })
-
 $(document).ready(function(){
     ativosInativos(`${main_url}/usuario/list`)
     $(document).on('keypress',function(e) {
@@ -105,6 +98,5 @@ $(document).ready(function(){
         }
     });
 })
-
 </script>
 @endsection

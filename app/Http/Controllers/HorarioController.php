@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\{ Usuario, Horario, Agendamento, DiaSemana, Status };
+use App\{ Usuario, Horario, Agendamento, DiaSemana, Status, Log };
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{HorarioCreateRequest};
@@ -73,6 +73,11 @@ class HorarioController extends Controller
                 ]);
             }
             DB::commit();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Inclusão',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
+            ]);
             return redirect('medicos/horario')->with('success', 'Horário registrado com sucesso!');
          }catch(\Exception $e){
             DB::rollback();
@@ -119,7 +124,11 @@ class HorarioController extends Controller
             ]);
 
             DB::commit();
-
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'       => 'Alteração', 
+                'descricao'  => 'Usuário '.Auth::user()->nome.' alterou um agendadamento'
+            ]);
             return redirect('medicos/horario')->with('success', 'Horário atualizado com sucesso!');
         } catch(\Exception $e) {
             DB::rollback();
@@ -133,9 +142,19 @@ class HorarioController extends Controller
         $horario = Horario::withTrashed()->findOrFail($id);
         if($horario->trashed()) {
             $horario->restore();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'       => 'Ativação', 
+                'descricao'  => 'Usuário '.Auth::user()->nome.' reativou um agendadamento'
+            ]);
             return back()->with('success', 'Horario ativado com sucesso!');
         } else {
             $horario->delete();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'       => 'Exlusão', 
+                'descricao'  => 'Usuário '.Auth::user()->nome.' deletou um agendadamento'
+            ]);
             return back()->with('success', 'Horario desativado com sucesso!');
         }
     }

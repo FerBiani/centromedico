@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento};
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
 use App\Http\Requests\{AgendamentoCreateRequest};
@@ -98,6 +98,13 @@ class AgendamentoController extends Controller
             ]);
 
             DB::commit();
+            
+            //Log
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Inclusão',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
+            ]);
             return back()->with('success', 'Consulta Marcada com sucesso');
         }catch(\Exception $e){
             DB::rollback();
@@ -138,6 +145,11 @@ class AgendamentoController extends Controller
     public function update(Request $request, $id)
     {
         $agendamento = Agendamento::whereId($id)->update($request->except(['_method', '_token']));
+        Log::create([
+            'usuario_id' => Auth::user()->id,
+            'acao'        => 'Alteração',
+            'descricao'   => 'Usuário '.Auth::user()->nome.' alterou um agendadamento'
+        ]);
         return back();
     }
 
@@ -151,7 +163,12 @@ class AgendamentoController extends Controller
     {
         $agendamento = Agendamento::find($id);
         if(date($agendamento->inicio, strtotime('-24 hours', time()))){
-            $agendamento->delete();    
+            $agendamento->delete();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Exclusão',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' deletou um agendadamento'
+            ]);    
             return back()->with('success', 'Consulta cancelada com sucesso');
         }else{
             return back()->with('success', 'Falha ao cancelar a consulta');

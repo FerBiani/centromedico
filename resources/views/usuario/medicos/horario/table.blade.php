@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <table id="horario-table" class="table table-hover">
-        <thead class="thead thead-dark">
+        <thead class="thead thead-light">
             <tr>
                 <th>Dia da semana</th>
                 <th>Início</th>

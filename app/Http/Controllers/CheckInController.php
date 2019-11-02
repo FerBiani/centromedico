@@ -33,6 +33,11 @@ class CheckInController extends Controller
             ]);
 
             DB::commit();
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Check-in',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' efetuou check-in'
+            ]); 
 
             return back()->with('success', 'Check-in efetuado com sucesso!');
 

@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function() {
     Route::middleware('role:1')->group(function () {
 
         Route::get('relatorios', 'RelatorioController@index');
+        Route::get('logs', 'LogController@index');
+        Route::get('logs/list', 'LogController@list');
 
     });
 
@@ -56,11 +58,6 @@ Route::middleware('auth')->group(function() {
     Route::middleware('role:2')->group(function () {
 
         Route::prefix('pacientes')->group(function () {
-
-            //Route::resource('agendamento', 'AgendamentoController');
-            // Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
-            // Route::get('dias/{id}', 'AgendamentoController@getDias');
-            // Route::get('horarios', function(){
             
             Route::get('agendamentos', 'AgendamentoController@index');
 
