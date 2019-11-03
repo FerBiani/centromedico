@@ -58,16 +58,8 @@ Route::middleware('auth')->group(function() {
     Route::middleware('role:2')->group(function () {
 
         Route::prefix('pacientes')->group(function () {
-            
             Route::get('agendamentos', 'AgendamentoController@index');
-
-            Route::get('ficha', function(){
-                $data = [
-                    'title'   => 'Ficha Paciente',
-                    'usuario' =>  Usuario::find(Auth::user()->id),
-                ];
-                return view('usuario.pacientes.ficha', compact('data'));
-            });
+            Route::get('ficha', 'PacienteController@index');
         });
 
     });

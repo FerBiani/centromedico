@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use auth;
+
 class HomeController extends Controller
 {
     /**
@@ -23,6 +25,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(Auth::user()->nivel_id <= 1){
+            //admin
+            return redirect('relatorios');
+         }elseif(Auth::user()->nivel_id == 2){
+            //paciente
+             return redirect('pacientes/ficha');
+         }elseif(Auth::user()->nivel_id == 3){
+            //medico
+             return redirect('medicos/horario');
+         }else{
+            //atendente
+             return redirect('usuario');
+         }
+
+        
     }
 }

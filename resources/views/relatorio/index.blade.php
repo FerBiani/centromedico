@@ -1,57 +1,51 @@
 @extends('layouts.app')
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-12">
-    <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body text-white bg-primary">
-                        <p class="text-center h4 my-0">Confirmados  <i class="fas fa-user-check"></i></p>
-                        <p class="text-center h2 my-0">
-                            {{$data['agendamentos']['confirmados']}}
-                            
-                        </p>
-                    </div> 
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body text-white bg-danger">
-                    <p class="text-center h4 my-0">Cancelados  <i class="far fa-window-close"></i></p>
-                        <p class="text-center h2 my-0">
-                            {{$data['agendamentos']['cancelados']}}
-                            
-                        </p>
-                    </div> 
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body text-white bg-dark">
-                    <p class="text-center h5 my-0">Não compareceu <i class="fas fa-user-slash"></i></p>
-                        <p class="text-center h2 my-0">
-                            {{$data['agendamentos']['naoCompareceu']}}
-                        </p>
-                    </div> 
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body text-white bg-success">
-                    <p class="text-center h4 my-0">Finalizado  <i class="far fa-check-circle"></i></p>
-                        <p class="text-center h2 my-0">
-                            {{$data['agendamentos']['finalizados']}}
-                        </p>
-                    </div> 
-                </div>
-            </div>
-        </div>     
-        <div class="card mt-3">
+<div class="row">
+    <div class="col-md-6">
+       <div class="card mt-3">
             <div class="card-header">Gráfico</div>
             <div class="card-body">
                 <canvas id="myChart" width="400" height="400"></canvas>
             </div>
         </div>
+    </div>
+    <!-- ////////////////////////// -->
+    <div class="col-md-6">
+        <div class="card text-white bg-primary shadow mt-3">
+            <div class="card-body">
+                <p class="text-center h4 my-0">Confirmados  <i class="fas fa-user-check"></i></p>
+                <p class="text-center h2 my-0">
+                    {{$data['agendamentos']['confirmados']}}
+                    
+                </p>
+            </div> 
+        </div>
+        <div class="card text-white bg-danger shadow mt-4">
+            <div class="card-body">
+            <p class="text-center h4 my-0">Cancelados  <i class="far fa-window-close"></i></p>
+                <p class="text-center h2 my-0">
+                    {{$data['agendamentos']['cancelados']}}
+                    
+                </p>
+            </div> 
+        </div>
+        <div class="card text-white bg-dark shadow mt-4">
+            <div class="card-body">
+            <p class="text-center h5 my-0">Não compareceu <i class="fas fa-user-slash"></i></p>
+                <p class="text-center h2 my-0">
+                    {{$data['agendamentos']['naoCompareceu']}}
+                </p>
+            </div> 
+        </div>
+        <div class="card text-white bg-success shadow mt-4">
+            <div class="card-body">
+            <p class="text-center h4 my-0">Finalizado  <i class="far fa-check-circle"></i></p>
+                <p class="text-center h2 my-0">
+                    {{$data['agendamentos']['finalizados']}}
+                </p>
+            </div> 
+        </div>
+    </div>
     </div>
 </div>
 @endsection
