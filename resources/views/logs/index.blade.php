@@ -47,7 +47,7 @@
                             @foreach($data['logs'] as $log)
                                 <tr>
                                     <td>{{\App\Usuario::find($log->usuario_id)->nome}}</td>
-                                    <td><span class="badge badge-warning">{{$log->acao}}</span></td> 
+                                    <td><span class="badge badge-{{ $log->getCor() }}">{{$log->acao}}</span></td> 
                                     <td>{{$log->descricao}}</td>
                                     <td>{{ date( "d/m/Y", strtotime($log->created_at)) }}</td>
                                     <td>{{ date( "H:i:s", strtotime($log->created_at)) }}</td>

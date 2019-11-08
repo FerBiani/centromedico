@@ -10,27 +10,29 @@
             <div class="card-body">
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
-                    <div class="col-md-12 text-right">
-                        <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
-                        <div class="col-md-6"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                        <div class="col-md-3 text-right">
+                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                        </div>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-3"><p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p></div>
                         <div class="col-md-3"><p><i class="fas fa-stethoscope"></i> {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}</p></div>
                         <div class="col-md-3">
                             <p id="checkin-status-{{$consulta->id}}" class="{{$consulta->check_in_id ? 'text-success' : 'text-danger'}}">
-                                <i class="fas fa-check-circle mr-2"></i>
+                                <i class="fas fa-check-circle"></i>
                                 <span class="checkin-status-text">
                                     {{$consulta->check_in_id ? 'Check-in efetuado' : 'Check-in não efetuado'}}
                                 </span>
                             </p>
                         </div>
                         @if(!$consulta->check_in_id)
-                        <div class="col-md-3" id="btn-efetuar-checkin-{{$consulta->id}}">
+                        <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
                             <form method="POST" action="{{url('check-in')}}">
                                 @csrf
                                 <input type="hidden" name="agendamento_id" value="{{$consulta->id}}">
@@ -71,7 +73,7 @@
 <script>
     function status(id){
         $( ".btn" ).click(function() {
-            const { value: fruit } = Swal.fire({
+            const { value } = Swal.fire({
             title: 'Status da Consulta',
             input: 'select',
             inputOptions: {
@@ -87,16 +89,18 @@
             confirmButtonColor: '#28a745',
             inputValidator: (value) => {
             var form = $(this); 
+            console.log(value)
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 type: "POST",
-                url: "{{url('medicos/status')}}/"+id,
+                url: "{{url('set-status')}}/"+id,
+                datatype: 'json',
                 data: { 'status_id': value }, 
                 success: function(data)
                 {
-                    Swal.fire('O status da consulta foi alterado')
+                    Swal.fire(data.message)
                 }
             });
             }

@@ -16,14 +16,14 @@ class AgendamentoController extends Controller
         if(Auth::user()->nivel_id == 2) {   
             $data = [
                 'title' => 'Meus Agendamentos',
-                'consultas' => Agendamento::where('paciente_id',Auth::user()->id)->paginate(10)
+                'consultas' => Agendamento::where('paciente_id',Auth::user()->id)->orderBy('inicio', 'ASC')->paginate(10)
             ];
             return view('usuario.pacientes.agendamentos', compact('data'));
         }
         else if(Auth::user()->nivel_id == 3) {
             $data = [
                 'title' => 'Meus agendamentos',
-                'consultas' => Agendamento::where('medico_id',auth::user()->id)->paginate(10),
+                'consultas' => Agendamento::where('medico_id',auth::user()->id)->orderBy('inicio', 'ASC')->paginate(10),
                 'status' => StatusAgendamento::all()
             ];
 
@@ -31,7 +31,7 @@ class AgendamentoController extends Controller
         } else {
             $data = [
                 'title' => 'Agendamentos',
-                'consultas' => Agendamento::paginate(10),
+                'consultas' => Agendamento::orderBy('inicio', 'ASC')->paginate(10),
                 'status' => StatusAgendamento::all()
             ];
             return view('agendamento.index', compact('data'));
@@ -91,6 +91,7 @@ class AgendamentoController extends Controller
             Agendamento::create([
                 'inicio' => $inicio,
                 'fim' => $fim,
+                'status_id' => 1,
                 'paciente_id' => (int)$request['paciente_id'],
                 'medico_id'  => (int)$request['medico_id'],
                 'especializacao_id' => (int)$request['especializacao_id'],
@@ -105,7 +106,7 @@ class AgendamentoController extends Controller
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
-            return back()->with('success', 'Consulta Marcada com sucesso');
+            return redirect('agendamentos')->with('success', 'Consulta Marcada com sucesso');
         }catch(\Exception $e){
             DB::rollback();
             return back()->with('error', $e);
@@ -154,8 +155,19 @@ class AgendamentoController extends Controller
     }
 
     public function setStatus(Request $request, $id){
-      
-        $agendamento = Agendamento::whereId($id)->update(['status_id' => $request->input('status_id')]);
+        return 'teste';
+        DB::beginTransaction();
+        try {
+            $agendamento = Agendamento::findOrFail($id)->update(['status_id' => $request->input('status_id')]);
+
+            DB::commit();
+
+            return response()->json(['message' => 'Status alterado com sucesso!'], 200);
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Erro no servidor!'], 500); 
+        }
+        return $agendamento;
        
     }
 

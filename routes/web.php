@@ -70,7 +70,10 @@ Route::middleware('auth')->group(function() {
             Route::get('horario/list', 'HorarioController@list');
             Route::resource('horario', 'HorarioController');
             Route::get('agendamentos', 'AgendamentoController@index');
-            Route::post('status/{id}', 'AgendamentoController@setStatus');
+        });
+
+        Route::prefix('atestados')->group(function() {
+            Route::get('gerar/{id}', 'AtestadoController@show');
         });
 
     });
@@ -86,6 +89,15 @@ Route::middleware('auth')->group(function() {
             Route::get('dias/{id}', 'AgendamentoController@getDias');
         });
 
+        Route::prefix('lista')->group(function(){
+            Route::get('/', 'ListaEsperaController@index');
+            Route::get('/create', 'ListaEsperaController@create');
+            Route::post('/store', 'ListaEsperaController@store');
+        });
+
     });
 
+    Route::middleware('role:3 4')->group(function() {
+        Route::post('set-status/{id}', 'AgendamentoController@setStatus');
+    });
 });

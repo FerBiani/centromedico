@@ -126,6 +126,10 @@
                             <i class="fas fa-users" style="margin:5px"></i>
                             <span>Usuários</span>
                         </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('lista/')}}">
+                            <i class="fas fa-list" style="margin:5px"></i>
+                            <span>Lista de Espera</span>
+                        </a>
                     @endif
                 </nav>
             </div>
@@ -193,6 +197,8 @@
         <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
+
+        
         
         <script> var main_url="{{url('')}}"; </script>
         @auth

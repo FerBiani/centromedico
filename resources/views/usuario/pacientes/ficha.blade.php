@@ -28,18 +28,18 @@
             	<div class="row">
             		<div class="col-md-6"><span><i class="fas fa fa-home"></i> {{ $data['usuario']->endereco->logradouro.' - '.$data['usuario']->endereco->cep.', '.$data['usuario']->endereco->bairro.', '.$data['usuario']->endereco->numero }}</span></div>
             	
-            		<div class="col-md-6"><i class="fas fa fa-map-marker-alt"></i> {{ $data['usuario']->endereco->cidade->nome }} - {{ $data['usuario']->endereco->cidade->estado->uf }}</div>          		     	    
+            		<div class="col-md-6"><i class="fas fa fa-map-marker-alt"></i> {{ $data['usuario']->endereco->cidade }} - {{ \App\Estado::find($data['usuario']->endereco->estado_id)->uf }}</div>          		     	    
             	</div>
 
             	<h5 class="d-flex align-items-end mt-4">Documentos</h5>
             	<hr>
             	<div class="row">
+            		@foreach($data['usuario']->documentos as $documento)
             		<div class="col-md-6">
-            			@foreach($data['usuario']->documentos as $documento)
             				<?php $tipoDocumento = \App\TipoDocumento::find($documento->tipo_documentos_id); ?>
  	           				<span><i class="fas fa fa-id-card"></i> {{$tipoDocumento->tipo.': '.$documento->numero }}</span>
-            			@endforeach
             		</div>
+            		@endforeach
             	</div>
             </div> 
         </div>

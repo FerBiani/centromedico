@@ -14,6 +14,6 @@ class StatusAgendamento extends Model
     ];
 
     public function agendamentos(){
-        return $this->belongsTo('App\Agendamento');
+        return $this->hasOne('App\Agendamento');
     }
 }

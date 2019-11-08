@@ -25,4 +25,9 @@ class Especializacao extends Model
     public function horarios(){
         return $this->belongsTo('App\Horario');
     }
+
+    public function listaEspera()
+    {
+        return $this->hasMany('App\Lista');
+    }
 }

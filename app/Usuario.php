@@ -47,6 +47,11 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany('App\Agendamento', 'medico_id');
     }
+
+    public function agendamentosPaciente()
+    {
+        return $this->hasMany('App\Agendamento', 'paciente_id');
+    }
     
     public function especializacoes(){
         return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
@@ -58,6 +63,10 @@ class Usuario extends Authenticatable
 
     public function logs(){
         return $this->hasMany('App\Log');
+    }
+
+    public function listaEspera(){
+        return $this->hasMany('App\ListaEspera');
     }
 
     public function setPasswordAttribute($val) {

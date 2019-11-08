@@ -9,7 +9,7 @@ class Agendamento extends Model
     protected $table = 'agendamentos';
 
     protected $fillable = [
-        'inicio', 'fim', 'paciente_id', 'medico_id', 'especializacao_id', 'codigo_check_in', 'check_in_id', 'status_id'
+        'inicio', 'fim', 'paciente_id', 'medico_id', 'especializacao_id','tipo','consulta_id','codigo_check_in', 'check_in_id', 'status_id'
     ];
 
     public function paciente()
@@ -32,7 +32,7 @@ class Agendamento extends Model
     }
 
     public function status() {
-        return $this->hasOne('App\Status');
+        return $this->belongsTo('App\StatusAgendamento');
     }
 
     public function setFimAttribute($val) {

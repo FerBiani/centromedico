@@ -8,7 +8,7 @@
             	@foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
                     <div class="col-md-12 text-right">
-                        <button class="btn btn-danger" onClick="status({{$consulta->id}})">Cancelar</button>
+                        <button class="btn btn-danger"  onClick="status({{$consulta->id}})">Cancelar</button>
                     </div>
                     <div class="row">
                         <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
@@ -35,4 +35,46 @@
         </div>
     </div>
 </div>
+@endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+@section('js')
+<script>
+    function status(id){
+        Swal.fire({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+        })
+
+        Swal.fire({
+        title: 'Tem certeza que deseja cancelar esta consulta?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Não, cancelar!',
+        reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: "{{url('set-status')}}/"+id,
+                    datatype: 'json',
+                    data: { 'status_id': 2 }, 
+                    success: function(data)
+                    {
+                        console.log(data)
+                        Swal.fire(data.message)
+                    }
+                });           
+            } 
+        })
+    }
+
+</script>
 @endsection

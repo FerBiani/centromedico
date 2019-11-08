@@ -18,4 +18,9 @@ class DiaSemana extends Model
     {
         return $this->belongsTo('App\Horario');
     }
+
+    public function listaEspera()
+    {
+        return $this->hasMany('App\Lista');
+    }
 }
