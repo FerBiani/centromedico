@@ -34,12 +34,13 @@
                                 <button type="submit" class="btn btn-info">
                                     Login
                                 </button>
-
-                                <!-- @if (Route::has('password.request'))
+                            </div>
+                            <div class="col-md-12">
+                                @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         Esqueceu sua senha?
                                     </a>
-                                @endif -->
+                                @endif
                             </div>
                         </div>
                     </form>
