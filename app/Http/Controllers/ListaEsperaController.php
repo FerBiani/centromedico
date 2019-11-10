@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\{ListaEspera, DiaSemana, Especializacao, Log};
+use App\{ListaEspera, DiaSemana, Especializacao, Log, Usuario};
 use DB;
 use auth;
 class ListaEsperaController extends Controller
@@ -11,7 +11,7 @@ class ListaEsperaController extends Controller
     public function index(){
         
         $data = [
-            'dados' => ListaEspera::all(),
+            'dados' => ListaEspera::paginate(10),
             'url'    => 'lista'
         ];
 
@@ -50,5 +50,19 @@ class ListaEsperaController extends Controller
             DB::rollback();
             return back()->with('error', 'Erro no servidor');
         }
+    }
+
+    public function list(Request $request){
+        $dados = new ListaEspera;
+
+        if($request['pesquisa']) {
+            $user = Usuario::where('nome', 'like', '%'.$request['pesquisa'].'%')->first();
+            $dados = $dados->where('paciente_id', 'like', '%'.$user->id.'%');
+            
+        }
+
+        $dados = $dados->paginate(10);
+        
+        return view('listaespera.table', compact('dados'));
     }
 }

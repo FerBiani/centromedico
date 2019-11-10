@@ -5,8 +5,11 @@
         <div class="card">
             <div class="card-header">Lista de Espera de Consultas</div>
             <div class="card-body">  
-                <form id="form" method="POST" action="{{url($data['url'])}}">
+            <form id="form" method="POST" action="{{url($data['url'])}}">
                 @csrf
+                @if($data['method'])
+                    @method($data['method'])
+                @endif
                     <div class="form-group">
                         <div class="col-md-12">
                             <label for="" class="col-form-label">Paciente</label>

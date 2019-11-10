@@ -44,10 +44,14 @@
                             </div>
                             @endif
                         </div>
+                        @if($consulta->status_id == 4)
+                        <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
+                            <a href="{{url('retorno/create/'.$consulta->id)}}"><button class="btn btn-primary">Agendar Retorno</button></a>
+                        </div>
+                        @endif
                     </div>
-                    <a href=""></a>
-                    @endforeach
-                @endif
+                </div>
+                @endforeach
             </div>
         </div>
     </div>

@@ -270,6 +270,17 @@ $(document).on('change', '#niveis', function() {
     }
 })
 
+$(document).on('change', '#niveis', function() {
+    if($(this).find('option:selected').val() == '3') {
+        $('input.tempo_retorno').removeAttr('disabled')
+        $('#tempo_retorno').removeAttr('hidden')
+        $('input.tempo_retorno').prop('required',true);
+    } else {
+        $('input.tempo_retorno').attr('disabled', 'disabled')
+        $('#tempo_retorno').attr('hidden', 'hidden')
+    }
+})
+
 //ENDEREÇO
 $('.estados').change(function() {
     atualizarCidades($(".estados option:selected").data("uf"), $(".estados").data('cidade'))

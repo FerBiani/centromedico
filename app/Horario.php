@@ -29,7 +29,7 @@ class Horario extends Model
         return $this->belongsTo('App\Especializacao', 'especializacao_id'); 
     }
 
-    function diasDoMes() {
+    public function diasDoMes() {
 
         $dayId = $this->dias_semana_id;
         $daysError = 3;

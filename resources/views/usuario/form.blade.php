@@ -89,6 +89,14 @@
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                             </div>
                         @endforeach
+
+                        <div class="form-group row">
+                        <label for="usuario[tempo_retorno]" class="col-md-4 col-form-label text-md-right">Tempo de retorno da cosulta</label>
+                        <div class="col-md-6">
+                            <input id="tempo_retorno" type="text" class="form-control" name="usuario[tempo_retorno]" >
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.tempo_retorno') }}</small>
+                        </div>
+                    </div>
                     </div>
 
                     <hr>

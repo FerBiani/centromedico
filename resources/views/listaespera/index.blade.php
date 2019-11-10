@@ -22,7 +22,7 @@
                 </div>
             <div class="tab-content" id="myTabContent">
                 <div class="table-responsive">
-                    <table id="horario-table" class="table table-hover">
+                    <table id="lista-table" class="table table-hover">
                         <thead class="thead thead-light">
                             <tr>
                                 <th>Nome</th>
@@ -39,7 +39,24 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        
+                        <tfoot>
+                        <tr>
+                            <td colspan="100%" class="text-center">
+                            <p class="text-center">
+                                Página {{$data['dados']->currentPage()}} de {{$data['dados']->lastPage()}}
+                                - Exibindo {{$data['dados']->perPage()}} registro(s) por página de {{$data['dados']->total()}}
+                                registro(s) no total
+                            </p>
+                            </td>     
+                        </tr>
+                        @if($data['dados']->lastPage() > 1)
+                        <tr>
+                            <td colspan="100%">
+                            {{ $data['dados']->links() }}
+                            </td>
+                        </tr>
+                        @endif
+                    </tfoot>
                     </table>
                  </div>
                 </div>
@@ -47,4 +64,22 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+<script>
+        $("#form-pesquisa").submit(function(e) {
+        e.preventDefault();
+        var form = $(this);       
+            $.ajax({
+                type: "GET",
+                url: "{{url('lista/list')}}",
+                data: form.serialize(), 
+                success: function(data)
+                {
+                    $("#myTabContent").html(data)
+                }
+            });
+
+        });
+</script>
 @endsection
