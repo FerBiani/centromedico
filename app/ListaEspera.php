@@ -15,7 +15,7 @@ class ListaEspera extends Model
     public $timestamps = false;
 
     public function pacientes(){
-        return $this->belongsTo('App\Usuario', 'usuarios_has_lista', 'lista_id', 'paciente_id');
+        return $this->belongsTo('App\Usuario');
     }
 
     public function especializacoes(){

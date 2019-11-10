@@ -39,10 +39,13 @@
                                 <button class="btn btn-success">Efetuar Check-in</button>
                             </form>
                         </div>
+                        @elseif($consulta->status_id == 4)
+                        <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
+                            <a href="{{url('retorno/create/'.$consulta->id)}}"><button class="btn btn-primary">Agendar Retorno</button></a>
+                        </div>
                         @endif
                     </div>
                 </div>
-                <a href=""></a>
                 @endforeach
             </div>
         </div>

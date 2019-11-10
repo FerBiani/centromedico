@@ -93,11 +93,17 @@ Route::middleware('auth')->group(function() {
             Route::get('/', 'ListaEsperaController@index');
             Route::get('/create', 'ListaEsperaController@create');
             Route::post('/store', 'ListaEsperaController@store');
+            Route::get('/list', 'ListaEsperaController@list');
+        });
+
+        Route::prefix('retorno')->group(function(){
+            Route::get('/create/{id}', 'RetornoController@create');
+            Route::post('/store', 'RetornoController@store');
         });
 
     });
 
-    Route::middleware('role:3 4')->group(function() {
+    Route::middleware('role:2 4 3')->group(function() {
         Route::post('set-status/{id}', 'AgendamentoController@setStatus');
     });
 });

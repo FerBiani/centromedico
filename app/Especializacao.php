@@ -15,7 +15,7 @@ class Especializacao extends Model
     public $timestamps = false;
 
     public function usuarios(){
-    	return $this->belongsToMany('App\Usuario', 'usuarios_has_especializacoes', 'especializacao_id', 'usuario_id');
+    	return $this->belongsToMany('App\Usuario', 'usuarios_has_especializacoes', 'especializacao_id', 'usuario_id', 'tempo_retorno');
     }
 
     public function consultas(){

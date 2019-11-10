@@ -54,7 +54,7 @@ class Usuario extends Authenticatable
     }
     
     public function especializacoes(){
-        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id');
+        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id', 'tempo_retorno');
     }
 
     public function horarios(){

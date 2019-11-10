@@ -155,19 +155,20 @@ class AgendamentoController extends Controller
     }
 
     public function setStatus(Request $request, $id){
-        return 'teste';
-        DB::beginTransaction();
-        try {
-            $agendamento = Agendamento::findOrFail($id)->update(['status_id' => $request->input('status_id')]);
-
-            DB::commit();
-
-            return response()->json(['message' => 'Status alterado com sucesso!'], 200);
-        } catch(\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Erro no servidor!'], 500); 
+        $agendamento = Agendamento::findOrFail($id);
+        $date = strtotime($agendamento->inicio."-1 day");
+    
+        if($date < date("Y-m-d H:i:s")){
+        $agendamento = Agendamento::findOrFail($id)->update(['status_id' => $request->input('status_id')]);
+        Log::create([
+            'usuario_id' => Auth::user()->id,
+            'acao'        => 'Atualização',
+            'descricao'   => 'Usuário '.Auth::user()->nome.' cancelou uma consulta'
+        ]);  
+        return response()->json(['message' => 'Consulta cancelada com sucesso'], 200);
+        }else{
+            return response()->json(['message' => 'Você não pode cancelar esta consulta'], 200);
         }
-        return $agendamento;
        
     }
 

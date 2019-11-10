@@ -74,7 +74,7 @@ public function store(UsuarioCreateRequest $request)
         try {
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
-            $usuario->especializacoes()->attach($request['especializacoes']);
+            $usuario->especializacoes()->attach($request['especializacoes'], $request['tempo_retorno']);
             
             foreach($request['documento'] as $documento) {
                 $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));

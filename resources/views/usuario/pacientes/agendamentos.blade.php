@@ -8,7 +8,11 @@
             	@foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
                     <div class="col-md-12 text-right">
+                    @if($consulta->status_id != 2)
                         <button class="btn btn-danger"  onClick="status({{$consulta->id}})">Cancelar</button>
+                    @else
+                    <button class="btn btn-danger disabled">Cancelar</button>
+                    @endif
                     </div>
                     <div class="row">
                         <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
@@ -55,23 +59,22 @@
         showCancelButton: true,
         confirmButtonText: 'Sim, cancelar!',
         cancelButtonText: 'Não, cancelar!',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#28a745',
         reverseButtons: true
         }).then((result) => {
-            if (result.value) {
-                $.ajax({
+            if (result.value) { 
+                  $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "{{url('set-status')}}/"+id,
-                    datatype: 'json',
-                    data: { 'status_id': 2 }, 
-                    success: function(data)
-                    {
-                        console.log(data)
-                        Swal.fire(data.message)
-                    }
-                });           
+                    },  
+                        type: "POST",
+                        url: "{{url('set-status')}}/"+id,
+                        data: { 'status_id': 2 },
+                        success: function(data){
+                            Swal.fire(data.message)
+                        }	
+                    });
             } 
         })
     }
