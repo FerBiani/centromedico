@@ -94,23 +94,24 @@ class AgendamentoController extends Controller
                 'inicio' => $inicio,
                 'fim' => $fim,
                 'status_id' => 1,
-                'paciente_id' => $request['paciente_id'],
-                'medico_id'  => $request['medico_id'],
-                'especializacao_id' => $request['especializacao_id'],
+                'paciente_id' => (int)$request['paciente_id'],
+                'medico_id'  => (int)$request['medico_id'],
+                'especializacao_id' => (int)$request['especializacao_id'],
                 'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
             ]);
-        
-            Mail::to('fernandobiani@gmail.com')->send(new AgendamentoEfetuado($agendamento->paciente));
 
-            DB::commit();
-            
-            //Log
+            // //Log
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
-            return redirect('agendamentos')->with('success', 'Consulta Marcada com sucesso');
+
+            Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
+
+            DB::commit();
+
+            return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
         }catch(\Exception $e){
             DB::rollback();
             return back()->with('error', $e);
@@ -159,7 +160,6 @@ class AgendamentoController extends Controller
     }
 
     public function setStatus(Request $request, $id){
-        return 'teste';
         DB::beginTransaction();
         try {
             $agendamento = Agendamento::findOrFail($id)->update(['status_id' => $request->input('status_id')]);

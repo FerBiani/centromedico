@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -69,8 +70,17 @@ class Usuario extends Authenticatable
         return $this->hasMany('App\ListaEspera');
     }
 
+    //Envio de e-mail para resetar senha
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+    //Mutators
     public function setPasswordAttribute($val) {
         $this->attributes['password'] = Hash::needsRehash($val) ? Hash::make($val) : $val;
     }
+
+    
 
 }

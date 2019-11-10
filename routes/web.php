@@ -29,6 +29,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function() {
 
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('get-medicos/{especializacao}', 'UsuarioController@getMedicos');
 
     Route::middleware('role:1')->group(function () {
