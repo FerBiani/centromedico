@@ -87,6 +87,9 @@ Route::middleware('auth')->group(function() {
             Route::get('confirma/{id}', 'AgendamentoController@confirma');
             Route::get('disponibilidade/{id}', 'AgendamentoController@getDisponibilidade');
             Route::get('dias/{id}', 'AgendamentoController@getDias');
+            Route::get('relatorio', 'RelatorioController@pacientes');
+            Route::get('resultado/{id}', 'RelatorioController@consultas');
+            Route::get('atestado/{id}', 'RelatorioController@atestado');
         });
 
         Route::prefix('lista')->group(function(){
@@ -97,6 +100,7 @@ Route::middleware('auth')->group(function() {
         });
 
         Route::prefix('retorno')->group(function(){
+            Route::get('/novo/{id}', 'RetornoController@create');
             Route::get('/create/{id}', 'RetornoController@create');
             Route::post('/store', 'RetornoController@store');
         });

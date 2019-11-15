@@ -94,22 +94,22 @@ class AgendamentoController extends Controller
                 'inicio' => $inicio,
                 'fim' => $fim,
                 'status_id' => 1,
-                'paciente_id' => $request['paciente_id'],
-                'medico_id'  => $request['medico_id'],
-                'especializacao_id' => $request['especializacao_id'],
-                'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
+                'paciente_id' => (int)$request['paciente_id'],
+                'medico_id'  => (int)$request['medico_id'],
+                'especializacao_id' => (int)$request['especializacao_id'],
+                'codigo_check_in' => (int)$request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
             ]);
         
-            Mail::to('fernandobiani@gmail.com')->send(new AgendamentoEfetuado($agendamento->paciente));
+            //Mail::to('fernandobiani@gmail.com')->send(new AgendamentoEfetuado($agendamento->paciente));
 
-            DB::commit();
-            
             //Log
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
+            DB::commit();
+            
             return redirect('agendamentos')->with('success', 'Consulta Marcada com sucesso');
         }catch(\Exception $e){
             DB::rollback();

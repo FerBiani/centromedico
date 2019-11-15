@@ -281,6 +281,17 @@ $(document).on('change', '#niveis', function() {
     }
 })
 
+$(document).on('change', '#niveis', function() {
+    if($(this).find('option:selected').val() == '3') {
+        $('#crm').removeAttr('disabled')
+        $('#crm').removeAttr('hidden')
+        $('#crm').prop('required',true);
+    } else {
+        $('#crm').attr('disabled', 'disabled')
+        $('#crm').attr('hidden', 'hidden')
+    }
+})
+
 //ENDEREÇO
 $('.estados').change(function() {
     atualizarCidades($(".estados option:selected").data("uf"), $(".estados").data('cidade'))

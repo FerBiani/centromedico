@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\{StatusAgendamento, Agendamento};
+use App\{StatusAgendamento, Agendamento, Usuario, Especializacao};
 
 class RelatorioController extends Controller
 {
@@ -18,5 +18,20 @@ class RelatorioController extends Controller
             ]
         ];
         return view('relatorio.index', compact('data'));
+    }
+
+    public function pacientes(){
+        $medicos = Usuario::where('nivel_id', 3)->paginate(10);
+       return view('impressos.pacientes', compact('medicos')); 
+    }
+
+    public function consultas($id){
+       $consultas = Agendamento::where('medico_id', $id)->whereDate('inicio', date('Y-m-d'))->get();
+       return view('impressos.resultados', compact('consultas'));
+    }
+
+    public function atestado($id){
+        $consulta = Agendamento::findOrFail($id);
+        return view('impressos.horarios', compact('consulta'));
     }
 }

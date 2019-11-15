@@ -10,13 +10,12 @@
             <div class="card-body">
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
-                    
                     <div class="row align-items-center">
                         <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
                         <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                        <div class="col-md-3"><a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank"><button class="btn btn-warning text-white">Atestado de Horário</button></a></div>
                         <div class="col-md-3 text-right">
-                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                            <button class="btn btn-info consulta" onClick="status({{$consulta->id}})">Status da Consulta</button>
                         </div>
                     </div>
                     <hr>
@@ -75,7 +74,7 @@
 </script>
 <script>
     function status(id){
-        $( ".btn" ).click(function() {
+        $( ".consulta" ).click(function() {
             const { value } = Swal.fire({
             title: 'Status da Consulta',
             input: 'select',

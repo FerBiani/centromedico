@@ -38,14 +38,14 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-6">
-                        <label for="" class="col-form-label">Dia</label>
-                        <select id="select-data" class="form-control" name="data">
-                            @foreach($data['horarios']->diasDoMes() as $dia)
-                                <option>{{$dia->format('d/m/Y')}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <div class="col-md-6">
+                            <label for="" class="col-form-label">Dia</label>
+                            <select id="select-data" class="form-control" name="data">
+                                @foreach($data['horarios'][1]->diasDoMes() as $dia)
+                                    <option>{{$dia->format('d/m/Y')}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                 </div>
                 <input type="hidden"  name="consulta_id" value="{{ $data['consulta']->id }}">
                 <div class="card-footer">

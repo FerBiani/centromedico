@@ -12,19 +12,25 @@
                         @csrf
 
                         <div class="form-group">
+
                             <label for="email" class="col-md-4 col-form-label">E-mail</label>
 
-                            <div class="col-md-12">
-                                <input id="email" type="email" class="form-control" name="email" value="{{old('email') }}" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-user"></i></span>
+                                </div>
+                               <input id="email" type="email" class="form-control" name="email" value="{{old('email') }}" required>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="password" class="col-md-4 col-form-label">Senha</label>
-
-                            <div class="col-md-12">
-                                <input id="password" type="password" class="form-control" name="password" required">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-lock"></i></span>
+                                </div>
+                               <input id="password" type="password" class="form-control" name="password" required">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
                             </div>
                         </div>
@@ -32,7 +38,7 @@
                         <div class="form-group text-center">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-info">
-                                    Login
+                                    ENTRAR
                                 </button>
                             </div>
                             <div class="col-md-12">

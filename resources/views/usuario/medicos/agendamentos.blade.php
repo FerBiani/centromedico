@@ -18,8 +18,9 @@
                         <a target="blank" class="btn btn-dark" href="{{url('atestados/gerar/'.$consulta->paciente_id)}}">Gerar Atestado</a>
                     </div>
                     <div class="row">
-                        <div class="col-md-6"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
-                        <div class="col-md-6"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
+                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
                     </div>
                     <hr>
                     <div class="row">    

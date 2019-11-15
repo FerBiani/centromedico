@@ -97,6 +97,74 @@ class Horario extends Model
         return $days;
     }
 
+    public function diasDoMesRetorno($intervalo) {
+
+        $dayId = $this->dias_semana_id;
+        $daysError = 3;
+
+        switch ($dayId) {
+            case 1:
+                $day = 'Monday';
+                break;
+            case 2:
+                $day = 'Tuesday';
+                break;
+            case 3:
+                $day = 'Wednesday';
+                break;
+            case 4:
+                $day = 'Thursday';
+                break;
+            case 5:
+                $day = 'Friday';
+                break;
+            case 6:
+                $day = 'Saturday';
+                break;
+            case 7:
+                $day = 'Sunday';
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $dateString = 'next '.$day;
+    
+        if (!strtotime($dateString)) {
+            throw new \Exception('"'.$dateString.'" is not a valid strtotime');
+        }
+    
+        $startDay = new \DateTime($dateString);
+    
+        // if ($startDay->format('j') > $daysError) {
+        //     $startDay->modify('- 7 days');
+        // }
+
+        $horariosIndisponiveis = [];
+
+        $agendamentosMedico = $this->usuario->agendamentosMedico;
+
+        foreach($agendamentosMedico as $agendamento) {
+            $horariosIndisponiveis[] = $agendamento->inicio;
+        }
+    
+        $days = array();
+
+        $count = 0;
+    
+        while ($count < $intervalo) {
+
+            if(!in_array($startDay->format('d/m/Y').' '.$this->inicio.':00', $horariosIndisponiveis)) {
+                $days[] = clone($startDay);
+            }
+            $startDay->modify('+ 7 days');
+            $count++;
+        }
+    
+        return $days;
+    }
+
     //MUTATORS
     public function getInicioAttribute($val) {
         return substr($val, 0, 5);

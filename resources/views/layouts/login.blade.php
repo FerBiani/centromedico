@@ -11,8 +11,8 @@
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font/fontawesome/css/all.css') }}" rel="stylesheet" />
     <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('js/chartsjs/Chart.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('js/chartsjs/Chart.css') }}" rel="stylesheet" />

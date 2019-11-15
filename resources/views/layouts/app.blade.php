@@ -11,11 +11,11 @@
     
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.css') }}" rel="stylesheet" />
+        <link href="{{ asset('font/fontawesome/css/all.css') }}" rel="stylesheet" />
         <style>
             #sidebar {
                 background: #303e45;
@@ -130,6 +130,10 @@
                             <i class="fas fa-list" style="margin:5px"></i>
                             <span>Lista de Espera</span>
                         </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('atendente/relatorio')}}">
+                            <i class="fas fa-folder" style="margin:5px"></i>
+                            <span>Relatórios</span>
+                        </a>
                     @endif
                 </nav>
             </div>
@@ -187,19 +191,15 @@
         <!-- Bootstrap JS -->
         <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ asset('js/jquery.js') }}"></script>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-        
+        <script type="text/javascript" src="{{ asset('js/popper.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/jquery-validator/jquery.validate.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery-validator/localization/messages_pt_BR.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
         <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
 
-        
-        
         <script> var main_url="{{url('')}}"; </script>
         @auth
         <script>

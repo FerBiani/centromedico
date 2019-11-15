@@ -69,11 +69,10 @@
 
                     <hr>
                     <h6>Especializações</h6>
-                        
                         @foreach(old('especializacoes', $data['especializacoes_usuario']) as $offset => $especializacao_usuario)
                             <div class="form-group row esp">
-                                <label class="col-md-4 col-form-label text-md-right">Especialização</label>
                                 <div class="col-md-6">
+                                    <label class="col-md-4 col-form-label ">Especialização</label>
                                     <div class="input-group">
                                         <select class="form-control especializacoes" id="especializacoes" name="especializacoes[{{$offset}}]" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'disabled'}}>
                                             <option value="">Selecione</option>
@@ -85,23 +84,19 @@
                                             <span class="btn btn-outline-secondary add-esp"><i class="fa fa-plus"></i></span>
                                         </div>
                                     </div>
+                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                                 </div>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
+                                <div class="col-md-6 mt-2">
+                                    <label for="retorno[tempo_retorno]" class="">Tempo de retorno da consulta em dias</label>
+                                    <input id="tempo_retorno" type="text" class="form-control" name="retorno[tempo_retorno]" >
+                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('retorno.tempo_retorno') }}</small>
+                                </div>
                             </div>
                         @endforeach
-
-                        <div class="form-group row">
-                        <label for="usuario[tempo_retorno]" class="col-md-4 col-form-label text-md-right">Tempo de retorno da cosulta</label>
-                        <div class="col-md-6">
-                            <input id="tempo_retorno" type="text" class="form-control" name="usuario[tempo_retorno]" >
-                            <small id="error" class="errors font-text text-danger">{{ $errors->first('usuario.tempo_retorno') }}</small>
-                        </div>
-                    </div>
                     </div>
 
                     <hr>
                     <h6>Dados de Endereço</h6>
-                    
                     <div class="form-group row">
                         <label for="endereco[cep]" class="col-md-4 col-form-label text-md-right">CEP</label>
                         <div class="col-md-6">
@@ -202,12 +197,14 @@
                                     @if($data['usuario'])
                                         <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
                                     @endif
-                                    <select class="form-control documento" name="documento[{{$offset}}][tipo_documentos_id]">
+                                    <select class="form-control documento" id="documento" name="documento[{{$offset}}][tipo_documentos_id]">
                                         @foreach(\App\TipoDocumento::all() as $tipoDocumento)
-                                        <option {{$documento->tipo_documentos_id == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                            @if($tipoDocumento->id != 4)
+                                                <option {{$documento->tipo_documentos_id == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
-                                    <input type="text" placeholder="Numero" class="form-control documento" name="documento[{{$offset}}][numero]" value="{{$documento['numero'] ? $documento['numero'] : ''}}"> 
+                                    <input type="text" placeholder="Numero" class="form-control numero" id="numero" name="documento[{{$offset}}][numero]" value="{{$documento['numero'] ? $documento['numero'] : ''}}"> 
                                     <div class="input-group-append">
                                         <span class="btn btn-outline-secondary add-doc"><i class="fa fa-plus"></i></span>
                                     </div>
@@ -216,6 +213,29 @@
                             </div>
                         </div>
                         @endforeach
+                        <!-- CRM -->
+                        <div class="form-group row" id="crm">
+                            <label for="documento[{{$offset}}][numero]" class="col-md-4 col-form-label text-md-right">Documento</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    @if($data['usuario'])
+                                        <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
+                                    @endif
+                                    <select class="form-control documento" id="documento" name="documento[{{$offset}}][tipo_documentos_id]">
+                                        @foreach(\App\TipoDocumento::all() as $tipoDocumento)
+                                            @if($tipoDocumento->id == 4)
+                                                <option {{$documento->tipo_documentos_id == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <input type="text" placeholder="Numero" class="form-control numero" id="numero" name="documento[{{$offset}}][numero]" value="{{$documento['numero'] ? $documento['numero'] : ''}}"> 
+                                    <div class="input-group-append">
+                                        <span class="btn btn-outline-secondary add-doc"><i class="fa fa-plus"></i></span>
+                                    </div>
+                                </div>
+                                <small id="error" id="error" class="errors font-text text-danger">{{ $errors->first('documento.'.$offset.'.numero') }}</small>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

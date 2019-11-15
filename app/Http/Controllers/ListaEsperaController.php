@@ -57,12 +57,15 @@ class ListaEsperaController extends Controller
 
         if($request['pesquisa']) {
             $user = Usuario::where('nome', 'like', '%'.$request['pesquisa'].'%')->first();
-            $dados = $dados->where('paciente_id', 'like', '%'.$user->id.'%');
-            
+            $dados = $dados->where('paciente_id', 'like', '%'.$user->id.'%');   
         }
 
-        $dados = $dados->paginate(10);
-        
-        return view('listaespera.table', compact('dados'));
+        if($dados){
+            $dados = $dados->paginate(10);
+            return view('listaespera.table', compact('dados'));
+        }else{
+            return back()->with('error', 'Nenhum resultado foi encontrado');
+        }
+
     }
 }

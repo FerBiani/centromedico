@@ -65,8 +65,7 @@ class UsuarioController extends Controller
     }
 
    
-public function store(UsuarioCreateRequest $request)
-    {
+public function store(UsuarioCreateRequest $request){
         if($request['usuario']['password'] !== $request['usuario']['password_confirmation']) {
             return back()->with('warning', 'As senhas informadas devem ser iguais!');
         }   
@@ -74,8 +73,7 @@ public function store(UsuarioCreateRequest $request)
         try {
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
-            $usuario->especializacoes()->attach($request['especializacoes'], $request['tempo_retorno']);
-            
+            $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));
             foreach($request['documento'] as $documento) {
                 $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));
             }
@@ -132,7 +130,7 @@ public function store(UsuarioCreateRequest $request)
 
             $usuario->update($request->input('usuario'));
             $usuario->endereco->update($request->input('endereco'));
-            $usuario->especializacoes()->sync($request['especializacoes']);
+            $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));
 
             $documentosRequestIds = [];
 

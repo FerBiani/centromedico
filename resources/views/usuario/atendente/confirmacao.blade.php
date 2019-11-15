@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label for="" class="col-form-label">Especialização</label>
+                            <label for="agendamento['especializacao']" class="col-form-label">Especialização</label>
                             <div class="input-group">
                                 <input readonly type="text" class="form-control" value="{{ $data['horario']->especializacoes->especializacao }}">
                                 <input type="hidden"  name="especializacao_id" value="{{ $data['horario']->especializacoes->id }}">
@@ -46,19 +46,20 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label for="" class="col-form-label">Paciente</label>
+                            <label for="agendamento['paciente']" class="col-form-label">Paciente</label>
                             <div class="input-group">
-                                <select id="paciente-select" class="form-control form-lg" name="paciente_id"></select>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
-                            </div> 
+                                <select id="paciente-select" class="form-control form-lg" name="paciente_id" required></select>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('paciente_id') }}</small> 
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="" class="col-form-label">Dia</label>
+                            <label for="agendamento['dia']" class="col-form-label">Dia</label>
                             <select id="select-data" class="form-control" name="data">
                                 @foreach($data['horario']->diasDoMes() as $dia)
                                     <option>{{$dia->format('d/m/Y')}}</option>
                                 @endforeach
                             </select>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.dia') }}</small>
                         </div>
                     </div>
                 </div> 
@@ -80,6 +81,27 @@
 
 @section('js') 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        ///// VALIDATE /////
+        $("#form").validate({
+            highlight:function(input){
+                jQuery(input).addClass('is-invalid');
+            },
+
+            unhighlight:function(input){
+                jQuery(input).removeClass('is-invalid');
+                jQuery(input).addClass('is-valid');
+            },
+
+            errorPlacement:function(error, element)
+            {
+                jQuery(element).parents('.form-group').find('#error').append(error);
+            },
+        })
+
+    })
    
    $("#paciente-select").select2({
         width: '100%',
@@ -156,8 +178,7 @@
     function formatSelection (repo) {
         return repo.nome || repo.text;
     }
-
-        
+     
     $(document).on('click', '.send-form', function() {
         if($("#form").valid()){
             $(".send-form").prop("disabled",true) 
