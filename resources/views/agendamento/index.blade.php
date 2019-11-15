@@ -8,16 +8,6 @@
                 Consultas Agendadas
             </div>
             <div class="card-body">
-<<<<<<< HEAD
-                @foreach($data['consultas'] as $consulta)
-                <div class="alert alert-secondary" role="alert">
-                    <div class="row align-items-center">
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
-                        <div class="col-md-3"><a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank"><button class="btn btn-warning text-white">Atestado de Horário</button></a></div>
-                        <div class="col-md-3 text-right">
-                            <button class="btn btn-info consulta" onClick="status({{$consulta->id}})">Status da Consulta</button>
-=======
                 @if(!count($data['consultas']))
                     <p class="text-center">Nenhuma consulta cadastrada.</p>
                 @else
@@ -31,7 +21,6 @@
                             <div class="col-md-3 text-right">
                                 <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
                             </div>
->>>>>>> 50fdabb60883cb972038565d2a7cbbd26e29a7f2
                         </div>
                         <hr>
                         <div class="row align-items-center">
@@ -54,15 +43,16 @@
                                 </form>
                             </div>
                             @endif
-                        </div>
                         @if($consulta->status_id == 4)
-                        <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
+                        <div class="col-md-3 text-right">
                             <a href="{{url('retorno/create/'.$consulta->id)}}"><button class="btn btn-primary">Agendar Retorno</button></a>
                         </div>
                         @endif
+                        </div>
                     </div>
-                </div>
                 @endforeach
+            @endif
+                </div>
             </div>
         </div>
     </div>
@@ -88,26 +78,6 @@
     })
 
     function status(id){
-<<<<<<< HEAD
-        $( ".consulta" ).click(function() {
-            const { value } = Swal.fire({
-            title: 'Status da Consulta',
-            input: 'select',
-            inputOptions: {
-            <?php foreach($data['status'] as $status) {?>
-                {{ $status->id }}: '{{ $status->nome }}',
-            <?php } ?>
-            },
-            inputPlaceholder: 'Selecione o status',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            cancelButtonColor: '#dc3545',
-            confirmButtonText: 'Enviar',
-            confirmButtonColor: '#28a745',
-            inputValidator: (value) => {
-            var form = $(this); 
-            console.log(value)
-=======
         const { value: fruit } = Swal.fire({
         title: 'Status da Consulta',
         input: 'select',
@@ -123,7 +93,6 @@
         confirmButtonText: 'Enviar',
         confirmButtonColor: '#28a745',
         inputValidator: (value) => {
->>>>>>> 50fdabb60883cb972038565d2a7cbbd26e29a7f2
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -143,8 +112,7 @@
                    
                 }
             });
-        }
-            
+        }   
         })
     }
 </script>
