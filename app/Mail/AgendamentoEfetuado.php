@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Usuario;
+use App\Agendamento;
 
 class AgendamentoEfetuado extends Mailable
 {
@@ -17,9 +17,12 @@ class AgendamentoEfetuado extends Mailable
      *
      * @return void
      */
-    public function __construct(Usuario $paciente)
+
+    public $agendamento;
+
+    public function __construct(Agendamento $agendamento)
     {
-        $this->paciente = $paciente;
+        $this->agendamento = $agendamento;
     }
 
     /**
@@ -29,6 +32,14 @@ class AgendamentoEfetuado extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.agendamentos.efetuado');
+        return $this->markdown('emails.agendamentos.efetuado')
+            ->with([
+                'nomePaciente'  => $this->agendamento->paciente->nome,
+                'nomeMedico'    => $this->agendamento->medico->nome,
+                'especialidade' => $this->agendamento->especializacao->especializacao,
+                'inicio'        => $this->agendamento->inicio,
+                'fim'           => $this->agendamento->fim,
+                'codigoCheckIn' => $this->agendamento->codigo_check_in
+            ]);
     }
 }

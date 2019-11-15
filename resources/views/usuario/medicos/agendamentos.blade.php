@@ -106,7 +106,6 @@
         confirmButtonText: 'Enviar',
         confirmButtonColor: '#28a745',
         inputValidator: (value) => {
-            var form = $(this); 
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -116,7 +115,12 @@
                 data: { 'status_id': value }, 
                 success: function(data)
                 {
-                    Swal.fire('O status da consulta foi alterado')
+                    Swal.fire(data.message)
+
+                    //atualiza a página
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
                 }
             });
         }

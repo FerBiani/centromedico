@@ -1,12 +1,20 @@
 @component('mail::message')
-# Introduction
+# Olá, {{explode(' ',$nomePaciente)[0]}}
 
-The body of your message.
+Aqui estão as informações da sua consulta:
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::table')
+| Especialidade       | Médico                   | Início           | *Código de Check-in |
+|:--------------------|:-------------------------|:-----------------|:--------------------|
+| {{$especialidade}}  | {{$nomeMedico}}          | {{$inicio}}      | {{$codigoCheckIn}}  |
 @endcomponent
 
-Thanks,<br>
+*No dia da consulta, insira este código no terminal disponível no consultório para efetuar o check-in.
+
+@component('mail::button', ['url' => url('/')])
+Acessar o site
+@endcomponent
+
+Obrigado,<br>
 {{ config('app.name') }}
 @endcomponent

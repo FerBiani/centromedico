@@ -97,20 +97,36 @@ class AgendamentoController extends Controller
                 'paciente_id' => (int)$request['paciente_id'],
                 'medico_id'  => (int)$request['medico_id'],
                 'especializacao_id' => (int)$request['especializacao_id'],
+<<<<<<< HEAD
                 'codigo_check_in' => (int)$request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
             ]);
         
             //Mail::to('fernandobiani@gmail.com')->send(new AgendamentoEfetuado($agendamento->paciente));
 
             //Log
+=======
+                'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
+            ]);
+
+            // //Log
+>>>>>>> 50fdabb60883cb972038565d2a7cbbd26e29a7f2
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
+<<<<<<< HEAD
             DB::commit();
             
             return redirect('agendamentos')->with('success', 'Consulta Marcada com sucesso');
+=======
+
+            Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
+
+            DB::commit();
+
+            return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
+>>>>>>> 50fdabb60883cb972038565d2a7cbbd26e29a7f2
         }catch(\Exception $e){
             DB::rollback();
             return back()->with('error', $e);
@@ -162,18 +178,28 @@ class AgendamentoController extends Controller
         $agendamento = Agendamento::findOrFail($id);
         $date = strtotime($agendamento->inicio."-1 day");
     
-        if($date < date("Y-m-d H:i:s")){
-        $agendamento = Agendamento::findOrFail($id)->update(['status_id' => $request->input('status_id')]);
-        Log::create([
-            'usuario_id' => Auth::user()->id,
-            'acao'        => 'Atualização',
-            'descricao'   => 'Usuário '.Auth::user()->nome.' cancelou uma consulta'
-        ]);  
-        return response()->json(['message' => 'Consulta cancelada com sucesso'], 200);
-        }else{
-            return response()->json(['message' => 'Você não pode cancelar esta consulta'], 200);
+        if($date > date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
+            return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
-       
+
+        DB::beginTransaction();
+        try {
+            $agendamento->update(['status_id' => $request->input('status_id')]);
+
+            Log::create([
+                'usuario_id' => Auth::user()->id,
+                'acao'        => 'Atualização',
+                'descricao'   => 'Usuário '.Auth::user()->nome.' alterou o status da consulta'
+            ]);  
+
+            DB::commit();
+
+            return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
+        } catch(\Exception $e) {
+            return response()->json(['message' => 'Erro no servidor!'], 500);
+        }
+        
+      
     }
 
     public function destroy($id)
