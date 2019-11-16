@@ -13,7 +13,8 @@ class AgendamentoTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+   
+    public function testBasicTest()
     {
         $this->assertTrue(true);
     }

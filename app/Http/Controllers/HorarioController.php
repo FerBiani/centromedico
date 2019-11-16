@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\{ Usuario, Horario, Agendamento, DiaSemana, Status, Log };
+use App\{ Usuario, Horario, Agendamento, DiaSemana, Status, Log, Especializacao };
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\{HorarioCreateRequest};

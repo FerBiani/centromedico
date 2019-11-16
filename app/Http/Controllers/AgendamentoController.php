@@ -88,7 +88,7 @@ class AgendamentoController extends Controller
             return redirect('/')->with('error', 'Não é possível marcar uma consulta nesta data!');
         }
 
-        DB::beginTransaction();
+         DB::beginTransaction();
         try{
             $agendamento = Agendamento::create([
                 'inicio' => $inicio,
@@ -100,7 +100,7 @@ class AgendamentoController extends Controller
                 'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
             ]);
 
-            // //Log
+            //Log
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
@@ -110,9 +110,9 @@ class AgendamentoController extends Controller
 
             Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
 
-            DB::commit();
+              DB::commit();
 
-            return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
+              return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
 
         }catch(\Exception $e){
             DB::rollback();

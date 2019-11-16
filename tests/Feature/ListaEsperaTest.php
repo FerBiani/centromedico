@@ -5,9 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Agendamento;
 
-class AgendamentoTest extends TestCase
+class ListaEsperaTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -20,6 +19,4 @@ class AgendamentoTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    
 }

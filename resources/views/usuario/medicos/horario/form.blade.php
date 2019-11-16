@@ -56,7 +56,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="inicio">Início</label>
+                            <label for="inicio">Início </label>
                             <input type="text" value="{{old('horario.inicio', $data['horario'] ? $data['horario']->inicio : '')}}" class="form-control inicio" id="inicio" name="horario[inicio]">
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('horario.inicio') }}</small>
                         </div>    
