@@ -65,28 +65,46 @@ class UsuarioController extends Controller
     }
 
    
-public function store(UsuarioCreateRequest $request){
-        if($request['usuario']['password'] !== $request['usuario']['password_confirmation']) {
-            return back()->with('warning', 'As senhas informadas devem ser iguais!');
-        }   
+    public function store(UsuarioCreateRequest $request){
+
+        return $request;
+
         DB::beginTransaction();
         try {
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
-            $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));
+
+            // if($request['crm']) {
+            //     return 'entrou';
+            // }
+            // return 'não entrou';
+
+
+            //registra as especializações do usuário e o tempo de retorno de cada uma.
+            foreach($request['especializacoes'] as $especializacao) {
+                $usuario->especializacoes()->attach($especializacao['especializacao'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+            }
+
+            $documentos[] = $request['documento'];
+            
+            
             foreach($request['documento'] as $documento) {
                 $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));
             }
+
             foreach($request['telefone'] as $telefone) {
                 $usuario->telefones()->save(new Telefone([ 'numero' => $telefone['numero'] ]));
             }
+
             DB::commit();
+
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um usuário'
             ]); 
-            return back()->with('success', 'Usuário cadastrado com sucesso!');
+
+            return redirect('usuario')->with('success', 'Usuário cadastrado com sucesso!');
         } catch(Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Erro no servidor!');
@@ -124,12 +142,12 @@ public function store(UsuarioCreateRequest $request){
     {
         $usuario = Usuario::findOrFail($id);
 
-
         DB::beginTransaction();
         try {
 
             $usuario->update($request->input('usuario'));
             $usuario->endereco->update($request->input('endereco'));
+
             $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));
 
             $documentosRequestIds = [];
