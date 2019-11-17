@@ -72,11 +72,13 @@ class Usuario extends Authenticatable
 
     public function getCRM() {
         if($this->nivel_id == 3) {
-            $crm = $this->documentos()->where('tipo_documento_id', 4)->first();
+            $crm = $this->documentos()->where('tipo_documentos_id', 4)->first();
 
             if($crm) {
                 return $crm;
             }
+
+            return '';
         }
         return '';
     }

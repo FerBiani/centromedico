@@ -7,43 +7,18 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Centro Médico') }}</title>
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('font/fontawesome/css/all.css') }}" rel="stylesheet" />
-    <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('js/chartsjs/Chart.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('js/chartsjs/Chart.css') }}" rel="stylesheet" />
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="{{url('/')}}">Centro Médico</a>
-
-                <ul class="navbar-nav ml-auto">
-                    @auth
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->nome }} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right position-absolute" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                    Sair
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                    @endauth
-                </ul>
             </div>
         </nav>
 
@@ -73,19 +48,10 @@
         </main>
     </div>
     <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-validator/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery-validator/localization/messages_pt_BR.min.js') }}"></script>
     <script> var main_url="{{url('')}}"; </script>
-    @auth
-        <script>
-            var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
-        </script>
-    @endauth
     @yield('js')
 </body>
 </html>

@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header bg-info text-white h5">{{ __('Login') }}</div>
+                <div class="card-header bg-info text-white h5">Login</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" autocomplete="off">
+                    <form id="form" method="POST" action="{{ route('login') }}" autocomplete="off">
                         @csrf
 
                         <div class="form-group">
@@ -30,7 +30,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-lock"></i></span>
                                 </div>
-                               <input id="password" type="password" class="form-control" name="password" required">
+                               <input id="password" type="password" class="form-control" name="password" required>
                             </div>
                             <small id="error" class="errors font-text text-danger">{{ $errors->first('password') }}</small>
                         </div>
@@ -55,4 +55,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+    <script src="{{ asset('js/auth/mainAuth.js') }}"></script>
 @endsection
