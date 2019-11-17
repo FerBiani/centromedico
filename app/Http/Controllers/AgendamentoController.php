@@ -14,7 +14,6 @@ use Auth;
 class AgendamentoController extends Controller
 {
     public function index(){
-        
         if(Auth::user()->nivel_id == 2) {   
             $data = [
                 'title' => 'Meus Agendamentos',
@@ -38,7 +37,6 @@ class AgendamentoController extends Controller
             ];
             return view('agendamento.index', compact('data'));
         }
-
     }
 
     public function create()
@@ -138,17 +136,9 @@ class AgendamentoController extends Controller
         return view('usuario.atendente.resultados', compact('horarios'));
     }
 
+    public function show($id){}
 
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
+    public function edit($id){}
 
     public function update(Request $request, $id)
     {
@@ -168,19 +158,15 @@ class AgendamentoController extends Controller
         if($date > date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
-
         DB::beginTransaction();
         try {
             $agendamento->update(['status_id' => $request->input('status_id')]);
-
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Atualização',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' alterou o status da consulta'
             ]);  
-
             DB::commit();
-
             return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
         } catch(\Exception $e) {
             return response()->json(['message' => 'Erro no servidor!'], 500);

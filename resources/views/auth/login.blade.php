@@ -19,9 +19,9 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-user"></i></span>
                                 </div>
-                               <input id="email" type="email" class="form-control" name="email" value="{{old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{old('email') }}" required>
+                                </div>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
-                            </div>
                         </div>
 
                         <div class="form-group">
@@ -31,8 +31,8 @@
                                   <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-lock"></i></span>
                                 </div>
                                <input id="password" type="password" class="form-control" name="password" required">
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
                             </div>
+                             <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
                         </div>
 
                         <div class="form-group text-center">
