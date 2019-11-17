@@ -68,10 +68,6 @@ class Horario extends Model
         }
     
         $startDay = new \DateTime($dateString);
-    
-        // if ($startDay->format('j') > $daysError) {
-        //     $startDay->modify('- 7 days');
-        // }
 
         $horariosIndisponiveis = [];
 

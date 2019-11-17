@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+@extends('layouts.app') @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
@@ -9,60 +7,71 @@
             </div>
             <div class="card-body">
                 @if(!count($data['consultas']))
-                    <p class="text-center">Nenhuma consulta cadastrada.</p>
-                @else
-                    @foreach($data['consultas'] as $consulta)
-                    <div class="alert alert-secondary" role="alert">
-                        
-                        <div class="row align-items-center">
-                            <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
-                            <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
-                            <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
-                            <div class="col-md-3 text-right">
-                                <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
-                            </div>
+                <p class="text-center">Nenhuma consulta cadastrada.</p>
+                @else @foreach($data['consultas'] as $consulta)
+                <div class="alert alert-secondary" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
+                        <div class="col-md-3">
+                            <a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank">
+                                <button class="btn btn-warning text-white">Atestado de Horário</button>
+                            </a>
                         </div>
-                        <hr>
-                        <div class="row align-items-center">
-                            <div class="col-md-3"><p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p></div>
-                            <div class="col-md-3"><p><i class="fas fa-stethoscope"></i> {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}</p></div>
-                            <div class="col-md-3">
-                                <p id="checkin-status-{{$consulta->id}}" class="{{$consulta->check_in_id ? 'text-success' : 'text-danger'}}">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span class="checkin-status-text">
-                                        {{$consulta->check_in_id ? 'Check-in efetuado' : 'Check-in não efetuado'}}
-                                    </span>
-                                </p>
-                            </div>
-                            @if(!$consulta->check_in_id)
-                            <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
-                                <form method="POST" action="{{url('check-in')}}">
-                                    @csrf
-                                    <input type="hidden" name="agendamento_id" value="{{$consulta->id}}">
-                                    <button class="btn btn-success">Efetuar Check-in</button>
-                                </form>
-                            </div>
-                            @endif
-                        @if($consulta->status_id == 4)
                         <div class="col-md-3 text-right">
-                            <a href="{{url('retorno/create/'.$consulta->id)}}"><button class="btn btn-primary">Agendar Retorno</button></a>
-                        </div>
-                        @endif
+                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
                         </div>
                     </div>
-                @endforeach
-            @endif
+                    <hr>
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><i class="fas fa-stethoscope"></i> {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p id="checkin-status-{{$consulta->id}}" class="{{$consulta->check_in_id ? 'text-success' : 'text-danger'}}">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="checkin-status-text">
+                                        {{$consulta->check_in_id ? 'Check-in efetuado' : 'Check-in não efetuado'}}
+                                    </span>
+                            </p>
+                        </div>
+                        @if(!$consulta->check_in_id)
+                        <div class="col-md-3 text-right" id="btn-efetuar-checkin-{{$consulta->id}}">
+                            <form method="POST" action="{{url('check-in')}}">
+                                @csrf
+                                <input type="hidden" name="agendamento_id" value="{{$consulta->id}}">
+                                <button class="btn btn-success">Efetuar Check-in</button>
+                            </form>
+                        </div>
+                        @endif @if($consulta->status_id == 4)
+                        <div class="col-md-3 text-right">
+                            <a href="{{url('retorno/create/'.$consulta->id)}}">
+                                <button class="btn btn-primary">Agendar Retorno</button>
+                            </a>
+                        </div>
+                        @endif
+                    </div>
                 </div>
+                @endforeach @endif
+            </div>
+            <p class="text-center">
+                Página {{$data['consultas']->currentPage()}} de {{$data['consultas']->lastPage()}} - Exibindo {{$data['consultas']->perPage()}} registro(s) por página de {{$data['consultas']->total()}} registro(s) no total
+            </p>
+            <div class="col-md-12 text-center">
+                @if($data['consultas']->lastPage() > 1) {{ $data['consultas']->links() }} @endif
             </div>
         </div>
     </div>
 </div>
+</div>
 @endsection
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
 @section('js')
-
 <script>
 
     socket.on('check_in', function(data){
@@ -103,12 +112,13 @@
                 data: { 'status_id': value }, 
                 success: function(data)
                 {
-                    Swal.fire(data.message)
+                    console.log(data)
+                    //Swal.fire(data.message)
 
                     //atualiza a página
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1000);
+                    // setTimeout(() => {
+                    //     location.reload()
+                    // }, 1000);
                    
                 }
             });

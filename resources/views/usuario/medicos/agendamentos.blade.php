@@ -38,16 +38,24 @@
                 </div>
                 <a href=""></a>
                 @endforeach
+                <p class="text-center">
+                    Página {{$data['consultas']->currentPage()}} de {{$data['consultas']->lastPage()}}
+                    - Exibindo {{$data['consultas']->perPage()}} registro(s) por página de {{$data['consultas']->total()}}
+                    registro(s) no total
+              </p>
+                <div class="col-md-12 text-center">
+                    @if($data['consultas']->lastPage() > 1)
+                        {{ $data['consultas']->links() }}
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
-@section('js')
 
+@section('js')
 <script>
     socket.on('check_in', function(data){
         console.log(data)
@@ -59,8 +67,8 @@
             .text('Check-in efetuado')
     })
 
+    //chama proximo paciente
     function chamarPaciente(consultaId, nomePaciente, especializacao) {
-        
         var now = new Date();
         var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+now.getMinutes();
 
@@ -84,12 +92,9 @@
                 console.log(err)
             }
         });
+    } 
 
-    }
-
-    
-</script>
-<script>
+    //seta o status da consulta
     function status(id){
         const { value: fruit } = Swal.fire({
         title: 'Status da Consulta',
@@ -124,8 +129,7 @@
                 }
             });
         }
-            
-        })
+    })
     }
 </script>
 @stop

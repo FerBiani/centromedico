@@ -198,6 +198,7 @@
         <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
         <script src="{{ asset('js/select2/js/select2.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
+        <script src="{{ asset('js/sweetalert.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
 
         <script> var main_url="{{url('')}}"; </script>

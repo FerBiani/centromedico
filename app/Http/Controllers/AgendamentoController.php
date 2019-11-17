@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
-use App\Http\Requests\{AgendamentoCreateRequest};
+use App\Http\Requests\{AgendamentoRequest};
 use App\Mail\AgendamentoEfetuado;
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -68,15 +68,14 @@ class AgendamentoController extends Controller
         return $pacientes;
     }
 
-    public function store(Request $request)
+    public function store(AgendamentoRequest $request)
     {   
-
-        $inicio = $request['data'].' '.$request['inicio'];
-        $fim = $request['data'].' '.$request['fim'];
+        $inicio = $request['agendamento']['data'].' '.$request['agendamento']['inicio'];
+        $fim = $request['agendamento']['data'].' '.$request['agendamento']['fim'];
 
         $horariosIndisponiveis = [];
 
-        $agendamentosMedico = Usuario::findOrFail($request['medico_id'])->agendamentosMedico;
+        $agendamentosMedico = Usuario::findOrFail($request['agendamento']['medico_id'])->agendamentosMedico;
 
         foreach($agendamentosMedico as $agendamento) {
             $horariosIndisponiveis[] = $agendamento->inicio;
@@ -92,10 +91,10 @@ class AgendamentoController extends Controller
                 'inicio' => $inicio,
                 'fim' => $fim,
                 'status_id' => 1,
-                'paciente_id' => (int)$request['paciente_id'],
-                'medico_id'  => (int)$request['medico_id'],
-                'especializacao_id' => (int)$request['especializacao_id'],
-                'codigo_check_in' => $request['paciente_id'].$request['especializacao_id'].$request['medico_id'],
+                'paciente_id' => (int)$request['agendamento']['paciente_id'],
+                'medico_id'  => (int)$request['agendamento']['medico_id'],
+                'especializacao_id' => (int)$request['agendamento']['especializacao_id'],
+                'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].$request['agendamento']['medico_id'],
             ]);
 
             //Log
@@ -154,23 +153,7 @@ class AgendamentoController extends Controller
     public function setStatus(Request $request, $id){
         $agendamento = Agendamento::findOrFail($id);
         $date = strtotime($agendamento->inicio."-1 day");
-    
-        if($date > date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
-            return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
-        }
-        DB::beginTransaction();
-        try {
-            $agendamento->update(['status_id' => $request->input('status_id')]);
-            Log::create([
-                'usuario_id' => Auth::user()->id,
-                'acao'        => 'Atualização',
-                'descricao'   => 'Usuário '.Auth::user()->nome.' alterou o status da consulta'
-            ]);  
-            DB::commit();
-            return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
-        } catch(\Exception $e) {
-            return response()->json(['message' => 'Erro no servidor!'], 500);
-        }
+        return response()->json($date);
     }
 
     public function destroy($id)
