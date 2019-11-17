@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\{Usuario, Nivel, Estado, Endereco, Telefone, Especializacao, Documento, TipoDocumento, Agendamento, StatusAgendamento, LOg};
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use App\Http\Requests\{UsuarioCreateRequest, UsuarioUpdateRequest};
+use App\Http\Requests\UsuarioRequest;
+use Illuminate\Support\Facades\Validator;
 use DB;
 use Auth;
 
@@ -65,30 +66,40 @@ class UsuarioController extends Controller
     }
 
    
-    public function store(UsuarioCreateRequest $request){
+    public function store(UsuarioRequest $request){
 
-        return $request;
+        //Validando senha
+        $validator = Validator::make($request->all(), [
+            'usuario.password'                 => 'required|min:6|max:10',
+            'usuario.password_confirmation'    => 'required_with:password|same:usuario.password',
+        ], [
+            'required'      => 'Este campo é obrigatorio',
+            'required_if'   => 'Este campo é obrigatorio',
+            'required_with' => 'Este campo é obrigatorio',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         DB::beginTransaction();
         try {
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
 
-            // if($request['crm']) {
-            //     return 'entrou';
-            // }
-            // return 'não entrou';
-
-
             //registra as especializações do usuário e o tempo de retorno de cada uma.
             foreach($request['especializacoes'] as $especializacao) {
-                $usuario->especializacoes()->attach($especializacao['especializacao'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+                $usuario->especializacoes()->attach($especializacao['id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
             }
 
-            $documentos[] = $request['documento'];
+            $documentos = $request['documento'];
             
+            //Inclui o CRM no array de documentos quando o usuário é um médico
+            if($usuario->nivel_id == 3) {
+                $documentos[] = $request->input('crm');
+            }
             
-            foreach($request['documento'] as $documento) {
+            foreach($documentos as $documento) {
                 $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));
             }
 
@@ -132,20 +143,24 @@ class UsuarioController extends Controller
             'especializacoes' => Especializacao::all(),
             'especializacoes_usuario' => count($usuario->especializacoes) ? $usuario->especializacoes : [new Especializacao],
             'telefones' => count($usuario->telefones) ? $usuario->telefones : [new Telefone],
-            'documentos' => count($usuario->documentos) ? $usuario->documentos : [new Documento]
+            'documentos' => count($usuario->documentos) ? $usuario->documentos->where('tipo_documentos_id', '<>', 4) : [new Documento]
         ];
 
         return view('usuario.form', compact('data'));
     }
 
-    public function update(UsuarioUpdateRequest $request, $id)
+    public function update(UsuarioRequest $request, $id)
     {
         $usuario = Usuario::findOrFail($id);
 
         DB::beginTransaction();
         try {
 
-            $usuario->update($request->input('usuario'));
+            $usuario->update([
+                'nome' => $request['usuario']['nome'],
+                'email' => $request['usuario']['email']
+            ]);
+
             $usuario->endereco->update($request->input('endereco'));
 
             $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));

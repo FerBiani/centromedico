@@ -24,8 +24,9 @@ $(document).ready(function() {
         },
 
         rules: {
-            "usuario[nome]": "required",
-
+            "usuario[nome]": {
+                nome_sobrenome: true,
+            },
             "usuario[email]": {
                 required:true,
                 email:true, 
@@ -112,6 +113,39 @@ $(document).ready(function() {
         },
     });
 
+    jQuery.validator.addMethod("cpf", function(value, element) {
+        value = jQuery.trim(value);
+     
+         value = value.replace('.','');
+         value = value.replace('.','');
+         cpf = value.replace('-','');
+         while(cpf.length < 11) cpf = "0"+ cpf;
+         var expReg = /^0+$|^1+$|^2+$|^3+$|^4+$|^5+$|^6+$|^7+$|^8+$|^9+$/;
+         var a = [];
+         var b = new Number;
+         var c = 11;
+         for (i=0; i<11; i++){
+             a[i] = cpf.charAt(i);
+             if (i < 9) b += (a[i] * --c);
+         }
+         if ((x = b % 11) < 2) { a[9] = 0 } else { a[9] = 11-x }
+         b = 0;
+         c = 11;
+         for (y=0; y<10; y++) b += (a[y] * c--);
+         if ((x = b % 11) < 2) { a[10] = 0; } else { a[10] = 11-x; }
+     
+         var retorno = true;
+         if ((cpf.charAt(9) != a[9]) || (cpf.charAt(10) != a[10]) || cpf.match(expReg)) retorno = false;
+     
+         return this.optional(element) || retorno;
+     
+     }, "Informe um CPF válido.");
+
+    jQuery.validator.addMethod("nome_sobrenome", function(value, element) {
+        // allow any non-whitespace characters as the host part
+        return value.split(' ').length >= 2
+    }, 'Informe o nome e sobrenome.');
+
     const telefoneRules = {
         required: true,
         minlength:14,
@@ -132,13 +166,13 @@ $(document).ready(function() {
     })
 
     //Mostra os campos exclusivos do médico no carregamento da página
-    if($('#niveis').find('option:selected').val() == '3') {
+    if($('#niveis').find('option:selected').val() == '3' || $('#nivel_id_fixed').val() == '3') {
         //especializacoes
         $('select.especializacoes').removeAttr('disabled')
         $('#especializacoes').removeAttr('hidden')
 
         //tempo retorno
-        $('#tempo_retorno').removeAttr('disabled').removeAttr('hidden')
+        $('.tempo_retorno').removeAttr('disabled').removeAttr('hidden')
 
         //crm
         $('#crm').removeAttr('hidden')
@@ -151,12 +185,18 @@ $(document).ready(function() {
         $('#especializacoes').attr('hidden', 'hidden')
 
         //tempo retorno
-        $('#tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
+        $('.tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
 
         //crm
         $('#crm').attr('hidden', 'hidden')
         $('input[name="crm[tipo_documentos_id]"]').val('').attr('disabled', 'disabled')
         $('input[name="crm[numero]"]').val('').attr('disabled', 'disabled')
+    }
+
+    if($('.select-documentos').find('option:selected').val() == '2') {
+        $(this).parents().closest('.doc').find('input.documento').eq(0).mask('999.999.999-99').rules("add", "cpf");
+    } else {
+        $(this).parents().closest('.doc').find('input.documento').eq(0).unmask().rules("remove", "cpf");
     }
 
     $(document).on('click', '.add-tel', function() {
@@ -276,6 +316,7 @@ $('#cep').blur(function(){
     }
 });
 
+//Evento executado quando o nível é alterado
 $(document).on('change', '#niveis', function() {
     if($(this).find('option:selected').val() == '3') {
         //especializacoes
@@ -283,7 +324,7 @@ $(document).on('change', '#niveis', function() {
         $('#especializacoes').removeAttr('hidden')
 
         //tempo retorno
-        $('#tempo_retorno').removeAttr('disabled').removeAttr('hidden');
+        $('.tempo_retorno').removeAttr('disabled').removeAttr('hidden');
 
         //crm
         $('#crm').removeAttr('hidden')
@@ -296,12 +337,21 @@ $(document).on('change', '#niveis', function() {
         $('#especializacoes').attr('hidden', 'hidden')
 
         //tempo retorno
-        $('#tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
+        $('.tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
 
         //crm
         $('#crm').attr('hidden', 'hidden')
         $('input[name="crm[tipo_documentos_id]"]').val('').attr('disabled', 'disabled')
         $('input[name="crm[numero]"]').val('').attr('disabled', 'disabled')
+    }
+})
+
+//Evento executado quando um tipo de documento é alterado
+$(document).on('change', '.select-documentos', function() {
+    if($(this).find('option:selected').val() == '2') {
+        $(this).parents().closest('.doc').find('input.documento').eq(0).mask('999.999.999-99').rules("add", "cpf")
+    } else {
+        $(this).parents().closest('.doc').find('input.documento').eq(0).unmask().rules("remove", "cpf")
     }
 })
 

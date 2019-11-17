@@ -9,9 +9,17 @@
             <div class="card-body">
                 <form id="form" method="POST" action="{{url($data['url'])}}" autocomplete="off">
                     @csrf
+
+                    @foreach($errors->all() as $error) 
+                        <span>{{$error}}</span>
+                    @endforeach
                     
                     @if($data['method'])
                         @method($data['method'])
+                    @endif
+
+                    @if($data['usuario'])
+                        <input type="hidden" id="nivel_id_fixed" name="usuario[nivel_id]" value="{{$data['usuario']->nivel_id}}">
                     @endif
 
                     <h6>Dados Básicos</h6>
@@ -73,10 +81,10 @@
                                 <div class="col-md-3">
                                     <label class="col-form-label ">Especialização</label>
                                     <div class="input-group">
-                                        <select class="form-control especializacoes" id="especializacoes" name="especializacoes[{{$offset}}][especializacao]">
-                                            <option value="">Selecione</option>
+                                        <select class="form-control especializacoes" name="especializacoes[{{$offset}}][id]" required>
+                                            <option value="" disabled selected>Selecione</option>
                                             @foreach($data['especializacoes'] as $especializacao)
-                                                <option value="{{$especializacao->id}}" {{$especializacao->id == (old('especializacoes') ? $especializacao_usuario : ($data['usuario'] ? $especializacao_usuario->id : '')) ? 'selected' : ''}} >{{$especializacao->especializacao}}</option>
+                                                <option value="{{$especializacao->id}}" {{$especializacao_usuario['id'] == $especializacao->id ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
                                             @endforeach
                                         </select>
                                         <div class="input-group-append">
@@ -86,9 +94,9 @@
                                     <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                                 </div>
                                 <div class="col-md-3 mt-2">
-                                    <label for="retorno[tempo_retorno]" class="">Tempo de retorno (em dias)</label>
-                                    <input id="tempo_retorno" type="text" class="form-control" name="especializacoes[{{$offset}}][tempo_retorno]">
-                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('retorno.'.$offset.'.tempo_retorno') }}</small>
+                                    <label for="retorno[tempo_retorno]">Tempo de retorno (em dias)</label>
+                                    <input type="text" class="form-control tempo_retorno" name="especializacoes[{{$offset}}][tempo_retorno]" value="{{old('especializacoes') == null ? $especializacao_usuario['pivot']['tempo_retorno'] : $especializacao_usuario['tempo_retorno']}}">
+                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.'.$offset.'.tempo_retorno') }}</small>
                                 </div>
                             </div>
                         @endforeach
@@ -193,7 +201,7 @@
                                         @if($data['usuario'])
                                             <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
                                         @endif
-                                        <select class="form-control documento" name="documento[{{$offset}}][tipo_documentos_id]">
+                                        <select class="form-control documento select-documentos" name="documento[{{$offset}}][tipo_documentos_id]">
                                             @foreach(\App\TipoDocumento::all() as $tipoDocumento)
                                                 @if($tipoDocumento->id != 4)
                                                     <option {{$documento['tipo_documentos_id'] == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
