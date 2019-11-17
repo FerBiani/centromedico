@@ -13,26 +13,26 @@
 
                         <div class="form-group">
 
-                            <label for="email" class="col-md-4 col-form-label">E-mail</label>
+                            <label for="email" class="col-form-label">E-mail</label>
 
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-user"></i></span>
                                 </div>
                                 <input id="email" type="email" class="form-control" name="email" value="{{old('email') }}" required>
-                                </div>
-                                <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
+                            </div>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
                         </div>
 
                         <div class="form-group">
-                            <label for="password" class="col-md-4 col-form-label">Senha</label>
+                            <label for="password" class="col-form-label">Senha</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend"><i class="fas fa-lock"></i></span>
                                 </div>
                                <input id="password" type="password" class="form-control" name="password" required">
                             </div>
-                             <small id="error" class="errors font-text text-danger">{{ $errors->first('email') }}</small>
+                            <small id="error" class="errors font-text text-danger">{{ $errors->first('password') }}</small>
                         </div>
 
                         <div class="form-group text-center">

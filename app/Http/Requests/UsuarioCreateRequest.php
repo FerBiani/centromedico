@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-class UsuarioCreateRequest extends BaseFormRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class UsuarioCreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -12,20 +14,23 @@ class UsuarioCreateRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'usuario.nome'                  => 'required|max:100',
-            'usuario.email'                 => 'required|email',
-            'usuario.password'              => 'required|min:6|max:10',
-            'usuario.password_confirmation' => 'required|same:usuario.password',
-            'usuario.nivel_id'              => 'required',
-            'endereco.cep'                  => 'required',
-            'endereco.estado_id'            => 'required',
-            'endereco.bairro'               => 'required|max:100',
-            'endereco.logradouro'           => 'required|max:100',
-            'endereco.numero'               => 'required|numeric',
-            'endereco.complemento'          => 'max:255',
-            'telefone.*.numero'             => 'required|min:10|max:11',
+            'usuario.nome'                   => 'required|max:100',
+            'usuario.email'                  => 'required|email',
+            'usuario.password'               => 'required|min:6|max:10',
+            'usuario.password_confirmation'  => 'required|same:usuario.password',
+            'usuario.nivel_id'               => 'required',
+            'especializacoes.*'              => 'required_if:usuario.nivel_id,==,3',
+            'retorno.*.tempo_retorno'        => 'required_if:usuario.nivel_id,==,3',
+            'endereco.cep'                   => 'required',
+            'endereco.estado_id'             => 'required',
+            'endereco.bairro'                => 'required|max:100',
+            'endereco.logradouro'            => 'required|max:100',
+            'endereco.numero'                => 'required|numeric',
+            'endereco.complemento'           => 'max:255',
+            'telefone.*.numero'              => 'required|min:14|max:15',
             'documento.*.tipo_documentos_id' => 'required',
-            'documento.*.numero'            => 'required'
+            'documento.*.numero'             => 'required',
+            'documento.crm.numero'           => 'required_if:usuario.nivel_id,==,3'
         ];
     }
 

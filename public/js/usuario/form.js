@@ -131,20 +131,37 @@ $(document).ready(function() {
         }
     })
 
-    // if($('#niveis').find('option:selected').val() == '3') {
-    //     $('select.especializacoes').removeAttr('disabled')
-    //     $('#especializacoes').removeAttr('hidden')
-    //     $('select.especializacoes').prop('required',true);
-    // } else {
-    //     $('select.especializacoes').attr('disabled', 'disabled')
-    //     $('#especializacoes').attr('hidden', 'hidden')
-    // }
+    //Mostra os campos exclusivos do médico no carregamento da página
+    if($('#niveis').find('option:selected').val() == '3') {
+        //especializacoes
+        $('select.especializacoes').removeAttr('disabled')
+        $('#especializacoes').removeAttr('hidden')
+
+        //tempo retorno
+        $('#tempo_retorno').removeAttr('disabled').removeAttr('hidden')
+
+        //crm
+        $('#crm').removeAttr('hidden')
+        $('input[name="crm[tipo_documentos_id]"]').val('4').removeAttr('disabled')
+        $('input[name="crm[numero]"]').removeAttr('disabled')
+
+    } else {
+        //especializacoes
+        $('select.especializacoes').attr('disabled', 'disabled')
+        $('#especializacoes').attr('hidden', 'hidden')
+
+        //tempo retorno
+        $('#tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
+
+        //crm
+        $('#crm').attr('hidden', 'hidden')
+        $('input[name="crm[tipo_documentos_id]"]').val('').attr('disabled', 'disabled')
+        $('input[name="crm[numero]"]').val('').attr('disabled', 'disabled')
+    }
 
     $(document).on('click', '.add-tel', function() {
         if($('.tel').length < 4) {
             clonar('.tel', '#telefones', true)
-            $('.tel').last().find('input').val('')
-            $('.tel').last().find('.error').remove()
             mascararTel($('.tel').last().find('input'))
             $('.tel').last().find('.add-tel')
                 .removeClass('add-tel')
@@ -156,15 +173,17 @@ $(document).ready(function() {
             atualizaValidacoes('.telefone', telefoneRules)
 
         } else {
-            alert('Podem ser adicionados no máximo '+$(".tel").length+' telefones')
+            Swal.fire(
+                'Atenção!',
+                'Podem ser adicionados no máximo '+$(".tel").length+' telefones',
+                'warning'
+            )
         }
     })
 
     $(document).on("click", ".del-tel", function() {
         if($(".tel").length > 1) {
             remover(".tel", $(this))
-        } else {
-            alert('Deve conter no mínimo 1 telefone')
         }
     })
     
@@ -178,23 +197,23 @@ $(document).ready(function() {
                 .removeClass('fa fa-plus')
                 .addClass('fa fa-trash')
         } else {
-            alert('Podem ser adicionados no máximo '+$(".esp").length+' especializações')
+            Swal.fire(
+                'Atenção!',
+                'Podem ser adicionadas no máximo '+$(".esp").length+' especializações',
+                'warning'
+            )
         }
     })
     
     $(document).on("click", ".del-esp", function() {
         if($(".esp").length > 1) {
             remover(".esp", $(this))
-        } else {
-            alert('Deve conter no mínimo 1 especialização')
         }
     })
     
     $(document).on('click', '.add-doc', function() {
         if($('.doc').length < 10) {
             clonar('.doc', '#documentos', true)
-            $('.doc').last().find('input').val('')
-            $('.doc').last().find('.error').remove()
             $('.doc').last().find('.add-doc')
                 .removeClass('add-doc')
                 .addClass('del-doc')
@@ -210,15 +229,18 @@ $(document).ready(function() {
             })
 
         } else {
-            alert('Podem ser adicionados no máximo '+$(".doc").length+' documentos')
+            alert()
+            Swal.fire(
+                'Atenção!',
+                'Podem ser adicionados no máximo '+$(".doc").length+' documentos',
+                'warning'
+            )
         }
     })
     
     $(document).on("click", ".del-doc", function() {
         if($(".doc").length > 1) {
             remover(".doc", $(this))
-        } else {
-            alert('Deve conter no mínimo 1 documentos')
         }
     })
 
@@ -244,14 +266,9 @@ $('#cep').blur(function(){
                         }
                     })
 
-                    $(".cidades option").each(function() {
-                        if($(this).text() == dados.localidade){
-                            $(this).attr('selected', 'selected')
-                        }
-                    })
-
-                    $("#logradouro").val(dados.logradouro);
-                    $("#bairro").val(dados.bairro);
+                    $("#cidade").val(dados.localidade)
+                    $("#logradouro").val(dados.logradouro)
+                    $("#bairro").val(dados.bairro)
                     $("#numero").focus()
                 }
             })
@@ -261,66 +278,34 @@ $('#cep').blur(function(){
 
 $(document).on('change', '#niveis', function() {
     if($(this).find('option:selected').val() == '3') {
-        $('select.especializacoes').removeAttr('disabled')
+        //especializacoes
+        $('select.especializacoes').removeAttr('disabled');
         $('#especializacoes').removeAttr('hidden')
-        $('select.especializacoes').prop('required',true);
+
+        //tempo retorno
+        $('#tempo_retorno').removeAttr('disabled').removeAttr('hidden');
+
+        //crm
+        $('#crm').removeAttr('hidden')
+        $('input[name="crm[tipo_documentos_id]"]').val('4').removeAttr('disabled')
+        $('input[name="crm[numero]"]').removeAttr('disabled')
+
     } else {
+        //especializacoes
         $('select.especializacoes').attr('disabled', 'disabled')
         $('#especializacoes').attr('hidden', 'hidden')
-    }
-})
 
-$(document).on('change', '#niveis', function() {
-    if($(this).find('option:selected').val() == '3') {
-        $('input.tempo_retorno').removeAttr('disabled')
-        $('#tempo_retorno').removeAttr('hidden')
-        $('input.tempo_retorno').prop('required',true);
-    } else {
-        $('input.tempo_retorno').attr('disabled', 'disabled')
-        $('#tempo_retorno').attr('hidden', 'hidden')
-    }
-})
+        //tempo retorno
+        $('#tempo_retorno').attr('disabled', 'disabled').attr('hidden', 'hidden').val('')
 
-$(document).on('change', '#niveis', function() {
-    if($(this).find('option:selected').val() == '3') {
-        $('#crm').removeAttr('disabled')
-        $('#crm').removeAttr('hidden')
-        $('#crm').prop('required',true);
-    } else {
-        $('#crm').attr('disabled', 'disabled')
+        //crm
         $('#crm').attr('hidden', 'hidden')
+        $('input[name="crm[tipo_documentos_id]"]').val('').attr('disabled', 'disabled')
+        $('input[name="crm[numero]"]').val('').attr('disabled', 'disabled')
     }
 })
 
 //ENDEREÇO
-$('.estados').change(function() {
-    atualizarCidades($(".estados option:selected").data("uf"), $(".estados").data('cidade'))
-    $(".estados").data('cidade','')
-})
-
-function atualizarCidades(uf, selected_id = null) {
-    $.ajax({
-        url: main_url + "/usuario/get-cidades/"+uf,
-        type: 'GET',
-        success: function(data){
-            $(".cidades option").remove();
-            $(".cidades").append("<option value=''>Selecione</option>")
-            $.each(data, function(i, cidade) {
-                $(".cidades").append(`<option ${selected_id == cidade.id ? 'selected' : ''} value=${cidade.id}>${cidade.nome}</option>`)
-            })
-        }
-    })
-}
-
-function selecionarCidade(cidade) {
-    $(".cidades option").removeAttr('selected')
-    $(".cidades option").each(function() {
-        if($(this).text() == cidade){
-            $(this).attr("selected", "selected")
-        }
-    })
-}
-
 function selecionarEstado(uf) {
     $(".estados option").removeAttr('selected')
     $(".estados option").each(function() {

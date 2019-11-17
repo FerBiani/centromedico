@@ -171,8 +171,6 @@ class AgendamentoController extends Controller
         } catch(\Exception $e) {
             return response()->json(['message' => 'Erro no servidor!'], 500);
         }
-        
-      
     }
 
     public function destroy($id)

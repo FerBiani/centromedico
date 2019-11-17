@@ -14,7 +14,7 @@ class AgendamentoCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'consulta.especializacoe_id' => 'required',
+            'consulta.especializacoes_id' => 'required',
             'consulta.medico_id' => 'required',
             'consulta.data' => 'required',
             'consulta.hora' => 'required'

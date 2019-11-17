@@ -1,5 +1,11 @@
 function clonar(target, local, indices) {
-    $(target).last().clone().appendTo(local).hide().fadeIn()
+    let clone = $(target).last().clone()
+
+    clone.find('input').val('').removeClass('is-valid').removeClass('is-invalid')
+    clone.find('select').removeClass('is-valid').removeClass('is-invalid')
+    clone.find('.error').remove()
+    
+    clone.appendTo(local)
 
     if(indices) {
         $(target).last().find('input, select').each(function() {
