@@ -204,6 +204,16 @@
         @auth
         <script>
             var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
+
+            socket.on('check_in', function(data){
+                console.log(data)
+
+                $("#checkin-status-"+data.agendamento_id)
+                    .removeClass('text-danger')
+                    .addClass('text-success')
+                    .find('.checkin-status-text')
+                    .text('Check-in efetuado')
+            })
         </script>
         @endauth
         <!-- Toggle Menu Script -->

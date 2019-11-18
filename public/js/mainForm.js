@@ -2,7 +2,7 @@ function clonar(target, local, indices) {
     let clone = $(target).last().clone()
 
     clone.find('input').val('').removeClass('is-valid').removeClass('is-invalid')
-    clone.find('select').removeClass('is-valid').removeClass('is-invalid')
+    clone.find('select').removeClass('is-valid').removeClass('is-invalid').prop("selectedIndex", 0);
     clone.find('.error').remove()
     
     clone.appendTo(local)

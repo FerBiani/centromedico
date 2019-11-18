@@ -68,20 +68,6 @@ class UsuarioController extends Controller
    
     public function store(UsuarioRequest $request){
 
-        //Validando senha
-        $validator = Validator::make($request->all(), [
-            'usuario.password'                 => 'required|min:6|max:10',
-            'usuario.password_confirmation'    => 'required_with:password|same:usuario.password',
-        ], [
-            'required'      => 'Este campo é obrigatorio',
-            'required_if'   => 'Este campo é obrigatorio',
-            'required_with' => 'Este campo é obrigatorio',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
         DB::beginTransaction();
         try {
             $usuario = Usuario::create($request['usuario']);
@@ -89,7 +75,7 @@ class UsuarioController extends Controller
 
             //registra as especializações do usuário e o tempo de retorno de cada uma.
             foreach($request['especializacoes'] as $especializacao) {
-                $usuario->especializacoes()->attach($especializacao['id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+                $usuario->especializacoes()->attach($especializacao['especializacao_id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
             }
 
             $documentos = $request['documento'];
@@ -163,11 +149,24 @@ class UsuarioController extends Controller
 
             $usuario->endereco->update($request->input('endereco'));
 
-            $usuario->especializacoes()->attach($request['especializacoes'], array('tempo_retorno' => $request['retorno']['tempo_retorno'],'usuario_id' => $usuario->id ));
+            //deleta todas as especializacoes para serem atualizadas
+            $usuario->especializacoes()->detach();
 
+            //insere todas as especializações que estão vindo do formulário
+            foreach($request['especializacoes'] as $especializacao) {
+                $usuario->especializacoes()->attach($especializacao['especializacao_id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+            }
+
+            $documentos = $request['documento'];
+            
+            //Inclui o CRM no array de documentos quando o usuário é um médico
+            if($usuario->nivel_id == 3) {
+                $documentos[] = $request->input('crm');
+            }
+            
             $documentosRequestIds = [];
 
-            foreach($request->input('documento') as $documento){
+            foreach($documentos as $documento){
                 if($documento['id'] !== null) {
                     Documento::find($documento['id'])->update($documento);
                 } else {

@@ -76,27 +76,31 @@
                     <div id="especializacoes" {{$data['usuario'] && $data['usuario']->nivel_id == 3 ? '' : 'hidden'}}>
                         <hr>
                         <h6>Especializações</h6>
-                        @foreach(old('especializacoes', $data['especializacoes_usuario']) as $offset => $especializacao_usuario)
-                            <div class="form-group row esp">
+                        @foreach($data['especializacoes_usuario'] as $offset => $especializacao_usuario)
+                            <div class="row esp">
                                 <div class="col-md-3">
-                                    <label class="col-form-label ">Especialização</label>
-                                    <div class="input-group">
-                                        <select class="form-control especializacoes" name="especializacoes[{{$offset}}][id]" required>
-                                            <option value="" disabled selected>Selecione</option>
-                                            @foreach($data['especializacoes'] as $especializacao)
-                                                <option value="{{$especializacao->id}}" {{$especializacao_usuario['id'] == $especializacao->id ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="input-group-append">
-                                            <span class="btn btn-outline-secondary add-esp"><i class="fa fa-plus"></i></span>
+                                    <div class="form-group">
+                                        <label class="col-form-label ">Especialização</label>
+                                        <div class="input-group">
+                                            <select class="form-control especializacoes" name="especializacoes[{{$offset}}][especializacao_id]" required>
+                                                <option disabled selected>Selecione</option>
+                                                @foreach($data['especializacoes'] as $especializacao)
+                                                    <option value="{{$especializacao->id}}" {{$especializacao_usuario['pivot']['especializacao_id'] == $especializacao->id ? 'selected' : ''}}>{{$especializacao->especializacao}}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="input-group-append">
+                                                <span class="btn btn-outline-secondary add-esp"><i class="fa fa-plus"></i></span>
+                                            </div>
                                         </div>
+                                        <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes'.$offset.'.especializacao_id') }}</small>
                                     </div>
-                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes') }}</small>
                                 </div>
-                                <div class="col-md-3 mt-2">
-                                    <label for="retorno[tempo_retorno]">Tempo de retorno (em dias)</label>
-                                    <input type="text" class="form-control tempo_retorno" name="especializacoes[{{$offset}}][tempo_retorno]" value="{{old('especializacoes') == null ? $especializacao_usuario['pivot']['tempo_retorno'] : $especializacao_usuario['tempo_retorno']}}">
-                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.'.$offset.'.tempo_retorno') }}</small>
+                                <div class="col-md-3">
+                                    <div class="form-group mt-2">
+                                        <label for="retorno[tempo_retorno]">Tempo de retorno (em dias)</label>
+                                        <input type="text" class="form-control tempo_retorno" name="especializacoes[{{$offset}}][tempo_retorno]" value="{{$especializacao_usuario['pivot']['tempo_retorno']}}" required>
+                                        <small id="error" class="errors font-text text-danger">{{ $errors->first('especializacoes.'.$offset.'.tempo_retorno') }}</small>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -232,10 +236,10 @@
                             <div class="form-group">
                                 <label class="col-form-label">CRM</label>
                                 @if($data['usuario'])
-                                    <input type="hidden" name="crm[id]" value="{{$data['usuario'] ? $data['usuario']->getCRM()->id : ''}}">
+                                    <input type="hidden" name="crm[id]" value="{{$data['usuario'] && $data['usuario']->getCRM() ? $data['usuario']->getCRM()->id : ''}}">
                                 @endif
                                 <input type="hidden" name="crm[tipo_documentos_id]">
-                                <input type="text" placeholder="Numero" class="form-control" name="crm[numero]" value="{{old('crm.numero', $data['usuario'] ? $data['usuario']->getCRM()->numero : '')}}" required>
+                                <input type="text" placeholder="Numero" class="form-control" name="crm[numero]" value="{{old('crm.numero', $data['usuario'] && $data['usuario']->getCRM() ? $data['usuario']->getCRM()->numero : '')}}" required>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('crm.numero') }}</small>
                             </div>
                         </div>

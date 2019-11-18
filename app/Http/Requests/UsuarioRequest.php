@@ -13,22 +13,25 @@ class UsuarioRequest extends FormRequest
 
     public function rules()
     {
+
         return [
-            'usuario.nome'                     => 'required|max:100',
-            'usuario.email'                    => 'required|email',
-            'usuario.nivel_id'                 => 'required',
-            'especializacoes.*.id'             => 'required_if:usuario.nivel_id,==,3',
-            'especializacoes.*.tempo_retorno'  => 'required_if:usuario.nivel_id,==,3',
-            'endereco.cep'                     => 'required',
-            'endereco.estado_id'               => 'required',
-            'endereco.bairro'                  => 'required|max:100',
-            'endereco.logradouro'              => 'required|max:100',
-            'endereco.numero'                  => 'required|numeric',
-            'endereco.complemento'             => 'max:255',
-            'telefone.*.numero'                => 'required|min:14|max:15',
-            'documento.*.tipo_documentos_id'   => 'required',
-            'documento.*.numero'               => 'required',
-            'crm.numero'                       => 'required_if:usuario.nivel_id,==,3'
+            'usuario.nome'                        => 'required|max:100',
+            'usuario.email'                       => 'required|email',
+            'usuario.password'                    => 'required_if:'.$this->route('usuario').',!==,null|min:6|max:10',
+            'usuario.password_confirmation'       => 'required_if:'.$this->route('usuario').',!==,null|same:usuario.password',
+            'usuario.nivel_id'                    => 'required',
+            'especializacoes.*.especializacao_id' => 'required_if:usuario.nivel_id,==,3',
+            'especializacoes.*.tempo_retorno'     => 'required_if:usuario.nivel_id,==,3',
+            'endereco.cep'                        => 'required',
+            'endereco.estado_id'                  => 'required',
+            'endereco.bairro'                     => 'required|max:100',
+            'endereco.logradouro'                 => 'required|max:100',
+            'endereco.numero'                     => 'required|numeric',
+            'endereco.complemento'                => 'max:255',
+            'telefone.*.numero'                   => 'required|min:14|max:15',
+            'documento.*.tipo_documentos_id'      => 'required',
+            'documento.*.numero'                  => 'required',
+            'crm.numero'                          => 'required_if:usuario.nivel_id,==,3'
         ];
     }
 

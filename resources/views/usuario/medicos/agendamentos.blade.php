@@ -112,15 +112,21 @@
                 },
                 type: "POST",
                 url: "{{url('set-status')}}/"+id,
+                datatype: "json",
                 data: { 'status_id': value }, 
                 success: function(data)
                 {
+
                     Swal.fire(data.message)
 
                     //atualiza a página
                     setTimeout(() => {
                         location.reload()
                     }, 1000);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                    console.log(thrownError);
                 }
             });
         }

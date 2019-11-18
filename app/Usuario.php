@@ -55,7 +55,7 @@ class Usuario extends Authenticatable
     }
     
     public function especializacoes(){
-        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes', 'usuario_id', 'especializacao_id')->withPivot('tempo_retorno');
+        return $this->belongsToMany('App\Especializacao', 'usuarios_has_especializacoes')->withPivot('tempo_retorno');
     }
 
     public function horarios(){
@@ -77,10 +77,9 @@ class Usuario extends Authenticatable
             if($crm) {
                 return $crm;
             }
-
-            return '';
         }
-        return '';
+
+        return false;
     }
 
     //Envio de e-mail para resetar senha

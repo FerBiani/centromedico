@@ -66,7 +66,6 @@
 <script>
 
     socket.on('check_in', function(data){
-        console.log(data)
 
         $("#checkin-status-"+data.agendamento_id)
             .removeClass('text-danger')
