@@ -65,6 +65,8 @@
     </div>
 </div>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
 @section('js')
 <script>
         $("#form-pesquisa").submit(function(e) {
@@ -77,7 +79,26 @@
                 success: function(data)
                 {
                     $("#myTabContent").html(data)
+                },
+                error: function(){
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+
+                    Toast.fire({
+                    type: 'error',
+                    title: 'Nenhum resultado foi encontrado'
+                    })
                 }
+
             });
 
         });

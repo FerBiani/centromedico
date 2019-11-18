@@ -12,6 +12,7 @@
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('js/chartsjs/sweetalert.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.css') }}" rel="stylesheet" />
