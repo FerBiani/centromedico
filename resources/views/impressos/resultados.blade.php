@@ -1,42 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
-    <title>Document</title>
-</head>
-<body>
-   <div class="container mt-5">
-   <div class="card">
-        <div class="card-header">Relatório da programação diária de pacientes</div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="usuario-table" class="table table-hover">
-                    <thead class="thead thead-light">
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Inicio</th>
-                            <th>Fim</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($consultas as $consulta)
-                            <tr>
-                                <td>{{\App\Usuario::find($consulta->paciente_id)->nome}}</td>
-                                <td>{{ $consulta->inicio }}</td>
-                                <td>{{ $consulta->fim }}</td> 
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-   </div>
-</body>
-<script>
-    window.print()
-</script>
-</html>
+<div class="table-responsive">
+    <table id="horario-table" class="table table-hover">
+        <thead class="thead thead-light">
+            <tr>
+                <th>Médico</th>
+                <th>Vizualisar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($dados as $medico)
+            <tr>
+                <td>{{$medico->nome}}</td>
+                <td>
+                    <a href="{{url('atendente/resultado/'.$medico->id)}}" target="_blank">
+                        <button class="btn btn-primary">Resumo Diário <span class="badge badge-light ml-3">{{ \App\Agendamento::where('medico_id', $medico->id)->whereDate('inicio', date('Y-m-d'))->count() }}</span></button>
+                    </a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="100%" class="text-center">
+                    <p class="text-center">
+                        Página {{$dados->currentPage()}} de {{$dados->lastPage()}} - Exibindo {{$dados->perPage()}} registro(s) por página de {{$dados->total()}} registro(s) no total
+                    </p>
+                </td>
+            </tr>
+            @if($dados->lastPage() > 1)
+            <tr>
+                <td colspan="100%">
+                    {{ $dados->links() }}
+                </td>
+            </tr>
+            @endif
+        </tfoot>
+    </table>
+</div>

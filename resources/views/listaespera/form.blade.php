@@ -12,18 +12,18 @@
                 @endif
                     <div class="form-group">
                         <div class="col-md-12">
-                            <label for="" class="col-form-label">Paciente</label>
+                            <label for="lista[paciente_id]" class="col-form-label">Paciente</label>
                             <div class="input-group">
-                                <select id="paciente-select" class="form-control " name="paciente_id"></select>
+                                <select id="paciente-select" class="form-control " name="lista[paciente_id]"></select>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('lista.paciente') }}</small>
                             </div> 
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <label class="col-form-label">Dia da Semana</label>
+                            <label for="lista[dia_semana_id]" class="col-form-label">Dia da Semana</label>
                             <div class="input-group">
-                                <select id="dia-select" class="form-control" name="dia_semana_id">
+                                <select id="dia-select" class="form-control" name="lista[dia_semana_id]">
                                 @foreach($data['dias'] as $dia)
                                     <option value="{{$dia->id}}">{{$dia->dia}}</option>
                                 @endforeach
@@ -34,9 +34,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <label class="col-form-label">Especialização</label>
+                            <label for="lista['especializacao_id']" class="col-form-label">Especialização</label>
                             <div class="input-group">
-                                <select id="especializacao-select" class="form-control" name="especializacao_id">
+                                <select id="especializacao-select" class="form-control" name="lista[especializacao_id]">
                                 @foreach($data['especializacoes'] as $especializacao)
                                     <option value="{{$especializacao->id}}">{{$especializacao->especializacao}}</option>
                                 @endforeach
@@ -132,6 +132,42 @@
     function formatSelection (repo) {
         return repo.nome || repo.text;
     }
+
+    //VALIDAÇÕES
+    $("#form").validate({
+            highlight:function(input){
+                jQuery(input).addClass('is-invalid');
+            },
+
+            unhighlight:function(input){
+                jQuery(input).removeClass('is-invalid');
+                jQuery(input).addClass('is-valid');
+            },
+
+            errorPlacement:function(error, element)
+            {
+                jQuery(element).parents('.form-group').find('#error').append(error);
+            },
+
+            rules: {
+                "lista[paciente_id]": "required",
+                "lista[dia_semana_id]": "required",
+                "lista[especializacao_id]":"required",
+            },
+
+            messages: {
+
+                "lista[paciente_id]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "lista[dia_semana_id]":{
+                    required: 'Este campo é obrigatório',
+                },
+                "lista[especializacao_id]":{
+                    required: 'Este campo é obrigatório',
+                },
+            },
+        });
 
         
     $(document).on('click', '.send-form', function() {

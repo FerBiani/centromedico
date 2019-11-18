@@ -24,12 +24,18 @@ class AgendamentoRequest extends FormRequest
     public function rules()
     {
         return [
-            'inicio' => ['required'],
-            'fim'    => ['required'],
-            'medico_id' => ['required'],
-            'agendamento.especialidade' => ['required'],
-            'paciente_id' => ['required'],
-            'data' => ['required']
+            'agendamento.inicio' => ['required'],
+            'agendamento.fim'    => ['required'],
+            'agendamento.medico_id' => ['required'],
+            'agendamento.especializacao_id' => ['required'],
+            'agendamento.paciente_id' => ['required'],
+            'agendamento.data' => ['required']
+        ];
+    }
+
+    public function messages(){
+        return [
+            'required'      => 'Este campo é obrigatorio',
         ];
     }
 }

@@ -1,12 +1,10 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-info text-white h5">Horários</div>
             <div class="card-body">
-
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <div class="text-right">
@@ -17,7 +15,6 @@
                 <div class="tab-content" id="myTabContent">
                     
                 </div>
-
             </div>
         </div>
     </div>
@@ -28,8 +25,6 @@
 
 function setLoading(target) {
     var loading = $('<h3></h3>').attr({'class': 'text-center'})
-    // var img = $('<img />').attr({'src': main_url+"/modules/funcionario/img/load.svg"})
-    // img.appendTo(loading)
     target.html(loading)
 }
 

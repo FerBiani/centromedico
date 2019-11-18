@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
 </head>
 <body>
-    
         <div class="container">
             <div class="card my-5">
                 <div class="card-header">
@@ -17,7 +16,7 @@
                 </div>
                 <div class="card-body my-5">
                     <div class="col-md-12 text-left">
-                        <p>Atesto que o paciente <strong>{{$paciente->nome}}</strong> necessita 
+                        <p>Atesto que o(a) Sr.(a) <strong>{{$paciente->nome}}</strong> necessita 
                         de ________ dias de afastamento por motivos médicos.
                         </p>
                     </div>
@@ -28,19 +27,15 @@
                     <div class="col-md-12 text-right">
                         _______________________________, {{date('d/m/Y H:i')}}
                     </div>
-                    <div class="col-md-12 text-center mt-5">
-                        
+                    <div class="col-md-12 text-center mt-5">  
                         <p>________________________________</p>
                         <p class="small">{{Auth::user()->nome}} | CRM: {{Auth::user()->documentos()->where('tipo_documentos_id', 4)->first()->numero}}</p>
-                   
                     </div>
                 </div>
             </div>
         </div>
     <script>
-
         window.print() 
-        
     </script>
 </body>
 </html>

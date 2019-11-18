@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function() {
             Route::get('relatorio', 'RelatorioController@pacientes');
             Route::get('resultado/{id}', 'RelatorioController@consultas');
             Route::get('atestado/{id}', 'RelatorioController@atestado');
+            Route::get('relatorio/list', 'RelatorioController@list');
         });
 
         Route::prefix('lista')->group(function(){

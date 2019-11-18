@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\{ListaEspera, DiaSemana, Especializacao, Log, Usuario};
+use App\Http\Requests\{ListaEsperaRequest};
 use DB;
 use auth;
 class ListaEsperaController extends Controller
@@ -31,13 +32,13 @@ class ListaEsperaController extends Controller
         return view('listaespera.form', compact('data'));
     }
 
-    public function store(Request $request){
+    public function store(ListaEsperaRequest $request){
         DB::beginTransaction();
         try{ 
             ListaEspera::create([
-                'paciente_id' => $request['paciente_id'],
-                'dia_semana_id' => $request['dia_semana_id'],
-                'especializacao_id' => $request['especializacao_id'],
+                'paciente_id' => $request['lista']['paciente_id'],
+                'dia_semana_id' => $request['lista']['dia_semana_id'],
+                'especializacao_id' => $request['lista']['especializacao_id'],
             ]);
             DB::commit();
             Log::create([

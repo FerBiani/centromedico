@@ -21,13 +21,29 @@ class RelatorioController extends Controller
     }
 
     public function pacientes(){
-        $medicos = Usuario::where('nivel_id', 3)->paginate(10);
+       $medicos = Usuario::where('nivel_id', 3)->paginate(10);
        return view('impressos.pacientes', compact('medicos')); 
     }
 
     public function consultas($id){
        $consultas = Agendamento::where('medico_id', $id)->whereDate('inicio', date('Y-m-d'))->get();
-       return view('impressos.resultados', compact('consultas'));
+       return view('impressos.programacaodiaria', compact('consultas'));
+    }
+
+     public function list(Request $request){
+        $dados = new Usuario;
+
+        if($request['pesquisa']) {
+            $dados = Usuario::where('nome', 'like', '%'.$request['pesquisa'].'%');   
+        }
+
+        if($dados){
+            $dados = $dados->paginate(10);
+            return view('impressos.resultados', compact('dados'));
+        }else{
+            return back()->with('error', 'Nenhum resultado foi encontrado');
+        }
+
     }
 
     public function atestado($id){

@@ -144,7 +144,6 @@
                     required: true,
                     time24: true
                 }
-
             },
 
             messages: {

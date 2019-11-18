@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\ListaEspera;
 
 class ListaEsperaTest extends TestCase
 {
@@ -14,11 +15,13 @@ class ListaEsperaTest extends TestCase
      * @return void
      */
     public function testNewWaitingListRegistration(){
-        $response = $this->visit('/lista/create')
-         ->select('1', 'paciente_id')
-         ->select('1', 'dia_semana_id')
-         ->select('1', 'especializacao_id')
-         ->press('Enviar');
-         $this->assertTrue(true);
+       \App\ListaEspera::create([
+            'paciente_id' => '6',
+            'dia_semana_id' => '1',
+            'especializacao_id' => '3',
+          ]);
+        
+          $this->assertDatabaseHas('lista_espera', ['dia_semana_id' => '1']);
+   
       }
 }

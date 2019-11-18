@@ -12,49 +12,49 @@
                         <div class="col-md-6">
                             <label for="agendamento[inicio]" class="col-form-label">Início</label>
                             <div class="input-group">
-                                <input readonly id="inicio" type="text" class="form-control especialidade" name="inicio" value="{{ $data['horario']->inicio }}">
+                                <input readonly id="inicio" type="text" class="form-control especialidade" name="agendamento[inicio]" value="{{ $data['horario']->inicio }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.inicio') }}</small>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="" class="col-form-label">Fim</label>
+                            <label for="agendamento[fim]" class="col-form-label">Fim</label>
                             <div class="input-group">
-                                <input readonly id="fim" type="text" class="form-control" id="validationCustom01" name="fim" value="{{ $data['horario']->fim }}">
+                                <input readonly id="fim" type="text" class="form-control" id="validationCustom01" name="agendamento[fim]" value="{{ $data['horario']->fim }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.fim') }}</small>
                             </div> 
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label for="agendamento[medico]" class="col-form-label">Medico</label>
+                            <label for="agendamento[medico_id]" class="col-form-label">Medico</label>
                             <div class="input-group">
                                 <input readonly type="text" class="form-control especialidade"  value="{{ $data['horario']->usuario->nome }}">
-                                <input type="hidden"  name="medico_id" value="{{ $data['horario']->usuario->id }}">
+                                <input type="hidden"  name="agendamento[medico_id]" value="{{ $data['horario']->usuario->id }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.inicio') }}</small>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label for="agendamento['especializacao']" class="col-form-label">Especialização</label>
+                            <label for="agendamento['especializacao_id']" class="col-form-label">Especialização</label>
                             <div class="input-group">
                                 <input readonly type="text" class="form-control" value="{{ $data['horario']->especializacoes->especializacao }}">
-                                <input type="hidden"  name="especializacao_id" value="{{ $data['horario']->especializacoes->id }}">
+                                <input type="hidden"  name="agendamento[especializacao_id]" value="{{ $data['horario']->especializacoes->id }}">
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacao') }}</small>
                             </div> 
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label for="agendamento['paciente']" class="col-form-label">Paciente</label>
+                            <label for="agendamento['paciente_id']" class="col-form-label">Paciente</label>
                             <div class="input-group">
-                                <select id="paciente-select" class="form-control form-lg" name="paciente_id" required></select>
+                                <select id="paciente-select" class="form-control form-lg" name="agendamento[paciente_id]" required></select>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('paciente_id') }}</small> 
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="agendamento['dia']" class="col-form-label">Dia</label>
-                            <select id="select-data" class="form-control" name="data">
+                            <label for="agendamento['data']" class="col-form-label">Dia</label>
+                            <select id="select-data" class="form-control" name="agendamento[data]">
                                 @foreach($data['horario']->diasDoMes() as $dia)
                                     <option>{{$dia->format('d/m/Y')}}</option>
                                 @endforeach
