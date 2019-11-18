@@ -27,6 +27,20 @@ class HorarioController extends Controller
         return view('usuario.medicos.horario.table', compact('horarios'));
     }
 
+    public function get($medicoId, $especializacaoId) {
+
+        $medico = Usuario::findOrFail($medicoId);
+
+        if($medico->nivel_id !== 3) {
+            return back()->with('error', 'O usuário informado não é um médico!');
+        }
+
+        $horarios = Horario::where('usuario_id', $medico->id)->where('especializacao_id', $especializacaoId)->get();
+
+        return $horarios;
+
+    }
+
     public function create()
     {
         $data = [

@@ -101,11 +101,15 @@ Route::middleware('auth')->group(function() {
             Route::get('/list', 'ListaEsperaController@list');
         });
 
-        Route::prefix('retorno')->group(function(){
-            Route::get('/novo/{id}', 'RetornoController@create');
-            Route::get('/create/{id}', 'RetornoController@create');
-            Route::post('/store', 'RetornoController@store');
+        Route::prefix('horario')->group(function() {
+            Route::get('get/{medicoId}/{especializacaoId}', 'HorarioController@get');
         });
+
+        // Route::prefix('retorno')->group(function(){
+        //     Route::get('/novo/{id}', 'RetornoController@create');
+        //     Route::get('/create/{id}', 'RetornoController@create');
+        //     Route::post('/store', 'RetornoController@store');
+        // });
 
     });
 
