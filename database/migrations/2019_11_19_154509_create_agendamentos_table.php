@@ -23,6 +23,7 @@ class CreateAgendamentosTable extends Migration {
 			$table->string('codigo_check_in', 45);
 			$table->integer('check_in_id')->unsigned()->nullable()->index('fk_agendamentos_check_in_id_idx');
 			$table->integer('status_id')->unsigned()->nullable()->index('fk_agendamentos_status_id_idx');
+			$table->integer('agendamento_id')->nullable()->index('fk_agendamentos_agendamento_id_idx');
 			$table->timestamps();
 			$table->softDeletes();
 		});

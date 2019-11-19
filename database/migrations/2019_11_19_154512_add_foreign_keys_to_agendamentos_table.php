@@ -14,6 +14,7 @@ class AddForeignKeysToAgendamentosTable extends Migration {
 	{
 		Schema::table('agendamentos', function(Blueprint $table)
 		{
+			$table->foreign('agendamento_id', 'fk_agendamentos_agendamento_id')->references('id')->on('agendamentos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('check_in_id', 'fk_agendamentos_check_in_id')->references('id')->on('check_ins')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
@@ -28,6 +29,7 @@ class AddForeignKeysToAgendamentosTable extends Migration {
 	{
 		Schema::table('agendamentos', function(Blueprint $table)
 		{
+			$table->dropForeign('fk_agendamentos_agendamento_id');
 			$table->dropForeign('fk_agendamentos_check_in_id');
 		});
 	}

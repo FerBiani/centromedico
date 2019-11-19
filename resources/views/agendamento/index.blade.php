@@ -12,9 +12,22 @@
                 <div class="alert alert-secondary" role="alert">
                     <div class="row align-items-center">
                         <div class="col-md-3">
-                            <h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
+                            <h6 class="alert-heading"><i class="fas fa-hashtag"></i> {{ $consulta->id }} </h6>
+                        </div>
+                        @if($consulta->agendamento_id)
                         <div class="col-md-3">
-                            <h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
+                            <h6 class="alert-heading"><i class="fas fa-back"></i> Retorno da consulta <i class="fas fa-hashtag"></i> {{ $consulta->agendamento_id }} </h6>
+                        </div>
+                        @endif
+                    </div>
+                    <hr>
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6>
+                        </div> 
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6>
+                        </div>
                        
                         <div class="col-md-6 text-right">
                             @if($consulta->status_id == 4)
@@ -77,32 +90,43 @@
       </div>
       <div class="modal-body">
         <div class="col-md-12">
-            <div class="form-group">
-                <label for="select-dias-semana">Dia da semana</label>
-                <input id="medico_id" type="hidden" name="medico_id">
-                <input id="especializacao_id" type="hidden" name="especializacao_id">
-                <input id="agendamento_id" type="hidden" name="agendamento_id">
-                <select id="select-dias-semana" class="form-control">
-                    <option value="1">Segunda-feira</option>
-                    <option value="2">Terça-feira</option>
-                    <option value="3">Quarta-feira</option>
-                    <option value="4">Quinta-feira</option>
-                    <option value="5">Sexta-feira</option>
-                    <option value="6">Sábado</option>
-                    <option value="7">Domingo</option>
-                </select>
+            <div id="status" class="row d-none">
             </div>
-            <div class="form-group">
-                <label for="select-dias-semana">Horário desejado</label>
-                <input id="horario" class="form-control" type="text" name="horario">
-            </div>
-            <div class="form-group text-center">
-                <button id="btn-buscar-horarios" onclick="buscarHorarios()" class="btn btn-primary">Buscar horários</button>
-            </div>
-            <div class="form-group">
-                <label for="select-dias-mes">Dia do mês</label>
-                <select id="select-dias-mes" class="form-control"></select>
-            </div>
+            <form method="POST" action="{{url('atendente/agendamento')}}">
+                @csrf
+                <div class="form-group">
+                    <label for="select-dias-semana">Dia da semana</label>
+                    <input id="medico_id" type="hidden" name="agendamento[medico_id]">
+                    <input id="especializacao_id" type="hidden" name="agendamento[especializacao_id]">
+                    <input id="agendamento_id" type="hidden" name="agendamento[agendamento_id]">
+                    <input id="paciente_id" type="hidden" name="agendamento[paciente_id]">
+                    <input id="inicio_id" type="hidden" name="agendamento[inicio]">
+                    <input id="fim_id" type="hidden" name="agendamento[fim]">
+                    <select id="select-dias-semana" class="form-control">
+                        <option value="1">Segunda-feira</option>
+                        <option value="2">Terça-feira</option>
+                        <option value="3">Quarta-feira</option>
+                        <option value="4">Quinta-feira</option>
+                        <option value="5">Sexta-feira</option>
+                        <option value="6">Sábado</option>
+                        <option value="7">Domingo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="select-dias-semana">Horário desejado</label>
+                    <input id="horario" class="form-control" type="text">
+                </div>
+                <div class="form-group text-center">
+                    <a href="#" id="btn-buscar-horarios" onclick="buscarHorarios()" class="btn btn-primary text-white">Buscar horários</a>
+                </div>
+                <div class="form-group">
+                    <label for="select-dias-mes">Dia do mês</label>
+                    <select name="agendamento[data]" id="select-dias-mes" class="form-control"></select>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-success">Marcar</button>
+                </div>
+            </form>
         </div>
       </div>
       <div class="modal-footer">
@@ -173,6 +197,7 @@
         consulta = JSON.parse(consulta)
 
         $('#medico_id').val(consulta['medico_id'])
+        $('#paciente_id').val(consulta['paciente_id'])
         $('#especializacao_id').val(consulta['especializacao_id'])
         $('#agendamento_id').val(consulta['id'])
 
@@ -185,6 +210,18 @@
         let agendamento_id = $('#agendamento_id').val()
         let dia_semana_id = $('#select-dias-semana').find('option:selected').val()
         let horario = $('#horario').val()
+
+        if(agendamento_id == '' || dia_semana_id == '' || horario == '') {
+            $("#status").hide().removeClass('d-none').html('<div class="alert alert-warning">Não foram informados todos os parâmetros necessários</div>').fadeIn()
+
+            setTimeout(() => {
+                $("#status").fadeOut(function(){
+                    $(this).addClass('d-none')
+                })
+            }, 3000);
+
+            return
+        }
 
         $.ajax({
             headers: {
@@ -204,21 +241,45 @@
                 let diasMes = []
 
                 $.each(data, function(i, dia) {
-                    diasMes.push('<option value="'+dia+'">'+dia+'</option>')
+                    diasMes.push('<option data-inicio="'+dia['inicio']+'" data-fim="'+dia['fim']+'" value="'+dia['diaDoMes']+'">'+dia['diaDoMes']+' ('+dia['inicio']+' - '+dia['fim']+')</option>')
                 })
 
                 $('#select-dias-mes').append(diasMes)
+                    
+                setInicioFim()
 
                 $("#btn-buscar-horarios").text('Buscar horários')
                 
             },
-            error: function() {
+            error: function(xhr, status, error) {
+
+                $('#select-dias-mes').empty()
+
+                let err = JSON.parse(xhr.responseText)
+
                 $("#btn-buscar-horarios").text('Buscar horários')
+                $("#status").hide().removeClass('d-none').html('<div class="alert alert-warning">'+err.message+'</div>').fadeIn()
+
+                setTimeout(() => {
+                    $("#status").fadeOut(function(){
+                        $(this).addClass('d-none')
+                    })
+                }, 3000);
             }
             
         });
 
     }
+
+    function setInicioFim() {
+        let optionSelected = $("#select-dias-mes").find('option:selected')
+        $("#inicio_id").val(optionSelected.data('inicio'))
+        $("#fim_id").val(optionSelected.data('fim'))
+    }
+
+    $(document).on('change', '#select-dias-mes', function() {
+        setInicioFim()
+    })
 
     
 </script>

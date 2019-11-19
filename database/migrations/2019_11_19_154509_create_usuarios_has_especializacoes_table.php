@@ -16,6 +16,7 @@ class CreateUsuariosHasEspecializacoesTable extends Migration {
 		{
 			$table->integer('usuario_id')->unsigned();
 			$table->integer('especializacao_id');
+			$table->integer('tempo_retorno');
 		});
 	}
 

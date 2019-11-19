@@ -69,7 +69,8 @@ class AgendamentoController extends Controller
     }
 
     public function store(AgendamentoRequest $request)
-    {   
+    {
+        
         $inicio = $request['agendamento']['data'].' '.$request['agendamento']['inicio'];
         $fim = $request['agendamento']['data'].' '.$request['agendamento']['fim'];
 
@@ -96,6 +97,12 @@ class AgendamentoController extends Controller
                 'especializacao_id' => (int)$request['agendamento']['especializacao_id'],
                 'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].$request['agendamento']['medico_id'],
             ]);
+
+            if(isset($request['agendamento']['agendamento_id'])) {
+                $agendamento->update([
+                    'agendamento_id' => $request['agendamento']['agendamento_id']
+                ]);
+            }
 
             //Log
             Log::create([

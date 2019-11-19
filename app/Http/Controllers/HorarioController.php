@@ -10,6 +10,7 @@ use Auth;
 use DateTime;
 use DatePeriod;
 use DateInterval;
+use Carbon\Carbon;
 
 class HorarioController extends Controller
 {
@@ -45,18 +46,29 @@ class HorarioController extends Controller
 
         $diasParaRetorno = $medico->especializacoes()->wherePivot('especializacao_id', $especializacao->id)->first()->pivot->tempo_retorno;
 
-        $diasDoMes = [];
+        $agendamentoInicio = Carbon::createFromDate($agendamento->getOriginal('inicio'));
+
+        $data = [];
+
+        $count = 0;
 
         foreach($horarios as $horario) {
-            foreach($horario->diasDoMes() as $diaDoMes) {
-                if(strtotime($diaDoMes->format('d/m/Y')) <= strtotime($agendamento->inicio.'+'.$diasParaRetorno.' day')) {
-                    $diasDoMes[] = $diaDoMes->format('d/m/Y');
+            foreach($horario->diasDoMes() as $key => $diaDoMes) {
+                $diferencaEmDias = $agendamentoInicio->diffInDays(Carbon::createFromDate($diaDoMes->format('Y-m-d')));
+                if($diferencaEmDias < $diasParaRetorno && $diferencaEmDias > 0) {
+                    $data[$count]['diaDoMes'] = $diaDoMes->format('d/m/Y');
+                    $data[$count]['inicio'] = $horario->inicio;
+                    $data[$count]['fim'] = $horario->fim;
                 }
+                $count++;
             }
         }
 
-        return $diasDoMes;
+        if(!count($data)) {
+            return response()->json(['message' => 'não foi encontrado nenhum horário disponível com os parâmetros informados!'], 404);
+        }
 
+        return $data;
     }
 
     public function create()
@@ -161,7 +173,6 @@ class HorarioController extends Controller
             return redirect('medicos/horario')->with('success', 'Horário atualizado com sucesso!');
         } catch(\Exception $e) {
             DB::rollback();
-            return $e;
             return back()->with('error', 'Erro no servidor');
         }
     }
