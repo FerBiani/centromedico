@@ -178,7 +178,7 @@
                                     <label for="telefone[{{$offset}}][numero]" class="col-form-label">Número</label> 
                                     <div class="input-group">
                                         @if($data['usuario'])
-                                            <input type="hidden" name="telefone[{{$offset}}][id]" value="{{isset($telefone->id) ? $telefone->id : ''}}">
+                                            <input type="hidden" name="telefone[{{$offset}}][id]" value="{{isset($telefone['id']) ? $telefone['id'] : ''}}">
                                         @endif
                                         <input type="text" class="form-control telefone" name="telefone[{{$offset}}][numero]" value="{{$telefone['numero'] ? $telefone['numero'] : ''}}"> 
                                         <div class="input-group-append">
@@ -203,7 +203,7 @@
                                     <label for="documento[{{$offset}}][numero]" class="col-form-label">Tipo</label>
                                     <div class="input-group">
                                         @if($data['usuario'])
-                                            <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento->id) ? $documento->id : ''}}">
+                                            <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento['id']) ? $documento['id'] : ''}}">
                                         @endif
                                         <select class="form-control documento select-documentos" name="documento[{{$offset}}][tipo_documentos_id]">
                                             @foreach(\App\TipoDocumento::all() as $tipoDocumento)

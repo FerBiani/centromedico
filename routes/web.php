@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function() {
         });
 
         Route::prefix('horario')->group(function() {
-            Route::get('get/{medicoId}/{especializacaoId}', 'HorarioController@get');
+            Route::get('get/{agendamentoId}/{diaSemanaId}/{horario}', 'HorarioController@get');
         });
 
         // Route::prefix('retorno')->group(function(){

@@ -104,12 +104,11 @@ class AgendamentoController extends Controller
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
 
+            //Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
 
-            Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
+            DB::commit();
 
-              DB::commit();
-
-              return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
+            return redirect('agendamentos')->with('success', 'Consulta marcada com sucesso');
 
         }catch(\Exception $e){
             DB::rollback();

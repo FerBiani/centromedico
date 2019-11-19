@@ -14,11 +14,13 @@ class UsuarioController extends Controller
 {
 
     public function index() {
+
         $usuarios = Usuario::paginate(10);
+
         if(Auth::user()->nivel_id == 1) {
             $niveis = Nivel::all();
         } else {
-            $niveis = Nivel::where('id', 2)->get();
+            $niveis = Nivel::whereIn('id', [2,3])->get();
         }
         return view('usuario.index', compact('usuarios', 'niveis'));
     }
@@ -27,7 +29,7 @@ class UsuarioController extends Controller
         if(Auth::user()->nivel_id == 1) {
             $usuarios = $usuarios->where('nivel_id', '>', '1');
         } else {
-            $usuarios = $usuarios->where('nivel_id', 2);
+            $usuarios = $usuarios->whereIn('nivel_id', [2,3]);
         }
         if($request['pesquisa']) {
             $usuarios = $usuarios->where('nome', 'like', '%'.$request['pesquisa'].'%');
@@ -53,7 +55,7 @@ class UsuarioController extends Controller
             'button' => 'Cadastrar',
             'url' => 'usuario',
             'title' => 'Cadastro de Usuário',
-            'niveis' => Nivel::all(),
+            'niveis' => Auth::user()->nivel_id == 1 ? Nivel::all() : Nivel::whereNotIn('id', [1,4])->get(),
             'estados' => Estado::all(),
             'especializacoes' => Especializacao::all(),
             'documentos' => [new Documento],
@@ -68,14 +70,20 @@ class UsuarioController extends Controller
    
     public function store(UsuarioRequest $request){
 
+        if(in_array($request['usuario']['nivel_id'], [1,4]) && Auth::user()->nivel_id !== 1){
+            return back()->with('error', 'Você não possuí permissões suficientes para executar esta ação!');
+        }
+
         DB::beginTransaction();
         try {
             $usuario = Usuario::create($request['usuario']);
             $usuario->endereco()->save(new Endereco($request['endereco']));
 
             //registra as especializações do usuário e o tempo de retorno de cada uma.
-            foreach($request['especializacoes'] as $especializacao) {
-                $usuario->especializacoes()->attach($especializacao['especializacao_id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+            if($request['especializacoes']) {
+                foreach($request['especializacoes'] as $especializacao) {
+                    $usuario->especializacoes()->attach($especializacao['especializacao_id'], ['tempo_retorno' => $especializacao['tempo_retorno']]);
+                }
             }
 
             $documentos = $request['documento'];
@@ -93,13 +101,13 @@ class UsuarioController extends Controller
                 $usuario->telefones()->save(new Telefone([ 'numero' => $telefone['numero'] ]));
             }
 
-            DB::commit();
-
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Inclusão',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um usuário'
             ]); 
+
+            DB::commit();
 
             return redirect('usuario')->with('success', 'Usuário cadastrado com sucesso!');
         } catch(Exception $e) {
@@ -117,6 +125,10 @@ class UsuarioController extends Controller
     {
 
         $usuario = Usuario::findOrFail($id);
+
+        if(in_array($usuario->nivel_id, [1,4]) && Auth::user()->nivel_id !== 1){
+            return back()->with('error', 'Você não possuí permissões suficientes para executar esta ação!');
+        }
 
         $data = [
             'usuario' => $usuario,
@@ -138,6 +150,10 @@ class UsuarioController extends Controller
     public function update(UsuarioRequest $request, $id)
     {
         $usuario = Usuario::findOrFail($id);
+
+        if(in_array($usuario->nivel_id, [1,4]) && Auth::user()->nivel_id !== 1){
+            return back()->with('error', 'Você não possuí permissões suficientes para executar esta ação!');
+        }
 
         DB::beginTransaction();
         try {
@@ -210,18 +226,20 @@ class UsuarioController extends Controller
 
             }
 
-            DB::commit();
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Alteração',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' alterou um usuário'
             ]); 
-            return back()->with('success', 'Usuário atualizado com sucesso!');
+
+            DB::commit();
+          
+            return redirect('usuario')->with('success', 'Usuário atualizado com sucesso!');
 
         } catch(Exception $e) {
 
             DB::rollBack();
-            return back()->with('error', 'Erro no servidor!');
+            return redirect('usuario')->with('error', 'Erro no servidor!');
         }
     }
 

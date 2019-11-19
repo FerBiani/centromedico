@@ -181,7 +181,7 @@
                         @endif
 
                         @if(Session::get('error'))
-                        <div class="alert alert-error" role="alert">
+                        <div class="alert alert-danger" role="alert">
                             <p>{{Session::get('error')}}</p>
                         </div>
                         @endif

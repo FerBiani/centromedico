@@ -18,7 +18,7 @@
                        
                         <div class="col-md-6 text-right">
                             @if($consulta->status_id == 4)
-                                <button onClick="marcarRetorno('{{$consulta}}')" class="btn btn-primary">Agendar Retorno</button>
+                                <button onClick="abrirModalRetorno('{{$consulta}}')" class="btn btn-primary">Agendar Retorno</button>
                             @endif
                             <a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank">
                                 <button class="btn btn-warning text-white">Atestado de Horário</button>
@@ -70,27 +70,43 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Título do modal</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Marcar Retorno</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-            <select>
-                <option value="1">Segunda-feira</option>
-                <option value="1">Terça-feira</option>
-                <option value="1">Quarta-feira</option>
-                <option value="1">Quinta-feira</option>
-                <option value="1">Sexta-feira</option>
-                <option value="1">Sábado</option>
-                <option value="1">Domingo</option>
-            </select>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="select-dias-semana">Dia da semana</label>
+                <input id="medico_id" type="hidden" name="medico_id">
+                <input id="especializacao_id" type="hidden" name="especializacao_id">
+                <input id="agendamento_id" type="hidden" name="agendamento_id">
+                <select id="select-dias-semana" class="form-control">
+                    <option value="1">Segunda-feira</option>
+                    <option value="2">Terça-feira</option>
+                    <option value="3">Quarta-feira</option>
+                    <option value="4">Quinta-feira</option>
+                    <option value="5">Sexta-feira</option>
+                    <option value="6">Sábado</option>
+                    <option value="7">Domingo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="select-dias-semana">Horário desejado</label>
+                <input id="horario" class="form-control" type="text" name="horario">
+            </div>
+            <div class="form-group text-center">
+                <button id="btn-buscar-horarios" onclick="buscarHorarios()" class="btn btn-primary">Buscar horários</button>
+            </div>
+            <div class="form-group">
+                <label for="select-dias-mes">Dia do mês</label>
+                <select id="select-dias-mes" class="form-control"></select>
+            </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Salvar mudanças</button>
       </div>
     </div>
   </div>
@@ -152,27 +168,58 @@
         })
     }
 
-    function marcarRetorno(consulta){
-
-        $('#retornoModal').modal('show')
+    function abrirModalRetorno(consulta){
 
         consulta = JSON.parse(consulta)
-    
+
+        $('#medico_id').val(consulta['medico_id'])
+        $('#especializacao_id').val(consulta['especializacao_id'])
+        $('#agendamento_id').val(consulta['id'])
+
+        $('#retornoModal').modal('show')
+       
+    }
+
+    function buscarHorarios() {
+
+        let agendamento_id = $('#agendamento_id').val()
+        let dia_semana_id = $('#select-dias-semana').find('option:selected').val()
+        let horario = $('#horario').val()
+
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: "GET",
-            url: "{{url('horario/get')}}/"+consulta['medico_id']+'/'+consulta['especializacao_id'],
+            url: "{{url('horario/get')}}/"+agendamento_id+'/'+dia_semana_id+'/'+horario,
             datatype: "json",
+            beforeSend: function() {
+                $("#btn-buscar-horarios").html('<img width="50" src="'+main_url+'/img/loading.gif">')
+            },
             success: function(data)
             {
-        
-                console.log(data)
+
+                $('#select-dias-mes').empty()
+
+                let diasMes = []
+
+                $.each(data, function(i, dia) {
+                    diasMes.push('<option value="'+dia+'">'+dia+'</option>')
+                })
+
+                $('#select-dias-mes').append(diasMes)
+
+                $("#btn-buscar-horarios").text('Buscar horários')
                 
+            },
+            error: function() {
+                $("#btn-buscar-horarios").text('Buscar horários')
             }
+            
         });
-       
+
     }
+
+    
 </script>
 @stop

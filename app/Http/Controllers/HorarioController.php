@@ -27,17 +27,35 @@ class HorarioController extends Controller
         return view('usuario.medicos.horario.table', compact('horarios'));
     }
 
-    public function get($medicoId, $especializacaoId) {
+    public function get($agendamentoId, $diaSemanaId, $horario) {
 
-        $medico = Usuario::findOrFail($medicoId);
+        $agendamento = Agendamento::findOrFail($agendamentoId);
+        $medico = Usuario::findOrFail($agendamento->medico_id);
+        $especializacao = Especializacao::findOrFail($agendamento->especializacao_id);
 
         if($medico->nivel_id !== 3) {
             return back()->with('error', 'O usuário informado não é um médico!');
         }
 
-        $horarios = Horario::where('usuario_id', $medico->id)->where('especializacao_id', $especializacaoId)->get();
+        $horarios = Horario::where('usuario_id', $medico->id)
+            ->where('especializacao_id', $especializacao->id)
+            ->where('dias_semana_id', $diaSemanaId)
+            ->where('inicio', $horario.':00')
+            ->get();
 
-        return $horarios;
+        $diasParaRetorno = $medico->especializacoes()->wherePivot('especializacao_id', $especializacao->id)->first()->pivot->tempo_retorno;
+
+        $diasDoMes = [];
+
+        foreach($horarios as $horario) {
+            foreach($horario->diasDoMes() as $diaDoMes) {
+                if(strtotime($diaDoMes->format('d/m/Y')) <= strtotime($agendamento->inicio.'+'.$diasParaRetorno.' day')) {
+                    $diasDoMes[] = $diaDoMes->format('d/m/Y');
+                }
+            }
+        }
+
+        return $diasDoMes;
 
     }
 
