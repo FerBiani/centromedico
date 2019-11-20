@@ -10,7 +10,7 @@
             <div class="card-body">
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
-                    <div class="col-md-12 text-right">
+                    <div id="botoes-superiores-{{$consulta->id}}" class="col-md-12 text-right">
                         @if($consulta->check_in_id && $consulta->status_id == 1)
                             <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
                         @endif
@@ -53,8 +53,6 @@
     </div>
 </div>
 @endsection
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
-
 @section('js')
 <script>
     socket.on('check_in', function(data){
@@ -65,12 +63,16 @@
             .addClass('text-success')
             .find('.checkin-status-text')
             .text('Check-in efetuado')
+
+        $("#botoes-superiores-"+data.agendamento_id).prepend(
+            '<button class="btn btn-warning text-white" onClick="chamarPaciente('+data.agendamento_id+','+data.nome_paciente+','+data.especializacao_id+')">Chamar paciente</button>'
+        )
     })
 
     //chama proximo paciente
     function chamarPaciente(consultaId, nomePaciente, especializacao) {
         var now = new Date();
-        var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+now.getMinutes();
+        var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+(now.getMinutes()<10?'0':'') + now.getMinutes();
 
         $.ajax({
             headers: {

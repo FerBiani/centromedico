@@ -206,6 +206,7 @@
                                             <input type="hidden" name="documento[{{$offset}}][id]" value="{{isset($documento['id']) ? $documento['id'] : ''}}">
                                         @endif
                                         <select class="form-control documento select-documentos" name="documento[{{$offset}}][tipo_documentos_id]">
+                                            <option disabled selected>Selecione</option>
                                             @foreach(\App\TipoDocumento::all() as $tipoDocumento)
                                                 @if($tipoDocumento->id != 4)
                                                     <option {{$documento['tipo_documentos_id'] == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
