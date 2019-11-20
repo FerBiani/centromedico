@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
-
+<style>
+    .select2-container .select2-selection--single {height: 35px !important;}
+</style>
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
@@ -55,6 +57,7 @@
                         <div class="col-md-6">
                             <label for="agendamento['data']" class="col-form-label">Dia</label>
                             <select id="select-data" class="form-control" name="agendamento[data]">
+                                    <option>Selecione</option>
                                 @foreach($data['horario']->diasDoMes() as $dia)
                                     <option>{{$dia->format('d/m/Y')}}</option>
                                 @endforeach

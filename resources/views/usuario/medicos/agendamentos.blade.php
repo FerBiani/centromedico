@@ -14,7 +14,11 @@
                         @if($consulta->check_in_id && $consulta->status_id == 1)
                             <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
                         @endif
-                        <button class="btn btn-info btn-status" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                        @if($consulta->status_id == 1)
+                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                        @else
+                            <button class="btn btn-secondary disabled" onClick="statusDisable()">Status da Consulta</button>
+                        @endif
                         <a target="blank" class="btn btn-dark" href="{{url('atestados/gerar/'.$consulta->paciente_id)}}">Gerar Atestado</a>
                     </div>
                     <div class="row">
@@ -55,6 +59,7 @@
 @endsection
 @section('js')
 <script>
+
     socket.on('check_in', function(data){
         console.log(data)
 
@@ -95,6 +100,14 @@
             }
         });
     } 
+
+    function statusDisable(){
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Você não pode mais alterar o status desta consulta!',
+        })
+    }
 
     //seta o status da consulta
     function status(id){

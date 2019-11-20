@@ -156,6 +156,11 @@ class AgendamentoController extends Controller
             $horarios = $horarios->where('dias_semana_id', $request['dias_semana_id']);
         }
 
+        if($request['horario']){
+            $horarios = $horarios->where('inicio', $request['horario']);
+        }
+
+        
         $horarios = $horarios->paginate(10);
         return view('usuario.atendente.resultados', compact('horarios'));
     }
@@ -179,7 +184,7 @@ class AgendamentoController extends Controller
         $agendamento = Agendamento::findOrFail($id);
 
         $date = strtotime($agendamento->getOriginal('inicio')."-1 day");
-    
+        
         if($date > date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
