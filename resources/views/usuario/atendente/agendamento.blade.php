@@ -23,7 +23,7 @@
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.especializacoes_id') }}</small>
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <label for="agendamento[dias_semana_id]" class="col-form-label">Dia da semana</label>
                             <div class="input-group">
                                 <select class="form-control especialidade" name="dias_semana_id">
@@ -33,6 +33,12 @@
                                     @endforeach
                                 </select>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('agendamento.dias_semana_id') }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mt-1">
+                            <label for="agendamento['horario']">Horário</label>
+                            <div class="input-group">
+                                <input type="text" name="horario" class="form-control horario" id="horario" placeholder="08:00">
                             </div>
                         </div>
                         <div class="col-md-2" style="margin-top: 35px">
@@ -52,6 +58,8 @@
 @endsection
 @section('js') 
     <script type="text/javascript">
+    //MASCARA HORARIO
+    $('.horario').mask('00:00')
 
     //MEDICO/especializacoes
     $('.especialidade').change(function() {

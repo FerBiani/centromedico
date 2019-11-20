@@ -19,7 +19,7 @@
                 <div class="col-md-12 text-left">
                     <p>Atesto que o(a) Sr.(a) {{ \App\Usuario::find($consulta->paciente_id)->nome}} 
                     compareceu na Clínica Médica para uma consulta de {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}
-                    no dia {{ date('d/m/Y H:i',strtotime($consulta->inicio)) }} às {{ date('H:i', strtotime($consulta->fim)) }}.</p>
+                    no dia {{ date('d/m/Y H:i',strtotime($consulta->getOriginal('inicio'))) }} às {{ date('H:i', strtotime($consulta->getOriginal('fim'))) }}.</p>
                 </div>
                 <div class="col-md-12 mt-5">
                     <div class="d-flex flex-row">
@@ -37,7 +37,7 @@
         </div>
     </div>
     <script>
-        window.print() 
+       // window.print() 
     </script>
 </body>
 </html>

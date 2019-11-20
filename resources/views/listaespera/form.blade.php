@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .select2-container .select2-selection--single {height: 35px !important;}
+</style>
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">

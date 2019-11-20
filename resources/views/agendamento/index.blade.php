@@ -36,7 +36,11 @@
                             <a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank">
                                 <button class="btn btn-warning text-white">Atestado de Horário</button>
                             </a>
-                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                            @if($consulta->status_id == 1)
+                                <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                            @else
+                                <button class="btn btn-secondary disabled" onClick="statusDisable()">Status da Consulta</button>
+                            @endif
                         </div>
 
                     </div>
@@ -92,17 +96,18 @@
         <div class="col-md-12">
             <div id="status" class="row d-none">
             </div>
-            <form method="POST" action="{{url('atendente/agendamento')}}">
+            <form method="POST" id="form" action="{{url('atendente/agendamento')}}">
                 @csrf
                 <div class="form-group">
-                    <label for="select-dias-semana">Dia da semana</label>
                     <input id="medico_id" type="hidden" name="agendamento[medico_id]">
                     <input id="especializacao_id" type="hidden" name="agendamento[especializacao_id]">
                     <input id="agendamento_id" type="hidden" name="agendamento[agendamento_id]">
                     <input id="paciente_id" type="hidden" name="agendamento[paciente_id]">
                     <input id="inicio_id" type="hidden" name="agendamento[inicio]">
                     <input id="fim_id" type="hidden" name="agendamento[fim]">
-                    <select id="select-dias-semana" class="form-control">
+
+                    <label for="select-dias-semana">Dia da semana</label>
+                    <select id="select-dias-semana" class="form-control dias-semana" required>
                         <option value="1">Segunda-feira</option>
                         <option value="2">Terça-feira</option>
                         <option value="3">Quarta-feira</option>
@@ -111,20 +116,23 @@
                         <option value="6">Sábado</option>
                         <option value="7">Domingo</option>
                     </select>
+                    <small id="error" class="errors font-text text-danger">{{ $errors->first('dias-semana') }}</small>
                 </div>
                 <div class="form-group">
-                    <label for="select-dias-semana">Horário desejado</label>
-                    <input id="horario" class="form-control" type="text">
+                    <label for="select-horarios">Horário desejado</label>
+                    <input id="horario" class="form-control horarios" type="text" required>
+                    <small id="error" class="errors font-text text-danger">{{ $errors->first('horarios') }}</small>
                 </div>
                 <div class="form-group text-center">
                     <a href="#" id="btn-buscar-horarios" onclick="buscarHorarios()" class="btn btn-primary text-white">Buscar horários</a>
                 </div>
                 <div class="form-group">
                     <label for="select-dias-mes">Dia do mês</label>
-                    <select name="agendamento[data]" id="select-dias-mes" class="form-control"></select>
+                    <select name="agendamento[data]" id="select-dias-mes" class="form-control" required></select>
+                    <small id="error" class="errors font-text text-danger">{{ $errors->first('dias-mes') }}</small>
                 </div>
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-success">Marcar</button>
+                    <button class="btn btn-success send-form">Marcar</button>
                 </div>
             </form>
         </div>
@@ -140,8 +148,9 @@
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
 @section('js')
+<script src="{{asset('js/mainForm.js')}}"></script>
 <script>
-
+    
     socket.on('check_in', function(data){
 
         $("#checkin-status-"+data.agendamento_id)
@@ -152,6 +161,14 @@
 
         $("#btn-efetuar-checkin-"+data.agendamento_id).remove()
     })
+
+    function statusDisable(){
+        Swal.fire({
+            type: 'error',
+            title: 'Está consulta já foi finalizada',
+            text: 'Você não pode mais alterar o status desta consulta!',
+        })
+    }
 
     function status(id){
         const { value: fruit } = Swal.fire({
@@ -186,6 +203,13 @@
                         location.reload()
                     }, 1000);
                    
+                },
+                error: function(){
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops',
+                        text: 'Você não pode alterar o status desta consuta!'
+                    })
                 }
             });
         }   
@@ -270,6 +294,25 @@
         });
 
     }
+
+    $("#form").validate({
+        highlight:function(input){
+            jQuery(input).addClass('is-invalid');
+        },
+
+        unhighlight:function(input){
+            jQuery(input).removeClass('is-invalid');
+            jQuery(input).addClass('is-valid');
+        },
+
+        errorPlacement:function(error, element)
+        {
+            jQuery(element).parents('.form-group').find('#error').append(error);
+        },
+    });
+
+    // MASCARA HORARIO
+    $('.horarios').mask('00:00')
 
     function setInicioFim() {
         let optionSelected = $("#select-dias-mes").find('option:selected')
