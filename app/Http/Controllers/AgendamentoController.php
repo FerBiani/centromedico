@@ -105,8 +105,27 @@ class AgendamentoController extends Controller
             $horariosIndisponiveis[] = $agendamento->inicio;
         }
 
+        //verificando se o horário escolhido está disponível
         if(in_array($inicio.':00', $horariosIndisponiveis)) {
             return redirect('/')->with('error', 'Não é possível marcar uma consulta nesta data!');
+        }
+
+        if(isset($request['agendamento']['agendamento_id'])) {
+
+            //verificando se já existe um retorno para esta consulta
+            $retornoExistente = Agendamento::where('agendamento_id', $request['agendamento']['agendamento_id'])->first();
+
+            //verificando se esta consulta já é um retorno
+            $ehUmretorno = Agendamento::findOrFail($request['agendamento']['agendamento_id'])->agendamento_id;
+
+            if($retornoExistente || $ehUmretorno) {
+                return redirect('agendamentos')->with('warning', 'Não é possível marcar um retorno para esta consulta.');
+            }
+
+            //identificacao de retorno para utilizar no código de check-in
+            $codigoRetorno = 1;
+        } else {
+            $codigoRetorno = 0;
         }
 
          DB::beginTransaction();
@@ -118,9 +137,9 @@ class AgendamentoController extends Controller
                 'paciente_id' => (int)$request['agendamento']['paciente_id'],
                 'medico_id'  => (int)$request['agendamento']['medico_id'],
                 'especializacao_id' => (int)$request['agendamento']['especializacao_id'],
-                'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].$request['agendamento']['medico_id'],
+                'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].$request['agendamento']['medico_id'].$codigoRetorno,
             ]);
-
+    
             if(isset($request['agendamento']['agendamento_id'])) {
                 $agendamento->update([
                     'agendamento_id' => $request['agendamento']['agendamento_id']

@@ -200,20 +200,14 @@
         <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
         <script src="{{ asset('js/sweetalert.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
         <script> var main_url="{{url('')}}"; </script>
         @auth
         <script>
             var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
 
             socket.on('check_in', function(data){
-                console.log(data)
-
-                $("#checkin-status-"+data.agendamento_id)
-                    .removeClass('text-danger')
-                    .addClass('text-success')
-                    .find('.checkin-status-text')
-                    .text('Check-in efetuado')
+            
             })
         </script>
         @endauth

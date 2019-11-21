@@ -5,6 +5,31 @@ function atualizaValidacoes(target, validations) {
     });
 } 
 
+function optionsJaSelecionados(target){
+    let selecionados = []
+    $(target).each(function() {
+        if($(this).find('option:selected').val() != 'Selecione') {
+            selecionados.push($(this).find('option:selected').val())
+        }
+    })
+    return selecionados
+}
+
+function atualizarDisponibilidadeOptions(target) {
+
+    let selecionados = optionsJaSelecionados(target)
+
+    $(target).each(function(){
+        $(this).find('option').each(function(){
+            if(selecionados.includes($(this).val()) && !$(this).is(':selected')) {
+                $(this).prop('disabled', true)
+            } else {
+                $(this).prop('disabled', false)
+            }
+        })
+    })
+}
+
 $(document).ready(function() {
 
     ///// VALIDATE /////
@@ -226,9 +251,18 @@ $(document).ready(function() {
             remover(".tel", $(this))
         }
     })
+
+    $(document).on("change", ".esp", function() {
+
+        atualizarDisponibilidadeOptions('.esp')
+ 
+     ""})
     
     $(document).on('click', '.add-esp', function() {
         if($('.esp').length < 10) {
+
+            let selecionados = optionsJaSelecionados('.esp')
+
             clonar('.esp', '#especializacoes', true)
             $('.esp').last().find('.add-esp')
                 .removeClass('add-esp')
@@ -236,6 +270,13 @@ $(document).ready(function() {
                 .find('i')
                 .removeClass('fa fa-plus')
                 .addClass('fa fa-trash')
+
+            $('.esp').last().find('option').each(function(){
+                if(selecionados.includes($(this).val())) {
+                    $(this).prop('disabled', true)
+                }
+            })
+            
         } else {
             Swal.fire(
                 'Atenção!',
@@ -248,11 +289,22 @@ $(document).ready(function() {
     $(document).on("click", ".del-esp", function() {
         if($(".esp").length > 1) {
             remover(".esp", $(this))
+
+            atualizarDisponibilidadeOptions('.esp')
         }
+    })
+
+    $(document).on("change", ".doc", function() {
+
+       atualizarDisponibilidadeOptions('.doc')
+
     })
     
     $(document).on('click', '.add-doc', function() {
         if($('.doc').length < 10) {
+
+            let selecionados = optionsJaSelecionados('.doc')
+
             clonar('.doc', '#documentos', true)
             $('.doc').last().find('.add-doc')
                 .removeClass('add-doc')
@@ -260,6 +312,12 @@ $(document).ready(function() {
                 .find('i')
                 .removeClass('fa fa-plus')
                 .addClass('fa fa-trash')
+
+            $('.doc').last().find('option').each(function(){
+                if(selecionados.includes($(this).val())) {
+                    $(this).prop('disabled', true)
+                }
+            })
 
             atualizaValidacoes('.documento', {
                 required: true,
@@ -281,6 +339,8 @@ $(document).ready(function() {
     $(document).on("click", ".del-doc", function() {
         if($(".doc").length > 1) {
             remover(".doc", $(this))
+
+            atualizarDisponibilidadeOptions('.doc')
         }
     })
 

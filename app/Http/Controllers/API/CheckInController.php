@@ -38,17 +38,19 @@ class CheckInController extends Controller
             ]);
 
             //event(new CheckInEfetuado(Agendamento::findOrFail($agendamento->first()->id)));
-
-            DB::commit();
-
+            
             $client = new \GuzzleHttp\Client();
 
             $request = $client->request('POST', 'http://localhost:8888/check-in', [
                 'form_params' => [
                     'agendamento_id' => $agendamento->first()->id,
                     'medico_id' => $agendamento->first()->medico_id,
+                    'especializacao_id' => $agendamento->first()->especializacao_id,
+                    'nome_paciente' => $agendamento->first()->paciente->nome
                 ]
             ]);
+
+            DB::commit();
 
             return response()->json([
                 'message' => 'Check-in efetuado com sucesso!',

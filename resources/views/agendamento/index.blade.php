@@ -30,7 +30,7 @@
                         </div>
                        
                         <div class="col-md-6 text-right">
-                            @if($consulta->status_id == 4)
+                            @if($consulta->status_id == 4 && !$consulta->agendamento_id)
                                 <button onClick="abrirModalRetorno('{{$consulta}}')" class="btn btn-primary">Agendar Retorno</button>
                             @endif
                             <a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank">
