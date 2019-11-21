@@ -7,6 +7,17 @@
             <div class="card-body">
             	@foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-hashtag"></i> {{ $consulta->id }} </h6>
+                        </div>
+                        @if($consulta->agendamento_id)
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-back"></i> Retorno da consulta <i class="fas fa-hashtag"></i> {{ $consulta->agendamento_id }} </h6>
+                        </div>
+                        @endif
+                    </div>
+                    <hr>
                     <div class="col-md-12 text-right">
                     @if($consulta->status_id != 2)
                         <button class="btn btn-danger"  onClick="status({{$consulta->id}})">Cancelar</button>
@@ -72,6 +83,18 @@
                         data: { 'status_id': 2 },
                         success: function(data){
                             Swal.fire(data.message)
+
+                            //atualiza a página
+                            setTimeout(() => {
+                                location.reload()
+                            }, 1000);
+                        },
+                        error: function(data){
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text:'Voce não pode cancelar esta consulta',
+                            })
                         }	
                     });
             } 

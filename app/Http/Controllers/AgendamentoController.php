@@ -48,8 +48,31 @@ class AgendamentoController extends Controller
             'title'  => 'Agendamento de Consultas',
             'dias'   => DiaSemana::all(),
             'especializacoes' => Especializacao::all(),
+            'horarios' => Horario::paginate(10)
         ];
         return view('usuario.atendente.agendamento', compact('data'));
+    }
+
+    public function filtro(Request $request) {
+
+        $horarios = new Horario;
+
+        if($request['especializacoes_id']){
+            $especializacao = Especializacao::findOrFail($request['especializacoes_id']);
+
+            $horarios = $horarios->where('especializacao_id', $especializacao->id);
+        }
+
+        if($request['dias_semana_id']){
+            $horarios = $horarios->where('dias_semana_id', $request['dias_semana_id']);
+        }
+
+        if($request['horario']){
+            $horarios = $horarios->where('inicio', $request['horario']);
+        }
+        
+        $horarios = $horarios->paginate(10);
+        return view('usuario.atendente.resultados', compact('horarios'));
     }
 
     public function confirma($id){
@@ -123,29 +146,6 @@ class AgendamentoController extends Controller
         }
     }
 
-    public function filtro(Request $request) {
-
-        $horarios = new Horario;
-
-        if($request['especializacoes_id']){
-            $especializacao = Especializacao::findOrFail($request['especializacoes_id']);
-
-            $horarios = $horarios->where('especializacao_id', $especializacao->id);
-        }
-
-        if($request['dias_semana_id']){
-            $horarios = $horarios->where('dias_semana_id', $request['dias_semana_id']);
-        }
-
-        if($request['horario']){
-            $horarios = $horarios->where('inicio', $request['horario']);
-        }
-
-        
-        $horarios = $horarios->paginate(10);
-        return view('usuario.atendente.resultados', compact('horarios'));
-    }
-
     public function show($id){}
 
     public function edit($id){}
@@ -161,20 +161,22 @@ class AgendamentoController extends Controller
         return back();
     }
 
+
     public function setStatus(Request $request, $id){
         $agendamento = Agendamento::findOrFail($id);
-
         $date = strtotime($agendamento->getOriginal('inicio')."-1 day");
-        
-        if($date > date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
+
+        if($date < date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
+            return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
+        }
+
+        if(date("Y-m-d H:i:s") != $agendamento->getOriginal('inicio') && $request->input('status_id') != 2){
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
 
         DB::beginTransaction();
         try {
-
             $agendamento->update(['status_id' => $request->input('status_id')]);
-
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Atualização',

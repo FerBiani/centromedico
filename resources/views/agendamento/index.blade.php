@@ -197,11 +197,11 @@
                 success: function(data)
                 {
                     Swal.fire(data.message)
-
+                    console.log(data.message)
                     //atualiza a página
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1000);
+                    // setTimeout(() => {
+                    //     location.reload()
+                    // }, 1000);
                    
                 },
                 error: function(){

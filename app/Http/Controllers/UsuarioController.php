@@ -24,6 +24,7 @@ class UsuarioController extends Controller
         }
         return view('usuario.index', compact('usuarios', 'niveis'));
     }
+    
     public function list(Request $request, $status) {
         $usuarios = new Usuario;
         if(Auth::user()->nivel_id == 1) {

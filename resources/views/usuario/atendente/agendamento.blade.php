@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header bg-info text-white h5">{{$data['title']}}</div>   
             <div class="card-body">
-                <form id="form">
+            <form id="form">
                     @csrf
                     @if($data['method'])
                         @method($data['method'])
@@ -49,19 +49,65 @@
                             </div>
                         </div>
                     </div>
-                </form>
-                <div class="ativos"></div>
+                </form>   
+                <div class="tab-content" id="myTabContent">
+                <div class="table-responsive">
+                    <table id="usuario-table" class="table table-hover">
+                        <thead class="thead thead-light">
+                            <tr>
+                                <th>Médico</th>
+                                <th>Dia</th>
+                                <th>Inicio</th>
+                                <th>Fim</th>
+                                <th colspan="4" class="min">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($data['horarios'] as $horario)
+                            
+                                <tr>
+                                    <td>{{$horario->usuario->nome}}</td> 
+                                    <td>{{$horario->dia->dia}}</td>
+                                    <td>{{$horario->inicio}}</td>
+                                    <td>{{$horario->fim}}</td>
+                                    <td class="min">
+                                        <a href="{{ url('atendente/confirma/'.$horario->id) }}"><button class="btn btn-primary">Agendar</button></a> 
+                                    </td>
+                                </tr>
+
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="100%" class="text-center">
+                                <p class="text-center">
+                                    Página {{$data['horarios']->currentPage()}} de {{$data['horarios']->lastPage()}}
+                                    - Exibindo {{$data['horarios']->perPage()}} registro(s) por página de {{$data['horarios']->total()}}
+                                    registro(s) no total
+                                </p>
+                                </td>     
+                            </tr>
+                            @if($data['horarios']->lastPage() > 1)
+                            <tr>
+                                <td colspan="100%">
+                                {{ $data['horarios']->links() }}
+                                </td>
+                            </tr>
+                            @endif
+                        </tfoot>
+                    </table>
+                </div>
+                </div>
             </div> 
         </div>
     </div>
 </div>
 @endsection
-@section('js') 
+@section('js')
     <script type="text/javascript">
-    //MASCARA HORARIO
+
     $('.horario').mask('00:00')
 
-    //MEDICO/especializacoes
     $('.especialidade').change(function() {
         atualizarMedicos($(".especialidade option:selected").data("especializacao"), $(".especialidade").data('medico'))
         $(".especialidade").data('medico','')
@@ -98,20 +144,19 @@
             }
         })
     }
+
     $("#form").submit(function(e) {
-        e.preventDefault(); // avoid to execute the actual submit of the form.
+        e.preventDefault(); 
         var form = $(this);       
         $.ajax({
             type: "GET",
             url: "{{url('atendente/filtro')}}",
-            data: form.serialize(), // serializes the form's elements.
+            data: form.serialize(), 
             success: function(data)
             {
-                $("div.ativos").html(data) // show response from the php script.
-            }
+                $("#myTabContent").html(data)
+            },
         });
-
     });
-    
 </script>
 @stop

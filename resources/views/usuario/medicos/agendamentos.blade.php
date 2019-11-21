@@ -10,6 +10,17 @@
             <div class="card-body">
                 @foreach($data['consultas'] as $consulta)
                 <div class="alert alert-secondary" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-hashtag"></i> {{ $consulta->id }} </h6>
+                        </div>
+                        @if($consulta->agendamento_id)
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-back"></i> Retorno da consulta <i class="fas fa-hashtag"></i> {{ $consulta->agendamento_id }} </h6>
+                        </div>
+                        @endif
+                    </div>
+                    <hr>
                     <div class="col-md-12 text-right">
                         @if($consulta->check_in_id && $consulta->status_id == 1)
                             <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
@@ -145,6 +156,12 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr);
                     console.log(thrownError);
+
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Você não pode mais alterar o status desta consulta!',
+                    })
                 }
             });
         }
