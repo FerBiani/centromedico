@@ -14,29 +14,35 @@
                         <div class="col-md-3">
                             <h6 class="alert-heading"><i class="fas fa-hashtag"></i> {{ $consulta->id }} </h6>
                         </div>
-                        @if($consulta->agendamento_id)
                         <div class="col-md-3">
-                            <h6 class="alert-heading"><i class="fas fa-back"></i> Retorno da consulta <i class="fas fa-hashtag"></i> {{ $consulta->agendamento_id }} </h6>
-                        </div>
+                        @if($consulta->agendamento_id)                       
+                            <h6 class="alert-heading"><i class="fas fa-back"></i> Retorno da consulta <i class="fas fa-hashtag"></i> {{ $consulta->agendamento_id }} </h6>                      
                         @endif
+                        </div>
+                        <div id="botoes-superiores-{{$consulta->id}}" class="col-md-6 text-right">
+                            @if($consulta->check_in_id && $consulta->status_id == 1)
+                                <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
+                            @endif
+                            @if($consulta->status_id == 1)
+                                <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
+                            @else
+                                <button class="btn btn-secondary disabled" onClick="statusDisable()">Status da Consulta</button>
+                            @endif
+                            <a target="blank" class="btn btn-dark" href="{{url('atestados/gerar/'.$consulta->paciente_id)}}">Gerar Atestado</a>
+                        </div>
                     </div>
                     <hr>
-                    <div class="col-md-12 text-right">
-                    <div id="botoes-superiores-{{$consulta->id}}" class="col-md-12 text-right">
-                        @if($consulta->check_in_id && $consulta->status_id == 1)
-                            <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
-                        @endif
-                        @if($consulta->status_id == 1)
-                            <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
-                        @else
-                            <button class="btn btn-secondary disabled" onClick="statusDisable()">Status da Consulta</button>
-                        @endif
-                        <a target="blank" class="btn btn-dark" href="{{url('atestados/gerar/'.$consulta->paciente_id)}}">Gerar Atestado</a>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6></div>
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6></div>
-                        <div class="col-md-3"><h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6></div>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="far fa-calendar-alt"></i> {{ $consulta->inicio }} </h6>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-info-circle"></i> {{ $consulta->status_id ? $consulta->status->nome : ''   }} </h6>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="alert-heading"><i class="fas fa-receipt"></i> {{ $consulta->codigo_check_in }} </h6>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">    
