@@ -22,7 +22,6 @@ class HorarioTest extends TestCase
          'especializacao_id' => '1',
     ]);
     $this->assertDatabaseHas('horarios', ['inicio' => '08:00']);
-
    }
 }
 

@@ -68,9 +68,12 @@ class AgendamentoController extends Controller
         }
 
         if($request['horario']){
-            $horarios = $horarios->where('inicio', $request['horario']);
+            $horarios = $horarios->where('inicio','>=', $request['horario']);
         }
-        
+        if($request['fim']){
+            $horarios = $horarios->where('inicio', '<=', $request['fim']);
+        }
+
         $horarios = $horarios->paginate(10);
         return view('usuario.atendente.resultados', compact('horarios'));
     }
@@ -185,11 +188,10 @@ class AgendamentoController extends Controller
         $agendamento = Agendamento::findOrFail($id);
         $date = strtotime($agendamento->getOriginal('inicio')."-1 day");
 
-        if($date < date("Y-m-d H:i:s") && $request->input('status_id') === 2) {
+        if(strtotime(date("Y-m-d H:i:s")) >= $date && $request->input('status_id') == 2) {
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
-
-        if(date("Y-m-d H:i:s") != $agendamento->getOriginal('inicio') && $request->input('status_id') != 2){
+        if(date("Y-m-d") != date('Y-m-d', strtotime( $agendamento->getOriginal('inicio'))) && $request->input('status_id') != 2){
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
 
@@ -204,7 +206,7 @@ class AgendamentoController extends Controller
             DB::commit();
             return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
         } catch(\Exception $e) {
-            return response()->json(['message' => $e], 500);
+            return response()->json(['message' => 'Não foi possível alterar o status da consulta'], 500);
         }
     }
 

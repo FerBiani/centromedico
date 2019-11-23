@@ -11,7 +11,7 @@
                         @method($data['method'])
                     @endif
                     <div class="form-group row">
-                       <div class="col-md-5">
+                       <div class="col-md-3">
                             <label for="agendamento[especializacoes_id]" class="col-form-label">Especialização</label>
                             <div class="input-group">
                                 <select class="form-control especialidade" name="especializacoes_id">
@@ -36,9 +36,15 @@
                             </div>
                         </div>
                         <div class="col-md-2 mt-1">
-                            <label for="agendamento['horario']">Horário</label>
+                            <label for="agendamento['horario']">Ínicio</label>
                             <div class="input-group">
                                 <input type="text" name="horario" class="form-control horario" id="horario" placeholder="08:00">
+                            </div>
+                        </div>
+                        <div class="col-md-2 mt-1">
+                            <label for="agendamento['fim']">Limite ínicio</label>
+                            <div class="input-group">
+                                <input type="text" name="fim" class="form-control horario" id="fim" placeholder="09:00">
                             </div>
                         </div>
                         <div class="col-md-2" style="margin-top: 35px">
@@ -107,6 +113,7 @@
     <script type="text/javascript">
 
     $('.horario').mask('00:00')
+    $('.fim').mask('00:00')
 
     $('.especialidade').change(function() {
         atualizarMedicos($(".especialidade option:selected").data("especializacao"), $(".especialidade").data('medico'))
