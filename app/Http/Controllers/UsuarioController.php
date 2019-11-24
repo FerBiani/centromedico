@@ -70,6 +70,7 @@ class UsuarioController extends Controller
 
    
     public function store(UsuarioRequest $request){
+        return $request->all();
 
         if(in_array($request['usuario']['nivel_id'], [1,4]) && Auth::user()->nivel_id !== 1){
             return back()->with('error', 'Você não possuí permissões suficientes para executar esta ação!');
