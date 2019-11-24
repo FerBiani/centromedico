@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">{{$data['title']}}</div>   
+            <div class="card-header bg-info text-white h5">{{$data['title']}}</div>   
             <div class="card-body">
                 <form id="form" method="post" action="{{url($data['url'])}}">
                     @csrf

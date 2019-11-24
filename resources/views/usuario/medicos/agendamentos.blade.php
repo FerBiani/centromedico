@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-info text-white h5">
                 Consultas Agendadas
             </div>
             <div class="card-body">
@@ -21,7 +21,7 @@
                         </div>
                         <div id="botoes-superiores-{{$consulta->id}}" class="col-md-6 text-right">
                             @if($consulta->check_in_id && $consulta->status_id == 1)
-                                <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}')">Chamar paciente</button>
+                                <button class="btn btn-warning text-white" onClick="chamarPaciente({{$consulta->id}}, '{{$consulta->paciente->nome}}', '{{$consulta->especializacao->especializacao}}', '{{$consulta->inicio}}')">Chamar paciente</button>
                             @endif
                             @if($consulta->status_id == 1)
                                 <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
@@ -93,9 +93,7 @@
     })
 
     //chama proximo paciente
-    function chamarPaciente(consultaId, nomePaciente, especializacao) {
-        var now = new Date();
-        var date = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+(now.getMinutes()<10?'0':'') + now.getMinutes();
+    function chamarPaciente(consultaId, nomePaciente, especializacao, horario) {
 
         $.ajax({
             headers: {
@@ -107,7 +105,7 @@
                 'id': consultaId,
                 'nome_paciente': nomePaciente,
                 'especialidade': especializacao,
-                'horario': date
+                'horario': horario
             }, 
             success: function(data)
             {
