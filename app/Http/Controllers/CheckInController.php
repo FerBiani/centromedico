@@ -16,18 +16,18 @@ class CheckInController extends Controller
 
         $agendamento = Agendamento::findOrFail($request->agendamento_id);
 
-        if(!$agendamento->first()) {
+        if(!$agendamento) {
             return back()->with('warning', 'Agendamento não encontrado!');
         }
 
-        if($agendamento->first()->status_id != 1) {
+        if($agendamento->status_id != 1) {
             return back()->with('warning', 'Ação não permitida!');
         }
 
         $dataHoraAtual = Carbon::now();
-        $diferencaEmMinutos = Carbon::parse($agendamento->first()->getOriginal('inicio'))->diffInMinutes($dataHoraAtual);
+        $diferencaEmMinutos = Carbon::parse($agendamento->getOriginal('inicio'))->diffInMinutes($dataHoraAtual);
 
-        if($dataHoraAtual > Carbon::parse($agendamento->first()->getOriginal('inicio'))) {
+        if($dataHoraAtual > Carbon::parse($agendamento->getOriginal('inicio'))) {
             return back()->with('warning', 'Não é possível realizar o check-in! A data de inicio desta consulta é anterior à data atual.');
         }
 
@@ -35,7 +35,8 @@ class CheckInController extends Controller
             return back()->with('warning', 'O Check-in só pode ser efetuado no mínimo 1 hora antes da consulta!');
         }
 
-        if($agendamento->first()->checkIn) {
+        if($agendamento->checkIn) {
+            return $agendamento;
             return back()->with('warning', 'Check-in já efetuado!');
         }
 
@@ -48,6 +49,20 @@ class CheckInController extends Controller
 
             $agendamento->update([
                 'check_in_id' => $checkIn->id
+            ]);
+
+             
+            $client = new \GuzzleHttp\Client();
+
+            $request = $client->request('POST', 'http://localhost:8888/check-in', [
+                'form_params' => [
+                    'agendamento_id' => $agendamento->id,
+                    'medico_id' => $agendamento->medico_id,
+                    'especializacao_id' => $agendamento->especializacao_id,
+                    'especializacao' => $agendamento->especializacao->especializacao,
+                    'nome_paciente' => $agendamento->paciente->nome,
+                    'inicio' => $agendamento->inicio
+                ]
             ]);
 
             Log::create([

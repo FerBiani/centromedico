@@ -23,7 +23,7 @@ class Agendamento extends Model
     }
 
     public function checkIn() {
-        return $this->belongsTo('App\CheckIn');
+        return $this->belongsTo('App\CheckIn', 'check_in_id');
     }
 
     public function especializacao()
