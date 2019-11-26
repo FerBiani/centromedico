@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6">
        <div class="card mt-3">
-            <div class="card-header">Gráfico</div>
+            <div class="card-header bg-info text-white h5">Gráfico</div>
             <div class="card-body">
                 <canvas id="myChart" width="400" height="400"></canvas>
             </div>
