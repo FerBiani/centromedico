@@ -34,7 +34,9 @@ class RelatorioController extends Controller
         $dados = new Usuario;
 
         if($request['pesquisa']) {
-            $dados = Usuario::where('nome', 'like', '%'.$request['pesquisa'].'%');   
+            $dados = Usuario::where('nome', 'like', '%'.$request['pesquisa'].'%')->where('nivel_id',3);   
+        }else{
+            $dados = Usuario::where('nivel_id',3);
         }
 
         if($dados){

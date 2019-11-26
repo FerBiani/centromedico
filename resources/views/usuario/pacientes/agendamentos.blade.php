@@ -69,8 +69,8 @@
         showCancelButton: true,
         confirmButtonText: 'Sim, cancelar!',
         cancelButtonText: 'Não, cancelar!',
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#28a745',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#dc3545',
         reverseButtons: true
         }).then((result) => {
             if (result.value) { 
@@ -91,8 +91,8 @@
                         },
                         error: function(data){
                             Swal.fire({
-                                type: 'error',
-                                title: 'Oops...',
+                                icon: 'error',
+                                title: 'Está consulta não pode ser alterada',
                                 text:'Voce não pode cancelar esta consulta',
                             })
                         }	
