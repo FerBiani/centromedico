@@ -179,8 +179,8 @@
     function atestadoDisable(){
         Swal.fire({
             icon: 'error',
-            title: 'Está consulta não pode ser alterada',
-            text: 'Você não pode mais gerar o atestad desta consulta!',
+            title: 'Não foi possível gerar o atestado',
+            text: 'Você não pode mais gerar o atestado desta consulta!',
         })
     }
 

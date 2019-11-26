@@ -127,7 +127,7 @@
 
     function statusDisable(){
         Swal.fire({
-            type: 'error',
+            icon: 'error',
             title: 'Está consulta não pode ser alterada',
             text: 'Você não pode mais alterar o status desta consulta!',
         })
@@ -135,8 +135,8 @@
 
     function atestadoDisable(){
         Swal.fire({
-            type: 'error',
-            title: 'Está consulta não pode ser alterada',
+            icon: 'error',
+            title: 'Não foi possível gerar o atestado',
             text: 'Você não pode mais gerar o atestad desta consulta!',
         })
     }
@@ -181,7 +181,7 @@
                     console.log(thrownError);
 
                     Swal.fire({
-                        type: 'error',
+                        icon: 'error',
                         title: 'Está consulta não pode ser alterada',
                         text: 'Você não pode mais alterar o status desta consulta!',
                     })

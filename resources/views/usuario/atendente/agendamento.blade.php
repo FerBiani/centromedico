@@ -62,6 +62,7 @@
                         <thead class="thead thead-light">
                             <tr>
                                 <th>Médico</th>
+                                <th>Especialização</th>
                                 <th>Dia</th>
                                 <th>Inicio</th>
                                 <th>Fim</th>
@@ -73,6 +74,7 @@
                             
                                 <tr>
                                     <td>{{$horario->usuario->nome}}</td> 
+                                    <td>{{\App\Especializacao::find($horario->especializacao_id)->especializacao}}</td>
                                     <td>{{$horario->dia->dia}}</td>
                                     <td>{{$horario->inicio}}</td>
                                     <td>{{$horario->fim}}</td>
