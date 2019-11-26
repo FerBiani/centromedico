@@ -28,7 +28,11 @@
                             @else
                                 <button class="btn btn-secondary disabled" onClick="statusDisable()">Status da Consulta</button>
                             @endif
+                            @if($consulta->status_id != 4)
+                            <button onClick="atestadoDisable()" class="btn btn-secondary disabled">Gerar Atestado</button>
+                            @else
                             <a target="blank" class="btn btn-dark" href="{{url('atestados/gerar/'.$consulta->paciente_id)}}">Gerar Atestado</a>
+                            @endif
                         </div>
                     </div>
                     <hr>
@@ -124,8 +128,16 @@
     function statusDisable(){
         Swal.fire({
             type: 'error',
-            title: 'Oops...',
+            title: 'Está consulta não pode ser alterada',
             text: 'Você não pode mais alterar o status desta consulta!',
+        })
+    }
+
+    function atestadoDisable(){
+        Swal.fire({
+            type: 'error',
+            title: 'Está consulta não pode ser alterada',
+            text: 'Você não pode mais gerar o atestad desta consulta!',
         })
     }
 

@@ -94,7 +94,7 @@
                     })
 
                     Toast.fire({
-                    type: 'error',
+                    icon: 'error',
                     title: 'Nenhum resultado foi encontrado'
                     })
                 }

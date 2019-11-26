@@ -12,6 +12,9 @@
                 <div class="alert alert-secondary" role="alert">
                     <div class="row align-items-center">
                         <div class="col-md-3">
+                            <p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->paciente_id)->nome }}</p>
+                        </div>
+                        <div class="col-md-3">
                             <h6 class="alert-heading"><i class="fas fa-hashtag"></i> {{ $consulta->id }} </h6>
                         </div>
                         @if($consulta->agendamento_id)
@@ -33,9 +36,13 @@
                             @if($consulta->status_id == 4 && !$consulta->agendamento_id)
                                 <button onClick="abrirModalRetorno('{{$consulta}}')" class="btn btn-primary">Agendar Retorno</button>
                             @endif
+                            @if($consulta->status_id != 4)
+                                <button onClick="atestadoDisable()" class="btn btn-secondary disabled">Atestado de Horário</button>
+                            @else
                             <a href="{{'atendente/atestado/'.$consulta->id}}" target="_blank">
                                 <button class="btn btn-warning text-white">Atestado de Horário</button>
                             </a>
+                            @endif
                             @if($consulta->status_id == 1)
                                 <button class="btn btn-info" onClick="status({{$consulta->id}})">Status da Consulta</button>
                             @else
@@ -47,7 +54,7 @@
                     <hr>
                     <div class="row align-items-center">
                         <div class="col-md-3">
-                            <p><i class="fas fa-user"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p>
+                            <p><i class="fas fa-user-md"></i> {{ \App\Usuario::find($consulta->medico_id)->nome }}</p>
                         </div>
                         <div class="col-md-3">
                             <p><i class="fas fa-stethoscope"></i> {{ \App\Especializacao::find($consulta->especializacao_id)->especializacao }}</p>
@@ -163,9 +170,17 @@
 
     function statusDisable(){
         Swal.fire({
-            type: 'error',
-            title: 'Está consulta já foi finalizada',
+            icon: 'error',
+            title: 'Está consulta não pode ser alterada',
             text: 'Você não pode mais alterar o status desta consulta!',
+        })
+    }
+
+    function atestadoDisable(){
+        Swal.fire({
+            icon: 'error',
+            title: 'Está consulta não pode ser alterada',
+            text: 'Você não pode mais gerar o atestad desta consulta!',
         })
     }
 
@@ -203,7 +218,7 @@
                 },
                 error: function(){
                     Swal.fire({
-                        type: 'error',
+                        icon: 'error',
                         title: 'Oops',
                         text: 'Você não pode alterar o status desta consuta!'
                     })
