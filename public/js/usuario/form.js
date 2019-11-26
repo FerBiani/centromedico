@@ -218,11 +218,13 @@ $(document).ready(function() {
         $('input[name="crm[numero]"]').val('').attr('disabled', 'disabled')
     }
 
-    if($('.select-documentos').find('option:selected').val() == '2') {
-        $(this).parents().closest('.doc').find('input.documento').eq(0).mask('999.999.999-99').rules("add", "cpf");
-    } else {
-        $(this).parents().closest('.doc').find('input.documento').eq(0).unmask().rules("remove", "cpf");
-    }
+    $.each($('.select-documentos'), function() {
+        if($(this).find('option:selected').val() == '2') {
+            $(this).parents().closest('.doc').find('input.documento').eq(0).mask('999.999.999-99').rules("add", "cpf");
+        } else {
+            $(this).parents().closest('.doc').find('input.documento').eq(0).unmask().rules("remove", "cpf");
+        }
+    })
 
     $(document).on('click', '.add-tel', function() {
         if($('.tel').length < 4) {
