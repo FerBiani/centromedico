@@ -12,7 +12,6 @@
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('js/chartsjs/sweetalert.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/select2/css/select2.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('js/chartsjs/Chart.css') }}" rel="stylesheet" />
@@ -200,14 +199,31 @@
         <script src="{{ asset('js/chartsjs/Chart.min.js') }}"></script>
         <script src="{{ asset('js/sweetalert.min.js') }}"></script>
         <script src="{{ asset('js/chartsjs/Chart.bundle.min.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/socket.io.js') }}"></script>
         <script> var main_url="{{url('')}}"; </script>
         @auth
         <script>
             var socket  = io('http://localhost:8888', { query: "id={{Auth::user()->id}}" });
 
-            socket.on('check_in', function(data){
-            
+            socket.on('check_in_notificacao', function(data){
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Um paciente efetuou check-in!'
+                })
+
             })
         </script>
         @endauth

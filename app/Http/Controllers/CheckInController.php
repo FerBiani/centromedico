@@ -27,6 +27,10 @@ class CheckInController extends Controller
         $dataHoraAtual = Carbon::now();
         $diferencaEmMinutos = Carbon::parse($agendamento->first()->getOriginal('inicio'))->diffInMinutes($dataHoraAtual);
 
+        if($dataHoraAtual > Carbon::parse($agendamento->first()->getOriginal('inicio'))) {
+            return back()->with('warning', 'Não é possível realizar o check-in! A data de inicio desta consulta é anterior à data atual.');
+        }
+
         if($diferencaEmMinutos > 60) {
             return back()->with('warning', 'O Check-in só pode ser efetuado no mínimo 1 hora antes da consulta!');
         }

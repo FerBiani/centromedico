@@ -87,8 +87,12 @@
             .find('.checkin-status-text')
             .text('Check-in efetuado')
 
+            let paciente = "'"+ data.nome_paciente +"'"
+            let inicio = "'"+ data.inicio +"'"
+            let especializacao = "'"+ data.especializacao +"'"
+
         $("#botoes-superiores-"+data.agendamento_id).prepend(
-            '<button class="btn btn-warning text-white" onClick="chamarPaciente('+data.agendamento_id+','+data.nome_paciente+','+data.especializacao_id+')">Chamar paciente</button>'
+            '<button class="btn btn-warning text-white" onClick="chamarPaciente('+data.agendamento_id+','+paciente+','+especializacao+','+inicio+')">Chamar paciente</button>'
         )
     })
 
@@ -112,7 +116,7 @@
                 Swal.fire('Paciente chamado com sucesso!')
             },
             error: function(err) {
-                console.log(err)
+                Swal.fire('Erro ao chamar paciente!')
             }
         });
     } 

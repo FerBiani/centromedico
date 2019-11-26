@@ -7,6 +7,7 @@ use App\Events\CheckInEfetuado;
 use App\Http\Controllers\Controller;
 use App\{Agendamento, CheckIn};
 use DB;
+use Carbon\Carbon;
 
 class CheckInController extends Controller
 {
@@ -19,6 +20,27 @@ class CheckInController extends Controller
             return response()->json([
                 'message' => 'Agendamento não encontrado!'
             ], 404);
+        }
+
+        if($agendamento->first()->status_id != 1) {
+            return response()->json([
+                'message' => 'Ação não permitida!'
+            ], 409);
+        }
+
+        $dataHoraAtual = Carbon::now();
+        $diferencaEmMinutos = Carbon::parse($agendamento->first()->getOriginal('inicio'))->diffInMinutes($dataHoraAtual);
+
+        if($dataHoraAtual > Carbon::parse($agendamento->first()->getOriginal('inicio'))) {
+            return response()->json([
+                'message' => 'Não é possível realizar o check-in! A data de inicio desta consulta é anterior à data atual.'
+            ], 409);
+        }
+
+        if($diferencaEmMinutos > 60) {
+            return response()->json([
+                'message' => 'O Check-in só pode ser efetuado no mínimo 1 hora antes da consulta!'
+            ], 409);
         }
 
         if($agendamento->first()->checkIn) {
@@ -46,7 +68,9 @@ class CheckInController extends Controller
                     'agendamento_id' => $agendamento->first()->id,
                     'medico_id' => $agendamento->first()->medico_id,
                     'especializacao_id' => $agendamento->first()->especializacao_id,
-                    'nome_paciente' => $agendamento->first()->paciente->nome
+                    'especializacao' => $agendamento->first()->especializacao->especializacao,
+                    'nome_paciente' => $agendamento->first()->paciente->nome,
+                    'inicio' => $agendamento->first()->inicio
                 ]
             ]);
 
