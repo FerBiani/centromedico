@@ -219,7 +219,7 @@
                 error: function(){
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops',
+                        title: 'Está consulta não pode ser alterada',
                         text: 'Você não pode alterar o status desta consuta!'
                     })
                 }

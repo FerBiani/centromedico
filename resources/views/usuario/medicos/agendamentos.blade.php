@@ -182,7 +182,7 @@
 
                     Swal.fire({
                         type: 'error',
-                        title: 'Oops...',
+                        title: 'Está consulta não pode ser alterada',
                         text: 'Você não pode mais alterar o status desta consulta!',
                     })
                 }
