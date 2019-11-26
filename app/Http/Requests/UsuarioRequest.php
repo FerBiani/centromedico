@@ -16,7 +16,7 @@ class UsuarioRequest extends FormRequest
 
         return [
             'usuario.nome'                        => 'required|max:100',
-            'usuario.email'                       => 'required|email',
+            'usuario.email'                       => 'required|email|unique:usuarios,email,'.$this->route('usuario').',id',
             'usuario.password'                    => 'required_if:'.$this->route('usuario').',!==,null|min:6|max:10',
             'usuario.password_confirmation'       => 'required_if:'.$this->route('usuario').',!==,null|same:usuario.password',
             'usuario.nivel_id'                    => 'required',
@@ -40,6 +40,7 @@ class UsuarioRequest extends FormRequest
             'required'                              => 'Este campo é obrigatorio',
             'required_if'                           => 'Este campo é obrigatorio',
             'required_with'                         => 'Este campo é obrigatorio',
+            'unique'                                => 'O valor informado neste campo já está em uso',
             'integer'                               => 'Este campo deve conter um valor numérico',
             'email'                                 => 'Este campo deve conter um endereço de e-mail válido',
             'especializacoes.*.tempo_retorno.min'   => 'Este campo deve conter um valor maior ou igual a :min',

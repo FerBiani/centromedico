@@ -89,9 +89,10 @@ class AgendamentoController extends Controller
         return view('usuario.atendente.confirmacao', compact('data'));
     }
 
-    public function pacientes(){
-        $pacientes = Usuario::where('nivel_id',2)->paginate(10);
-        return $pacientes;
+    public function pacientes(Request $request){
+        $pacientes = Usuario::where('nivel_id',2)->where('nome', 'like', $request->q.'%');
+
+        return json_encode($pacientes->paginate(10, ['*'], 'page', $request->page));
     }
 
     public function store(AgendamentoRequest $request)
@@ -156,7 +157,7 @@ class AgendamentoController extends Controller
                 'descricao'   => 'Usuário '.Auth::user()->nome.' cadastrou um agendadamento'
             ]);
 
-            //Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
+            Mail::to($agendamento->paciente->email)->send(new AgendamentoEfetuado($agendamento));
 
             DB::commit();
 
