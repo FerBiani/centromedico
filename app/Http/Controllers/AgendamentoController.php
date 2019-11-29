@@ -199,13 +199,25 @@ class AgendamentoController extends Controller
         DB::beginTransaction();
         try {
             $agendamento->update(['status_id' => $request->input('status_id')]);
+            
+            ///////// EMAIL LIBERACAO DE CONSULTA ///////////////
+            //https://laravel.com/docs/5.7/mail#generating-mailables
+            if($request->input('status_id') == 2){
+                $pacientes = \App\ListaEspera::where('especializacao_id', $agendamento->especializacao_id);
+                foreach($pacientes->paciente_id as $paciente){
+                    $usuario = \App\Usuario::find($paciente);
+                    Mail::to($usuario->email)->send(new AgendamentoEfetuado($agendamento));
+                }            
+            }
+            ///////// EMAIL LIBERACAO DE CONSULTA ///////////////
+
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Atualização',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' alterou o status da consulta'
             ]);  
             DB::commit();
-            return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
+            return response()->json(['message' => 'Status da consulta alterado com sucesso, entre em contato com a clínica para reagendar!'], 200);
         } catch(\Exception $e) {
             return response()->json(['message' => 'Não foi possível alterar o status da consulta'], 500);
         }

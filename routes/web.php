@@ -28,6 +28,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function() {
 
+
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('get-medicos/{especializacao}', 'UsuarioController@getMedicos');
@@ -105,6 +106,7 @@ Route::middleware('auth')->group(function() {
             Route::get('get/{agendamentoId}/{diaSemanaId}/{horario}', 'HorarioController@get');
         });
 
+
         // Route::prefix('retorno')->group(function(){
         //     Route::get('/novo/{id}', 'RetornoController@create');
         //     Route::get('/create/{id}', 'RetornoController@create');
@@ -115,5 +117,12 @@ Route::middleware('auth')->group(function() {
 
     Route::middleware('role:2 4 3')->group(function() {
         Route::post('set-status/{id}', 'AgendamentoController@setStatus');
+    });
+
+    Route::middleware('role:4 3')->group(function() {
+        Route::prefix('lista')->group(function () {
+            Route::get('pacientes', 'ListaController@index');
+            Route::get('medicos', 'ListaController@list');
+        });
     });
 });
