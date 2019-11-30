@@ -28,6 +28,6 @@ class Especializacao extends Model
 
     public function listaEspera()
     {
-        return $this->hasMany('App\Lista');
+        return $this->hasMany('App\ListaEspera');
     }
 }

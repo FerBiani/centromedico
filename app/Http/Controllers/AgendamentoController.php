@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log};
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log, ListaEspera};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
 use App\Http\Requests\{AgendamentoRequest};
 use App\Mail\AgendamentoEfetuado;
+use App\Mail\ConsultaDisponivel;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Auth;
@@ -195,21 +196,19 @@ class AgendamentoController extends Controller
         if(date("Y-m-d") != date('Y-m-d', strtotime( $agendamento->getOriginal('inicio'))) && $request->input('status_id') != 2){
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
-
+          
+            $pacientes = DB::table('lista_espera')->where('especializacao_id', $agendamento->especializacao_id)->get();
+            if($request->input('status_id') == 2 || $request->input('status_id') == 4){
+                foreach($pacientes as $paciente){
+                    $usuario = \App\Usuario::find($paciente->paciente_id);
+                    Mail::to($usuario->email)->send(new ConsultaDisponivel($paciente));
+                }            
+            }
+           
+            
         DB::beginTransaction();
         try {
             $agendamento->update(['status_id' => $request->input('status_id')]);
-            
-            ///////// EMAIL LIBERACAO DE CONSULTA ///////////////
-            //https://laravel.com/docs/5.7/mail#generating-mailables
-            if($request->input('status_id') == 2){
-                $pacientes = \App\ListaEspera::where('especializacao_id', $agendamento->especializacao_id);
-                foreach($pacientes->paciente_id as $paciente){
-                    $usuario = \App\Usuario::find($paciente);
-                    Mail::to($usuario->email)->send(new AgendamentoEfetuado($agendamento));
-                }            
-            }
-            ///////// EMAIL LIBERACAO DE CONSULTA ///////////////
 
             Log::create([
                 'usuario_id' => Auth::user()->id,
