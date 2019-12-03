@@ -16,6 +16,7 @@ class CreateTipoDocumentosTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('tipo', 45);
+			$table->boolean('possui_complemento')->default(0);
 		});
 	}
 
