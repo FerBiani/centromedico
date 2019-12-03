@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log};
+use App\{Usuario, Nivel, Agendamento, Especializacao, Horario, DiaSemana, StatusAgendamento, Log, ListaEspera};
 use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioCollection;
 use App\Http\Requests\{AgendamentoRequest};
 use App\Mail\AgendamentoEfetuado;
+use App\Mail\ConsultaDisponivel;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Auth;
@@ -195,17 +196,27 @@ class AgendamentoController extends Controller
         if(date("Y-m-d") != date('Y-m-d', strtotime( $agendamento->getOriginal('inicio'))) && $request->input('status_id') != 2){
             return response()->json(['message' => 'Você não pode cancelar esta consulta!'], 403);
         }
-
+          
+            $pacientes = DB::table('lista_espera')->where('especializacao_id', $agendamento->especializacao_id)->get();
+            if($request->input('status_id') == 2 || $request->input('status_id') == 4){
+                foreach($pacientes as $paciente){
+                    $usuario = \App\Usuario::find($paciente->paciente_id);
+                    Mail::to($usuario->email)->send(new ConsultaDisponivel($paciente));
+                }            
+            }
+           
+            
         DB::beginTransaction();
         try {
             $agendamento->update(['status_id' => $request->input('status_id')]);
+
             Log::create([
                 'usuario_id' => Auth::user()->id,
                 'acao'        => 'Atualização',
                 'descricao'   => 'Usuário '.Auth::user()->nome.' alterou o status da consulta'
             ]);  
             DB::commit();
-            return response()->json(['message' => 'Status da consulta alterado com sucesso!'], 200);
+            return response()->json(['message' => 'Status da consulta alterado com sucesso, entre em contato com a clínica para reagendar!'], 200);
         } catch(\Exception $e) {
             return response()->json(['message' => 'Não foi possível alterar o status da consulta'], 500);
         }

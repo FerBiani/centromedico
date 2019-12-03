@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\{ListaEspera, DiaSemana, Especializacao, Log, Usuario};
+use App\{ListaEspera, DiaSemana, Especializacao, Log, Usuario, Agendamento};
 use App\Http\Requests\{ListaEsperaRequest};
 use DB;
 use auth;
@@ -67,6 +67,6 @@ class ListaEsperaController extends Controller
         }else{
             return back()->with('error', 'Nenhum resultado foi encontrado');
         }
-
     }
+
 }

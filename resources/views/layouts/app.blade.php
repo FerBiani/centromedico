@@ -120,6 +120,10 @@
                             <i class="fas fa-clock" style="margin:5px"></i>
                             <span>Horários</span>
                         </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('lista/pacientes')}}">
+                            <i class="fas fa-user" style="margin:5px"></i>
+                            <span>Pacientes</span>
+                        </a>
                     @endif
                     @if(Auth::user()->nivel_id == 4)
                         <a class="nav-link d-flex align-items-center" href="{{url('agendamentos')}}">
@@ -141,6 +145,10 @@
                         <a class="nav-link d-flex align-items-center" href="{{url('atendente/relatorio')}}">
                             <i class="fas fa-folder" style="margin:5px"></i>
                             <span>Relatórios</span>
+                        </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('lista/pacientes')}}">
+                            <i class="fas fa-user" style="margin:5px"></i>
+                            <span>Pacientes</span>
                         </a>
                     @endif
                 </nav>

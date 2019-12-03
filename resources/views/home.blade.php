@@ -102,6 +102,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">Lista de Consultas</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('lista/pacientes')}}"><i class="fas fa-6x fa-list"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
