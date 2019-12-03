@@ -216,7 +216,7 @@
                     //atualiza a página
                     setTimeout(() => {
                         location.reload()
-                    }, 1000);
+                    }, 3000);
                    
                 },
                 error: function(){

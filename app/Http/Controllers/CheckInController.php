@@ -27,7 +27,7 @@ class CheckInController extends Controller
         $dataHoraAtual = Carbon::now();
         $diferencaEmMinutos = Carbon::parse($agendamento->getOriginal('inicio'))->diffInMinutes($dataHoraAtual);
 
-        if($dataHoraAtual > Carbon::parse($agendamento->getOriginal('inicio'))) {
+        if($dataHoraAtual < Carbon::parse($agendamento->getOriginal('inicio'))) {
             return back()->with('warning', 'Não é possível realizar o check-in! A data de inicio desta consulta é anterior à data atual.');
         }
 
@@ -77,7 +77,7 @@ class CheckInController extends Controller
 
         } catch(\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Erro no servidor');
+            return back()->with('error', $e);
         }
         
     }
