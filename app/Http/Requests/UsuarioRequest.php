@@ -21,7 +21,7 @@ class UsuarioRequest extends FormRequest
             'usuario.password_confirmation'       => 'required_if:'.$this->route('usuario').',!==,null|same:usuario.password',
             'usuario.nivel_id'                    => 'required',
             'especializacoes.*.especializacao_id' => 'required_if:usuario.nivel_id,==,3',
-            'especializacoes.*.tempo_retorno'     => 'required_if:usuario.nivel_id,==,3|integer|min:1',
+            'especializacoes.*.tempo_retorno'     => 'required_if:usuario.nivel_id,==,3|integer|min:0',
             'endereco.cep'                        => 'required',
             'endereco.estado_id'                  => 'required',
             'endereco.bairro'                     => 'required|max:100',

@@ -46,6 +46,10 @@ class HorarioController extends Controller
 
         $diasParaRetorno = $medico->especializacoes()->wherePivot('especializacao_id', $especializacao->id)->first()->pivot->tempo_retorno;
 
+        if($diasParaRetorno == 0) {
+            return response()->json(['message' => 'Esta especialização não permite retornos com este médico!'], 403);
+        }
+
         $agendamentoInicio = Carbon::createFromDate($agendamento->getOriginal('inicio'));
 
         $data = [];

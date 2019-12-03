@@ -95,7 +95,11 @@ class UsuarioController extends Controller
             }
             
             foreach($documentos as $documento) {
-                $usuario->documentos()->save(new Documento([ 'numero' => $documento['numero'], 'tipo_documentos_id' => $documento['tipo_documentos_id'] ]));
+                $usuario->documentos()->save(new Documento([
+                    'numero' => $documento['numero'],
+                    'tipo_documentos_id' => $documento['tipo_documentos_id'],
+                    'complemento' => $documento['complemento']
+                ]));
             }
 
             foreach($request['telefone'] as $telefone) {

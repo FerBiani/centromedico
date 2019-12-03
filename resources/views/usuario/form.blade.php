@@ -209,7 +209,7 @@
                                             <option disabled selected>Selecione</option>
                                             @foreach(\App\TipoDocumento::all() as $tipoDocumento)
                                                 @if($tipoDocumento->id != 4)
-                                                    <option {{$documento['tipo_documentos_id'] == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
+                                                    <option data-complemento="{{$tipoDocumento->possui_complemento}}" {{$documento['tipo_documentos_id'] == $tipoDocumento->id ? 'selected' : ''}} value="{{$tipoDocumento->id}}">{{$tipoDocumento->tipo}}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -228,6 +228,15 @@
                                     <small id="error" class="errors font-text text-danger">{{ $errors->first('documento.'.$offset.'.numero') }}</small>
                                 </div>
                             </div>
+                            <div class="col-md-3 complemento">
+                                <div class="form-group">
+                                    <label for="documento[{{$offset}}][complemento]" class="col-form-label">Complemento</label>
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Complemento" class="form-control documento" name="documento[{{$offset}}][complemento]" value="{{$documento['complemento'] ? $documento['complemento'] : ''}}" required>
+                                    </div>
+                                    <small id="error" class="errors font-text text-danger">{{ $errors->first('documento.'.$offset.'.complemento') }}</small>
+                                </div>
+                            </div>
                         </div>
                         @endforeach
                     </div>
@@ -242,6 +251,13 @@
                                 <input type="hidden" name="crm[tipo_documentos_id]">
                                 <input type="text" placeholder="Numero" class="form-control" name="crm[numero]" value="{{old('crm.numero', $data['usuario'] && $data['usuario']->getCRM() ? $data['usuario']->getCRM()->numero : '')}}" required>
                                 <small id="error" class="errors font-text text-danger">{{ $errors->first('crm.numero') }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-form-label">Complemento</label>
+                                <input type="text" placeholder="Complemento" class="form-control" name="crm[complemento]" value="{{old('crm.complemento', $data['usuario'] && $data['usuario']->getCRM() ? $data['usuario']->getCRM()->complemento : '')}}" required>
+                                <small id="error" class="errors font-text text-danger">{{ $errors->first('crm.complemento') }}</small>
                             </div>
                         </div>
                     </div>

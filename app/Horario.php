@@ -61,7 +61,7 @@ class Horario extends Model
                 break;
         }
 
-        $dateString = 'next '.$day;
+        $dateString = $day;
     
         if (!strtotime($dateString)) {
             throw new \Exception('"'.$dateString.'" is not a valid strtotime');
@@ -84,7 +84,9 @@ class Horario extends Model
         while ($count < 5) {
 
             if(!in_array($startDay->format('d/m/Y').' '.$this->inicio.':00', $horariosIndisponiveis)) {
-                $days[] = clone($startDay);
+                if($startDay->format('d/m/Y').' '.$this->inicio.':00' > date('d/m/Y H:i:s')) {
+                    $days[] = clone($startDay);
+                }
             }
             $startDay->modify('+ 7 days');
             $count++;

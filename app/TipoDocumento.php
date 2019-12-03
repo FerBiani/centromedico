@@ -9,13 +9,13 @@ class TipoDocumento extends Model
     protected $table = 'tipo_documentos';
 
     protected $fillable = [
-        'tipo'
+        'tipo', 'possui_complemento'
     ];
 
     public $timestamps = false;
 
     public function documentos()
     {
-        return $this->belongsTo('App\Documento');
+        return $this->hasMany('App\Documento', 'tipo_documentos_id');
     }
 }

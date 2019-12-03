@@ -26,6 +26,14 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card">
+                                <div class="card-header bg-info text-white">Tipos de documentos</div>
+                                <div class="card-body text-center">
+                                    <a class="btn" href="{{url('tipo-documentos')}}"><i class="fas fa-6x fa-filter"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
                                 <div class="card-header bg-info text-white">Logs</div>
                                 <div class="card-body text-center">
                                     <a class="btn" href="{{url('logs')}}"><i class="fas fa-6x fa-filter"></i></a>

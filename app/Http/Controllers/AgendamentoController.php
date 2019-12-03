@@ -141,7 +141,7 @@ class AgendamentoController extends Controller
                 'paciente_id' => (int)$request['agendamento']['paciente_id'],
                 'medico_id'  => (int)$request['agendamento']['medico_id'],
                 'especializacao_id' => (int)$request['agendamento']['especializacao_id'],
-                'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].$request['agendamento']['medico_id'].$codigoRetorno,
+                'codigo_check_in' => $request['agendamento']['paciente_id'].$request['agendamento']['especializacao_id'].rand(10,99).$request['agendamento']['medico_id'].$codigoRetorno,
             ]);
     
             if(isset($request['agendamento']['agendamento_id'])) {

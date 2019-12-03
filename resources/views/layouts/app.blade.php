@@ -84,6 +84,14 @@
                             <i class="fas fa-users" style="margin:5px"></i>
                             <span>Usuários</span>
                         </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('especializacoes')}}">
+                            <i class="fas fa-heartbeat" style="margin:5px"></i>
+                            <span>Especializações</span>
+                        </a>
+                        <a class="nav-link d-flex align-items-center" href="{{url('tipo-documentos')}}">
+                            <i class="fas fa-file" style="margin:5px"></i>
+                            <span>Tipos de documento</span>
+                        </a>
                         <a class="nav-link d-flex align-items-center" href="{{url('logs')}}">
                             <i class="far fa-chart-bar" style="margin:5px"></i>
                             <span>Logs</span>

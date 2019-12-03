@@ -38,22 +38,21 @@ Route::middleware('auth')->group(function() {
         Route::get('logs', 'LogController@index');
         Route::get('logs/list', 'LogController@list');
 
+        Route::resource('tipo-documentos', 'TipoDocumentoController');
+        Route::resource('especializacoes', 'EspecializacaoController');
+
     });
 
     Route::middleware('role:1 4')->group(function () {
 
-        Route::middleware('role:1 4')->group(function () {
-        
-            Route::prefix('usuario')->group(function () {
-                Route::get('list/{status}', 'UsuarioController@list');
-            });
-
-            Route::resource('usuario', 'UsuarioController');
-            Route::get('agendamentos', 'AgendamentoController@index');
-            Route::post('check-in', 'CheckInController@store');
-
+        Route::prefix('usuario')->group(function () {
+            Route::get('list/{status}', 'UsuarioController@list');
         });
-    
+
+        Route::resource('usuario', 'UsuarioController');
+        Route::get('agendamentos', 'AgendamentoController@index');
+        Route::post('check-in', 'CheckInController@store');
+
     });
 
     Route::middleware('role:2')->group(function () {
@@ -104,12 +103,6 @@ Route::middleware('auth')->group(function() {
         Route::prefix('horario')->group(function() {
             Route::get('get/{agendamentoId}/{diaSemanaId}/{horario}', 'HorarioController@get');
         });
-
-        // Route::prefix('retorno')->group(function(){
-        //     Route::get('/novo/{id}', 'RetornoController@create');
-        //     Route::get('/create/{id}', 'RetornoController@create');
-        //     Route::post('/store', 'RetornoController@store');
-        // });
 
     });
 

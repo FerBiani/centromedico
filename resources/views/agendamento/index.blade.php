@@ -33,7 +33,10 @@
                         </div>
                        
                         <div class="col-md-6 text-right">
-                            @if($consulta->status_id == 4 && !$consulta->agendamento_id)
+
+                            <?php $diasParaRetorno = $consulta->medico->especializacoes()->wherePivot('especializacao_id', $consulta->especializacao_id)->first()->pivot->tempo_retorno; ?>
+
+                            @if($consulta->status_id == 4 && !$consulta->agendamento_id && $diasParaRetorno != 0)            
                                 <button onClick="abrirModalRetorno('{{$consulta}}')" class="btn btn-primary">Agendar Retorno</button>
                             @endif
                             @if($consulta->status_id != 4)

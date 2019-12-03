@@ -224,6 +224,20 @@ $(document).ready(function() {
         } else {
             $(this).parents().closest('.doc').find('input.documento').eq(0).unmask().rules("remove", "cpf");
         }
+
+        if($(this).find('option:selected').data('complemento') == '1') {
+            $(this).parents().closest('.doc').find('.complemento').eq(0).removeAttr('hidden')
+        } else {
+            $(this).parents().closest('.doc').find('.complemento').eq(0).attr('hidden', 'hidden')
+        }
+    })
+
+    $(document).on('change', '.select-documentos', function() {
+        if($(this).find('option:selected').data('complemento') == '1') {
+            $(this).parents().closest('.doc').find('.complemento').eq(0).removeAttr('hidden')
+        } else {
+            $(this).parents().closest('.doc').find('.complemento').eq(0).attr('hidden', 'hidden')
+        }
     })
 
     $(document).on('click', '.add-tel', function() {
