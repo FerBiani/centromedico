@@ -23,7 +23,7 @@
         "vue": "^2.5.17"
     },
     "dependencies": {
-        "express": "^4.17.1",
+        "express": "^4.17.3",
         "socketio": "^1.0.0"
     }
 }
